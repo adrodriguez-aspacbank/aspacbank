@@ -230,7 +230,6 @@ const WelcomePage: React.FC = () => {
               </div>
             </div>
           </SwiperSlide>
-          ```
           {/* Slide 1 */}
           <SwiperSlide>
             <div
