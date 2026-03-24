@@ -213,7 +213,6 @@ const WelcomePage: React.FC = () => {
           className="w-full h-full"
           aria-roledescription="carousel"
         >
-          help me to fit this on desktop and mobile view - ```typescriptreact
           {/* BSP */}
           <SwiperSlide>
             <div
