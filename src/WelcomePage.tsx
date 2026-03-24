@@ -213,6 +213,25 @@ const WelcomePage: React.FC = () => {
           className="w-full h-full"
           aria-roledescription="carousel"
         >
+          help me to fit this on desktop and mobile view - ```typescriptreact
+          {/* BSP */}
+          <SwiperSlide>
+            <div
+              className="h-full w-full relative bg-cover bg-center"
+              style={{ backgroundImage: "url(/PYM-digital-poster.jpg)" }}
+              role="img"
+              aria-label="Teacher in a classroom — ASPAC Teachers’ Salary Loan (APDS)"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
+
+              <div className="absolute left-4 md:left-16 bottom-10 md:bottom-16 max-w-xl">
+                <div className="animate-[fadeIn_500ms_ease-out] space-y-3">
+                  <h1 className="text-[#ebd839] text-3xl md:text-5xl font-extrabold leading-tight drop-shadow"></h1>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+          ```
           {/* Slide 1 */}
           <SwiperSlide>
             <div
@@ -265,7 +284,6 @@ const WelcomePage: React.FC = () => {
               </div>
             </div>
           </SwiperSlide>
-
           {/* Slide 2 */}
           <SwiperSlide>
             <div
@@ -302,7 +320,6 @@ const WelcomePage: React.FC = () => {
               </div>
             </div>
           </SwiperSlide>
-
           {/* Slide 3 */}
           <SwiperSlide>
             <div
