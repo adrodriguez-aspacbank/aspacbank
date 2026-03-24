@@ -224,9 +224,7 @@ const WelcomePage: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
 
               <div className="absolute left-4 md:left-16 bottom-10 md:bottom-16 max-w-xl">
-                <div className="animate-[fadeIn_500ms_ease-out] space-y-3">
-                  <h1 className="text-[#ebd839] text-3xl md:text-5xl font-extrabold leading-tight drop-shadow"></h1>
-                </div>
+                <div className="animate-[fadeIn_500ms_ease-out] space-y-3"></div>
               </div>
             </div>
           </SwiperSlide>
