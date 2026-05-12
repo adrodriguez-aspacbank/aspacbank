@@ -45,20 +45,6 @@ const WelcomePage: React.FC = () => {
 
   const news: NewsItem[] = [
     {
-      title: "Bogo Branch Reopening – December 15, 2025",
-      content:
-        "We are reopening on December 15, 2025! Thank you for your patience and understanding. See you soon at the Bogo Branch along P. Rodriguez Street, Cogon, Bogo City. Happy Holidays!",
-      label: "Branch Advisory",
-      Icon: FaMapMarkerAlt as React.ComponentType<
-        React.SVGProps<SVGSVGElement>
-      >,
-      iconColor: "text-primary",
-      to: "/advisories",
-      mediaType: "image",
-      mediaSrc: "/bogo_reopens.jpg", // make sure this is in /public
-      mediaAlt: "ASPAC Bank Bogo Branch reopening advisory – December 15, 2025",
-    },
-    {
       title: "ASPAC Bank Consolacion Moves to a New Building",
       content:
         "We are pleased to announce that ASPAC Bank Consolacion is now operating in its new building at Sta. Lucia Town Center, Poblacion Oriental.",
