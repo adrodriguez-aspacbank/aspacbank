@@ -20,6 +20,15 @@ const fileUrl = (name: string) => `/assets/balancesheet/${name}`;
 
 const DOC_OPTIONS: DocOption[] = [
   {
+    label: "March 31, 2026 (Q1)",
+    asOf: "2026-03-31",
+    pages: [
+      fileUrl("balancesheet-3-31-2026.jpg"),
+      fileUrl("balancesheet-3-31-2026_1.jpg"),
+    ],
+  },
+
+  {
     label: "December 31, 2025 (Q4)",
     asOf: "2025-12-31",
     pages: [

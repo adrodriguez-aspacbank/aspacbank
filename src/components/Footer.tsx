@@ -134,11 +134,6 @@ const Footer: React.FC = () => {
                   Terms & Conditions
                 </a>
               </li>
-              <li>
-                <a href="/advisories" className="hover:underline">
-                  Advisories
-                </a>
-              </li>
             </ul>
           </nav>
         </div>
