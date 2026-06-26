@@ -19,7 +19,7 @@ const BspSecurityTipsNewYearAdvisory: React.FC<Props> = ({
         src={IMG_SRC}
         alt={title}
         loading="lazy"
-        className="w-full rounded-2xl shadow-sm ring-1 ring-gray-100 select-none"
+        className="w-max h-96 rounded-2xl shadow-sm ring-1 ring-gray-100 select-none"
         draggable={false}
         onContextMenu={(e) => e.preventDefault()} // ✅ disable right-click menu
       />

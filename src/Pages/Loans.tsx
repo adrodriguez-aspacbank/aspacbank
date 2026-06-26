@@ -5,48 +5,56 @@ import {
   FaAward,
   FaGem,
   FaUserTie,
+  FaArrowRight,
 } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import Seo from "../components/Seo";
+import ServicesGrid, { ServiceItem } from "../module/ServicesCard";
+import { IoMdOpen } from "react-icons/io";
 
-interface LoanType {
-  title: string;
-  description: string;
-  Icon: React.ElementType;
-}
+// interface LoanType {
+//   title: string;
+//   description: string;
+//   Icon: React.ElementType;
+// }
 
-const loanTypes: LoanType[] = [
+const loanTypes: ServiceItem[] = [
   {
     title: "Commercial Loan",
     description:
       "Support for businesses needing working capital or expansion funds.",
     Icon: FaBriefcase as React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    link: "/loans/commercial",
+    badge: "Business",
   },
   {
     title: "Real Estate Loan",
     description:
       "Flexible financing for property acquisition, renovation, or construction.",
     Icon: FaBuilding as React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    link: "/loans/real-estate",
   },
-
   {
     title: "Honorarium Loan",
     description:
       "Loans for individuals receiving honoraria, such as public servants or consultants.",
     Icon: FaAward as React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    link: "/loans/honorarium",
   },
   {
-    title: "Chatel Loan",
+    title: "Chattel Loan",
     description:
       "Secured loans backed by assets for personal or emergency use.",
     Icon: FaGem as React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    link: "/loans/chattel",
   },
-
   {
     title: "Salary Loan",
     description:
       "Quick and easy loans for employed individuals with flexible terms.",
     Icon: FaUserTie as React.ComponentType<React.SVGProps<SVGSVGElement>>,
+    link: "/loans/salary",
+    badge: "Popular",
   },
 ];
 
@@ -91,7 +99,14 @@ const steps = [
 
 const Loans: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-
+  const fadeInUpVariant = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut" },
+    },
+  };
   return (
     <>
       {/* ✅ SEO for /loans */}
@@ -129,7 +144,7 @@ const Loans: React.FC = () => {
 
       <div className="bg-gray-50 min-h-screen">
         {/* 🟢 HERO SECTION (commercial bank style) */}
-        <section className="relative w-full h-[20rem] sm:h-[22rem] md:h-[24rem] overflow-hidden">
+        <section className="relative w-full h-[54rem] sm:h-[43rem] md:h-[46rem] overflow-hidden">
           <img
             src="/loans.jpg"
             alt="Customer signing a loan agreement with a bank officer"
@@ -153,17 +168,26 @@ const Loans: React.FC = () => {
                   understand your needs.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <button
+      
+                    <button
                     onClick={() => setShowModal(true)}
-                    className="bg-aspac-yellow text-black font-semibold px-7 py-3 rounded-xl shadow-md hover:bg-aspac-yellow/90 transition duration-300 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-aspac-yellow/60"
+                    className="relative inline-block mt-6 overflow-hidden text-white border border-white px-6 md:px-6 py-3 text-sm md:text-base font-light md:font-semibold rounded shadow group"
                   >
-                    Apply for a Loan
+                    <span className="relative z-10 flex items-center gap-3">
+                       Apply for a Loan
+                      <IoMdOpen className="group-hover:scale-125   transition-transform duration-300" />
+                    </span>
+                    <span className="absolute inset-0 bg-primary  translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                   </button>
                   <a
                     href="#loan-products"
-                    className="border border-white/80 text-white font-semibold px-7 py-3 rounded-xl hover:bg-white hover:text-aspac-green transition duration-300 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-white/40"
+                    className="relative inline-block mt-6 overflow-hidden text-white border border-white px-6 md:px-6 py-3 text-sm md:text-base font-light md:font-semibold rounded shadow group"
                   >
-                    View Loan Options
+                    <span className="relative z-10 flex items-center gap-3">
+                      View Loan Options
+                      <FaArrowRight className="group-hover:translate-y-1   relative -top-0.5 rotate-90  transition-transform duration-300" />
+                    </span>
+                    <span className="absolute inset-0 bg-primary  translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                   </a>
                 </div>
               </div>
@@ -173,7 +197,7 @@ const Loans: React.FC = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="hidden md:block bg-white rounded-2xl shadow-xl p-6 text-gray-900"
+                className=" bg-white rounded-2xl shadow-xl p-6 text-gray-900"
               >
                 <h2 className="text-xl font-semibold text-primary mb-3">
                   Why choose ASPAC loans?
@@ -200,14 +224,26 @@ const Loans: React.FC = () => {
         {/* 🟢 INTRO + CATEGORIES */}
         <section className="px-6 py-14 md:py-16 max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3">
-              Find the loan that fits your needs
-            </h2>
-            <p className="text-gray-700 text-sm md:text-base">
-              ASPAC Bank offers a range of loan products—from salary to business
-              and real estate financing—designed to support your plans and
-              responsibilities.
-            </p>
+            <motion.div
+              className="text-center max-w-3xl mx-auto space-y-4"
+              variants={fadeInUpVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <span className="text-xs uppercase tracking-widest font-extrabold text-[#459243] bg-[#459243]/10 px-4 py-1.5 rounded-full">
+                In ASPAC Bank
+              </span>
+
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">
+                Find the loan that fits your needs
+              </h2>
+              <p className="text-base sm:text-lg text-gray-500 font-normal leading-relaxed">
+                ASPAC Bank offers a range of loan products—from salary to
+                business and real estate financing—designed to support your
+                plans and responsibilities.
+              </p>
+            </motion.div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3 mb-4">
@@ -241,9 +277,8 @@ const Loans: React.FC = () => {
           </div>
         </section>
 
-        {/* 🟢 LOAN PRODUCTS GRID */}
-        <section id="loan-products" className="px-6 pb-16 max-w-6xl mx-auto">
-          <header className="text-center max-w-2xl mx-auto mb-10">
+        <div id="loan-products" className="pb-16 max-w-6xl mx-auto">
+          <header className="text-center max-w-2xl mx-auto mb-10 px-6">
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3">
               Our loan products
             </h2>
@@ -254,47 +289,29 @@ const Loans: React.FC = () => {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {loanTypes.map(({ title, description, Icon }, index) => (
-              <motion.article
-                key={title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="bg-white p-6 rounded-2xl border border-primary/10 shadow-md hover:shadow-[0_0_18px_#EBD839] hover:-translate-y-1 transition-all duration-300 flex flex-col"
-              >
-                <div className="flex items-center justify-center mb-5">
-                  <div className="h-14 w-14 rounded-full bg-aspac-yellow flex items-center justify-center">
-                    <Icon className="text-2xl text-aspac-green" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-primary mb-3 text-center">
-                  {title}
-                </h3>
-                <p className="text-gray-600 text-sm text-center">
-                  {description}
-                </p>
-              </motion.article>
-            ))}
-          </div>
+          <ServicesGrid
+            items={loanTypes}
+            negativeMarginClass="mt-0"
+            gridColsClass="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            learnMore={true}
+          />
 
           {/* CTA under loan grid */}
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
+          <div className="mt-12 flex flex-wrap justify-center gap-4 px-6">
             <button
               onClick={() => setShowModal(true)}
-              className="bg-aspac-yellow text-black font-semibold px-8 py-4 rounded-xl shadow-md hover:bg-aspac-yellow/90 transition duration-300 text-sm md:text-lg focus:outline-none focus:ring-4 focus:ring-aspac-yellow/60"
+              className="bg-primary text-white font-semibold px-8 py-4 rounded-xl shadow-md hover:bg-aspac-yellow/90 transition duration-300 text-sm md:text-lg focus:outline-none focus:ring-4 focus:ring-aspac-yellow/60"
             >
               Talk to a Loan Officer
             </button>
             <a
               href="#how-it-works"
-              className="text-primary font-semibold px-8 py-4 rounded-xl border border-primary/40 hover:bg-primary hover:text-white transition duration-300 text-sm md:text-lg focus:outline-none focus:ring-4 focus:ring-primary/40"
+              className="text-primary font-semibold px-8 py-4 rounded-xl border border-primary/40 hover:bg-aspac-yellow/30 hover:text-primary transition duration-300 text-sm md:text-lg focus:outline-none focus:ring-4 focus:ring-primary/40"
             >
               See How It Works
             </a>
           </div>
-        </section>
+        </div>
 
         {/* 🟢 HOW IT WORKS */}
         <section id="how-it-works" className="bg-aspac-green text-white">

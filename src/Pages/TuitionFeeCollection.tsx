@@ -1,15 +1,11 @@
 import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { Pagination, Autoplay, Navigation } from "swiper/modules";
-import Seo from "../components/Seo"; // ← update path to your Seo.tsx
+import Seo from "../components/Seo";
+import { FaArrowRight } from "react-icons/fa6";
 
 const TuitionFeeCollection: React.FC = () => {
   return (
     <>
-      {/* ✅ SEO for /tuition-fee-collection */}
+      {/* ✅ SEO Setup */}
       <Seo
         title="Tuition Fee Collection | ASPAC Bank"
         description="Pay school tuition safely and conveniently at ASPAC Bank partner schools. Fast over-the-counter processing, official receipts, and trusted partner institutions."
@@ -90,386 +86,345 @@ const TuitionFeeCollection: React.FC = () => {
         }}
       />
 
-      <main className="bg-gradient-to-b from-white to-primary/5 min-h-screen">
-        {/* 🟢 HERO: images slide, text stays fixed and readable */}
-        <section className="relative w-full h-[60vh] md:h-[70vh]">
-          {/* Swiper = background images only */}
-          <div className="absolute inset-0">
-            <Swiper
-              spaceBetween={50}
-              slidesPerView={1}
-              autoplay={{ delay: 3000, disableOnInteraction: false }}
-              pagination={{ clickable: true }}
-              navigation
-              loop
-              modules={[Pagination, Autoplay, Navigation]}
-              className="h-full"
-            >
-              {[
-                {
-                  src: "/PAYTUTION.jpg",
-                  alt: "Parent paying tuition at ASPAC partner school counter",
-                },
-                {
-                  src: "/PAYTUTION1.jpg",
-                  alt: "Teller processing tuition payment securely",
-                },
-                {
-                  src: "/PAYTUTION2.jpg",
-                  alt: "Students and parents at a convenient payment area",
-                },
-              ].map(({ src, alt }) => (
-                <SwiperSlide key={src}>
-                  <img
-                    src={src}
-                    alt={alt}
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+      <main className="bg-slate-50 min-h-screen text-slate-800 font-sans relative overflow-x-hidden selection:bg-aspac-green/20">
+       
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-[120vh] right-0 w-[400px] h-[400px] bg-gradient-to-bl from-aspac-yellow/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute  left-32 md:left-[25%] w-[400px] md:w-[800px] h-[500px] bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-32 right-0 h-[500px] bg-aspac-green/10 rounded-full blur-3xl" />
 
-          {/* Strong dark overlay on top of images */}
-          <div className="absolute inset-0 bg-black/50 md:bg-black/60" />
+        <section className="w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center bg-slate-50 border-b border-slate-200/60 py-16 md:py-24">
+          <div className="w-full max-w-6xl mx-auto px-6 md:px-10 grid gap-12 items-center mt-16 md:mt-0">
+            <div className="lg:col-span-7 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.15em] uppercase text-primary bg-slate-100 border border-slate-200/80 px-3 py-1.5 rounded-lg w-fit mb-6">
+                <span>✨</span> Tuition Fee Collection
+              </div>
 
-          {/* Fixed text overlay inside a dark card */}
-          <div className="relative z-10 h-full flex items-center">
-            <div className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12 w-full">
-              <div className="max-w-xl bg-black/70 backdrop-blur-sm rounded-2xl p-5 sm:p-7 md:p-8 shadow-2xl">
-                <p className="text-xs font-semibold tracking-[0.25em] uppercase text-aspac-yellow mb-3">
-                  Tuition Fee Collection
-                </p>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 text-white">
-                  Pay tuition safely at ASPAC Bank partner schools.
-                </h1>
-                <p className="text-sm md:text-base lg:text-lg text-white/90 mb-6">
-                  Make tuition payments reliable and stress-free with
-                  over-the-counter assistance, clear receipts, and a trusted
-                  banking partner.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <a
-                    href="#partner-schools"
-                    className="bg-aspac-yellow text-black font-semibold px-7 py-3 rounded-xl shadow-md hover:bg-aspac-yellow/90 transition duration-300 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-aspac-yellow/60"
-                  >
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none mb-6 text-slate-900">
+                Sleek, secure <br />
+                <span className="bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
+                  tuition payments.
+                </span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed mb-4">
+                Make tuition payments seamless with ultra-fast over-the-counter
+                assistance, instantaneous receipts, and a trusted banking
+                framework.
+              </p>
+
+              <div className="flex flex-wrap gap-4 items-center">
+                <a
+                  href="#partner-schools"
+                  className="relative inline-block overflow-hidden text-slate-800 hover:text-white border border-slate-300 hover:border-primary px-6 py-3.5 text-sm md:text-base font-semibold rounded-xl transition-colors duration-300 shadow-sm group"
+                >
+                  <span className="relative z-10 flex items-center gap-3">
                     View Partner Schools
-                  </a>
-                  <a
-                    href="#how-it-works"
-                    className="border border-white/80 text-white font-semibold px-7 py-3 rounded-xl hover:bg-white hover:text-aspac-green transition duration-300 text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-white/40"
-                  >
+                    <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300 text-xs text-slate-400 group-hover:text-white" />
+                  </span>
+                  <span className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                </a>
+
+                <a
+                  href="#how-it-works"
+                  className="relative inline-block overflow-hidden text-slate-800 hover:text-white border border-slate-300 hover:border-primary px-6 py-3.5 text-sm md:text-base font-semibold rounded-xl transition-colors duration-300 shadow-sm group"
+                >
+                  <span className="relative z-10 flex items-center gap-3">
                     See How It Works
-                  </a>
-                </div>
+                    <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-300 text-xs text-slate-400 group-hover:text-white" />
+                  </span>
+                  <span className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 🟢 INTRO: What this service is */}
-        <section className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12 py-12 md:py-16 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4 tracking-wide">
-            Tuition Fee Collection Service
-          </h2>
-          <p className="text-gray-700 text-sm md:text-base lg:text-lg max-w-3xl mx-auto">
-            ASPAC Bank makes it easier for students, parents, and schools to
-            manage tuition payments. With our over-the-counter collection
-            service, you can pay at our branches or designated payment centers
-            and receive official proof of payment every time.
-          </p>
+        <section className="max-w-6xl mx-auto px-6 md:px-10 py-20 text-center">
+          <div className="max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-black text-primary mb-4 tracking-tight">
+              Streamlined Financial Collections
+            </h2>
+            <div className="w-12 h-1 bg-gradient-to-r from-primary to-aspac-yellow mx-auto rounded-full mb-4" />
+            <p className="text-slate-600 text-base md:text-lg leading-relaxed">
+              ASPAC Bank bridges the gap between families and universities with
+              safe transactional pathways, ensuring compliance and real-time
+              confirmation.
+            </p>
+          </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3 text-left">
-            <div className="bg-white rounded-2xl shadow-md border border-primary/10 p-5">
-              <p className="text-xs font-semibold text-aspac-yellow uppercase tracking-[0.18em] mb-2">
-                For Whom
-              </p>
-              <h3 className="text-base font-semibold text-primary mb-2">
-                Students & Parents
-              </h3>
-              <p className="text-sm text-gray-700">
-                Settle tuition and other school-related fees in a secure
-                environment, assisted by ASPAC Bank staff.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl shadow-md border border-primary/10 p-5">
-              <p className="text-xs font-semibold text-aspac-yellow uppercase tracking-[0.18em] mb-2">
-                For
-              </p>
-              <h3 className="text-base font-semibold text-primary mb-2">
-                Schools & Universities
-              </h3>
-              <p className="text-sm text-gray-700">
-                Partner with ASPAC Bank to streamline collections, reduce cash
-                handling, and receive consolidated reports.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl shadow-md border border-primary/10 p-5">
-              <p className="text-xs font-semibold text-aspac-yellow uppercase tracking-[0.18em] mb-2">
-                Benefit
-              </p>
-              <h3 className="text-base font-semibold text-primary mb-2">
-                Clear & Organized Payments
-              </h3>
-              <p className="text-sm text-gray-700">
-                Payments are processed under a trusted banking system, with
-                documentation that’s easy to track and reconcile.
-              </p>
-            </div>
+          <div className="grid gap-8 md:grid-cols-3 text-left">
+            {[
+              {
+                label: "FOR WHOM",
+                title: "Students & Parents",
+                desc: "Settle educational duties inside a secure, hospitality-focused ecosystem optimized by ASPAC staff counters.",
+              },
+              {
+                label: "MANAGEMENT",
+                title: "Schools & Universities",
+                desc: "Consolidate accounting flows, lower your campus hazard liabilities, and acquire itemized automated audits.",
+              },
+              {
+                label: "THE PAYOFF",
+                title: "Crystal-Clear Records",
+                desc: "Every balance is checked and approved under dynamic monetary clearing setups, ensuring clean student ledgers.",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="bg-white border border-slate-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden group"
+              >
+                <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <p className="text-[10px] font-bold text-primary tracking-widest uppercase mb-2 bg-slate-100 px-2 py-0.5 rounded w-fit">
+                  {item.label}
+                </p>
+                <h3 className="text-lg font-bold text-primary mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* 🟢 HOW IT WORKS */}
+   
         <section
           id="how-it-works"
-          className="bg-aspac-green text-white py-14 md:py-18"
+          className="relative bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white py-20 overflow-hidden"
         >
-          <div className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12">
-            <div className="text-center max-w-2xl mx-auto mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3">
-                How the tuition payment process works
+          <div className="absolute inset-0 opacity-40 mix-blend-overlay bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]" />
+
+          <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <h2 className="text-3xl font-extrabold mb-4 tracking-tight">
+                The Three-Step Pathway
               </h2>
-              <p className="text-sm md:text-base text-white/90">
-                Paying tuition through ASPAC Bank is straightforward. Here’s
-                what to expect on your next visit.
+              <p className="text-sm md:text-base text-emerald-100/70">
+                We have refined over-the-counter payments down to a simple,
+                verified pipeline.
               </p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-3">
               {[
                 {
-                  step: 1,
-                  title: "Visit ASPAC or designated payment site",
-                  desc: "Go to an ASPAC Bank branch or official payment area assigned for your school.",
+                  step: "01",
+                  title: "Locate Branch Counter",
+                  desc: "Approach any authorized ASPAC Bank branch kiosk or dedicated nearby partner educational portal.",
                 },
                 {
-                  step: 2,
-                  title: "Provide your school details",
-                  desc: "Share your student information and reference details so our staff can post your payment correctly.",
+                  step: "02",
+                  title: "Verify Student Profile",
+                  desc: "Present basic billing slips or unique student IDs. Our modern ledger system immediately identifies your records.",
                 },
                 {
-                  step: 3,
-                  title: "Pay & receive official proof",
-                  desc: "Pay over the counter and receive an official receipt or proof of payment recognized by your school.",
+                  step: "03",
+                  title: "Secure Remittance",
+                  desc: "Finalize your deposit. Walk away with a validated, tamper-proof bank statement accepted by your school.",
                 },
-              ].map(({ step, title, desc }) => (
+              ].map((item, idx) => (
                 <div
-                  key={step}
-                  className="bg-white/10 border border-white/25 rounded-2xl p-6"
+                  key={idx}
+                  className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 relative group hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-9 w-9 rounded-full bg-aspac-yellow text-black flex items-center justify-center text-sm font-bold">
-                      {step}
-                    </div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-white/80">
-                      Step {step}
-                    </p>
+                  <div className="text-4xl font-black text-white/10 group-hover:text-aspac-yellow/30 transition-colors duration-300 absolute top-4 right-6 select-none font-mono">
+                    {item.step}
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">{title}</h3>
-                  <p className="text-sm text-white/90">{desc}</p>
+                  <h3 className="text-lg font-bold mb-3 pr-8 text-emerald-400">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* 🟢 BENEFITS FOR PARENTS/STUDENTS VS SCHOOLS */}
-        <section className="max-w-6xl mx-auto px-6 md:px-10 lg:px-12 py-14 md:py-18">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3">
-              Designed for both families and institutions
-            </h2>
-            <p className="text-sm md:text-base text-gray-700">
-              ASPAC Bank works closely with partner schools so tuition payments
-              are handled smoothly on both sides of the counter.
-            </p>
-          </div>
-
+        <section className="max-w-6xl mx-auto px-6 md:px-10 py-20">
           <div className="grid gap-8 md:grid-cols-2">
-            <div className="bg-white rounded-2xl shadow-md border border-primary/10 p-6">
-              <h3 className="text-lg font-semibold text-primary mb-3">
-                For students & parents
+            <div className="bg-gradient-to-b from-white to-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                <span className="text-primary font-bold">✓</span>
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-4">
+                Built for Families
               </h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li>• Clear instructions from on-site ASPAC staff</li>
-                <li>• Official proof of payment for your records</li>
-                <li>• Less time lining up at school payment counters</li>
-                <li>
-                  • Peace of mind knowing payments are handled by a regulated
-                  bank
+              <ul className="space-y-3.5 text-sm text-slate-600">
+                <li className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-primary rounded-full shrink-0" />
+                  Clear routing instructions via trained support personnel.
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-primary rounded-full shrink-0" />
+                  Instantaneous hard-copy validations for peace of mind.
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-primary rounded-full shrink-0" />
+                  Bypass over-congested school accounting lines entirely.
                 </li>
               </ul>
             </div>
-            <div className="bg-white rounded-2xl shadow-md border border-primary/10 p-6">
-              <h3 className="text-lg font-semibold text-primary mb-3">
-                For schools & universities
+
+            <div className="bg-gradient-to-b from-white to-slate-50 border border-slate-200/80 rounded-3xl p-8 shadow-sm">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6">
+                <span className="text-amber-600 font-bold">✦</span>
+              </div>
+              <h3 className="text-xl font-bold text-amber-600 mb-4">
+                Engineered for Institutions
               </h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li>• Streamlined collection process through ASPAC Bank</li>
-                <li>• Reduced on-campus cash handling and congestion</li>
-                <li>• Reconciliation support and reporting</li>
-                <li>
-                  • A dependable partner focused on long-term collaboration
+              <ul className="space-y-3.5 text-sm text-slate-600">
+                <li className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-amber-500 rounded-full shrink-0" />
+                  Seamless data pipelines updating student balances securely.
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-amber-500 rounded-full shrink-0" />
+                  Drastically lower local vault cash handling logistics.
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 bg-amber-500 rounded-full shrink-0" />
+                  End-to-end reconciliation dashboards and automated exports.
                 </li>
               </ul>
             </div>
           </div>
         </section>
 
-        {/* 🟢 PARTNER SCHOOLS GRID */}
-        <section id="partner-schools" className="bg-white py-14 md:py-18">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-primary mb-3 tracking-tight">
-              Our Partner Schools
-            </h2>
-            <p className="text-sm md:text-base text-gray-700 mb-10 max-w-3xl mx-auto">
-              ASPAC Bank is proud to serve these institutions and their
-              students. Look for ASPAC payment counters or confirm with your
-              school for exact payment locations.
-            </p>
+        <section
+          id="partner-schools"
+          className="bg-white border-y border-slate-200/60 py-20 relative"
+        >
+          <div className="max-w-7xl mx-auto px-6 md:px-10 text-center">
+            <div className="max-w-2xl mx-auto mb-16">
+              <h2 className="text-3xl font-black text-primary uppercase tracking-tight mb-3">
+                Affiliated Institutions
+              </h2>
+              <p className="text-sm md:text-base text-slate-500">
+                We safely manage tuition systems across prominent regional hubs.
+                Ensure precise branch requirements directly with your registrar.
+              </p>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mx-auto max-w-screen-xl">
-              {/* University of Cebu */}
-              <article className="relative bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out ring-1 ring-gray-100">
-                <span className="absolute top-4 right-4 text-xs font-semibold text-black bg-aspac-yellow px-3 py-1 rounded-full shadow-md z-10">
-                  Partner
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <article className="group bg-gradient-to-b from-slate-50 to-white p-5 rounded-2xl shadow-sm border border-slate-200/70 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-300 relative overflow-hidden">
+                <span className="absolute top-4 right-4 text-[10px] tracking-wider font-extrabold text-primary bg-white shadow-sm border border-slate-200 px-2.5 py-1 rounded-md z-10">
+                  OFFICIAL
                 </span>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-xl bg-slate-100 aspect-video">
                   <img
                     src="assets/tuitionpaymentphotos/UC.jpg"
                     alt="University of Cebu"
-                    className="w-full h-48 object-cover transform transition-all duration-500 hover:scale-110"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-primary mb-4 tracking-wide">
+                <h3 className="text-lg font-bold text-slate-900 mb-3 text-left group-hover:text-primary transition-colors duration-300">
                   University of Cebu
                 </h3>
-                <ul className="space-y-2 text-gray-700 text-sm">
-                  {[
-                    "Main Campus",
-                    "Banilad Campus",
-                    "METC Campus",
-                    "UCLM Campus",
-                  ].map((campus) => (
-                    <li key={`uc-${campus}`} className="flex items-start gap-2">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-primary" />
-                      <span>{campus}</span>
+                <ul className="grid grid-cols-2 gap-2 text-left text-xs text-slate-600 font-medium">
+                  {["Main Campus", "Banilad", "METC", "UCLM"].map((c) => (
+                    <li key={c} className="flex items-center gap-1.5">
+                      <span className="w-1 h-1 rounded-full bg-slate-400" /> {c}
                     </li>
                   ))}
                 </ul>
               </article>
 
-              {/* University of San Carlos */}
-              <article className="relative bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out ring-1 ring-gray-100">
-                <span className="absolute top-4 right-4 text-xs font-semibold text-black bg-aspac-yellow px-3 py-1 rounded-full shadow-md z-10">
-                  Partner
+              {/* USC Card */}
+              <article className="group bg-gradient-to-b from-slate-50 to-white p-5 rounded-2xl shadow-sm border border-slate-200/70 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-300 relative overflow-hidden">
+                <span className="absolute top-4 right-4 text-[10px] tracking-wider font-extrabold text-primary bg-white shadow-sm border border-slate-200 px-2.5 py-1 rounded-md z-10">
+                  OFFICIAL
                 </span>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-xl bg-slate-100 aspect-video">
                   <img
                     src="assets/tuitionpaymentphotos/USC.jpg"
                     alt="University of San Carlos"
-                    className="w-full h-48 object-cover transform transition-all duration-500 hover:scale-110"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-primary mb-4 tracking-wide">
+                <h3 className="text-lg font-bold text-slate-900 mb-3 text-left group-hover:text-primary transition-colors duration-300">
                   University of San Carlos
                 </h3>
-                <ul className="space-y-2 text-gray-700 text-sm">
-                  {["Main Campus", "Talamban Campus"].map((campus) => (
-                    <li
-                      key={`usc-${campus}`}
-                      className="flex items-start gap-2"
-                    >
-                      <span className="mt-1 w-2 h-2 rounded-full bg-primary" />
-                      <span>{campus}</span>
+                <ul className="grid grid-cols-2 gap-2 text-left text-xs text-slate-600 font-medium">
+                  {["Main Campus", "Talamban"].map((c) => (
+                    <li key={c} className="flex items-center gap-1.5">
+                      <span className="w-1 h-1 rounded-full bg-slate-400" /> {c}
                     </li>
                   ))}
                 </ul>
               </article>
 
-              {/* CTS Cebu */}
-              <article className="relative bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out ring-1 ring-gray-100">
-                <span className="absolute top-4 right-4 text-xs font-semibold text-black bg-aspac-yellow px-3 py-1 rounded-full shadow-md z-10">
-                  Partner
-                </span>
-                <div className="mb-4 overflow-hidden rounded-lg">
-                  <img
-                    src="assets/tuitionpaymentphotos/CTSC.jpg"
-                    alt="College of Technological Sciences - Cebu"
-                    className="w-full h-48 object-cover transform transition-all duration-500 hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-primary mb-2 tracking-wide">
-                  College of Technological Sciences
-                </h3>
-                <p className="text-gray-700 text-sm">CTS - Cebu</p>
-              </article>
-
-              {/* USJR */}
-              <article className="relative bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out ring-1 ring-gray-100">
-                <span className="absolute top-4 right-4 text-xs font-semibold text-black bg-aspac-yellow px-3 py-1 rounded-full shadow-md z-10">
-                  Partner
-                </span>
-                <div className="mb-4 overflow-hidden rounded-lg">
-                  <img
-                    src="assets/tuitionpaymentphotos/USJR.jpg"
-                    alt="University of San Jose–Recoletos"
-                    className="w-full h-48 object-cover transform transition-all duration-500 hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-primary mb-2 tracking-wide">
-                  University of San Jose–Recoletos
-                </h3>
-                <p className="text-gray-700 text-sm">USJR</p>
-              </article>
-
-              {/* CDU */}
-              <article className="relative bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out ring-1 ring-gray-100">
-                <span className="absolute top-4 right-4 text-xs font-semibold text-black bg-aspac-yellow px-3 py-1 rounded-full shadow-md z-10">
-                  Partner
-                </span>
-                <div className="mb-4 overflow-hidden rounded-lg">
-                  <img
-                    src="assets/tuitionpaymentphotos/CDU.jpg"
-                    alt="Cebu Doctors University"
-                    className="w-full h-48 object-cover transform transition-all duration-500 hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-primary mb-2 tracking-wide">
-                  Cebu Doctors University
-                </h3>
-                <p className="text-gray-700 text-sm">CDU</p>
-              </article>
+              {[
+                {
+                  name: "College of Technological Sciences",
+                  code: "CTS Cebu",
+                  img: "assets/tuitionpaymentphotos/CTSC.jpg",
+                },
+                {
+                  name: "University of San Jose–Recoletos",
+                  code: "USJR",
+                  img: "assets/tuitionpaymentphotos/USJR.jpg",
+                },
+                {
+                  name: "Cebu Doctors University",
+                  code: "CDU",
+                  img: "assets/tuitionpaymentphotos/CDU.jpg",
+                },
+              ].map((school, i) => (
+                <article
+                  key={i}
+                  className="group bg-gradient-to-b from-slate-50 to-white p-5 rounded-2xl shadow-sm border border-slate-200/70 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-300 relative overflow-hidden"
+                >
+                  <span className="absolute top-4 right-4 text-[10px] tracking-wider font-extrabold text-primary bg-white shadow-sm border border-slate-200 px-2.5 py-1 rounded-md z-10">
+                    OFFICIAL
+                  </span>
+                  <div className="mb-4 overflow-hidden rounded-xl bg-slate-100 aspect-video">
+                    <img
+                      src={school.img}
+                      alt={school.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 text-left group-hover:text-primary transition-colors duration-300">
+                    {school.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 text-left mt-1 font-mono">
+                    {school.code}
+                  </p>
+                </article>
+              ))}
             </div>
 
-            {/* Footer note */}
-            <div className="mt-12">
-              <p className="text-sm text-gray-500 italic">
-                For more information about payment schedules and exact payment
-                locations, please coordinate with your school or visit your
-                nearest ASPAC Bank branch.
+            <div className="mt-16 bg-slate-50 border border-slate-200/60 rounded-2xl p-6 max-w-3xl mx-auto">
+              <p className="text-xs md:text-sm text-slate-500 italic leading-relaxed">
+                ℹ️ For exact calendar processing limits, active holidays, and
+                specialized regional branches, please verify directly with your
+                target institution's registration office.
               </p>
             </div>
           </div>
         </section>
 
-        {/* 🟢 FINAL CTA */}
-        <section className="bg-gray-50 py-12 md:py-16">
-          <div className="max-w-5xl mx-auto px-6 md:px-10 lg:px-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-3">
-              Want to include your school in ASPAC’s collection network?
+        <section className="bg-gradient-to-t from-slate-100 to-white py-20 text-center relative overflow-hidden">
+          <div className="max-w-4xl mx-auto px-6 relative z-10">
+            <h2 className="text-2xl md:text-3xl font-black text-primary mb-4 tracking-tight">
+              Incorporate Your Campus Into Our Grid
             </h2>
-            <p className="text-sm md:text-base text-gray-700 mb-6 max-w-3xl mx-auto">
-              If you’re part of a school administration and would like to learn
-              more about ASPAC Bank’s tuition fee collection services, our team
-              can walk you through the partnership process.
+            <p className="text-slate-600 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+              Are you part of an academic management body seeking to integrate
+              streamlined payments? Let us assist you with a straightforward
+              institutional integration setup.
             </p>
+            {/* <button className="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm px-8 py-3.5 rounded-xl transition duration-300 shadow-md active:scale-98">
+              Connect With Treasury Division
+            </button> */}
           </div>
         </section>
       </main>

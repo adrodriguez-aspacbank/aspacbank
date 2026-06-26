@@ -1,8 +1,18 @@
 import React, { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay, Navigation, EffectFade } from "swiper/modules";
-import { FaMapMarkerAlt, FaPhoneAlt, FaFacebookF } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+
+} from "framer-motion";
+import {
+  FaPhoneAlt,
+  FaFacebookF,
+  FaGraduationCap,
+  FaPiggyBank,
+  FaBriefcase,
+  FaArrowRight,
+  FaShieldAlt,
+} from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
 import Seo from "./components/Seo";
 import AspacChatbot from "./components/AspacChatbot";
@@ -14,6 +24,12 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 import "./WelcomePage.css";
+import { heroSlides } from "./data/hero";
+import { MasonryGrid } from "./module/MasonryGrid";
+import { reviews } from "./data/reviews";
+import { ReviewCard } from "./module/ReviewCardMasonry";
+import { news } from "./data/news";
+import ParallaxHero from "./module/Parallax";
 
 /**
  * WelcomePage – ASPAC brand integration
@@ -26,39 +42,8 @@ const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
   const [showContactModal, setShowContactModal] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
-
   // Toggle this if your Layout already renders a global header
   const SHOW_LOCAL_HEADER = false;
-
-  // --- Advisory data (keep short, factual) --- //
-  type NewsItem = {
-    title: string;
-    content: string;
-    label: string;
-    Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-    iconColor: string;
-    to?: string;
-    mediaType?: "video" | "image";
-    mediaSrc?: string;
-    mediaAlt?: string;
-  };
-
-  const news: NewsItem[] = [
-    {
-      title: "ASPAC Bank Consolacion Moves to a New Building",
-      content:
-        "We are pleased to announce that ASPAC Bank Consolacion is now operating in its new building at Sta. Lucia Town Center, Poblacion Oriental.",
-      label: "Branch Update",
-      Icon: FaMapMarkerAlt as React.ComponentType<
-        React.SVGProps<SVGSVGElement>
-      >,
-      iconColor: "text-primary",
-      to: "https://www.google.com/maps/place/ASPAC+Rural+Savings+Bank/@10.373832,123.958717,18z",
-      mediaType: "video",
-      mediaSrc: "/assets/vid/cnsvid3.webm",
-      mediaAlt: "ASPAC Bank Consolacion branch feature video",
-    },
-  ];
 
   return (
     <motion.div
@@ -102,21 +87,21 @@ const WelcomePage: React.FC = () => {
 
       {/* Top announcement bar */}
       <div
-        className="w-full bg-primary text-white text-sm md:text-[15px] py-2 px-4"
+        className="w-full bg-primary text-white text-sm md:text-[15px] py-2 px-4 mt-14"
         role="status"
         aria-live="polite"
       >
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-2 md:gap-6 justify-between">
           <p className="flex items-center gap-2">
-            <span
+            {/* <span
               className="inline-flex h-2 w-2 rounded-full bg-white"
               aria-hidden
-            />
-            <span className="font-medium">
+            /> */}
+            <span className="font-light text-xs md:text-base">
               Your trusted Bank - serving communities across Cebu and beyond.
             </span>
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 text-xs md:text-base">
             <a
               href="tel:+63322722724"
               className="inline-flex items-center gap-2 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-white/60 rounded"
@@ -186,159 +171,13 @@ const WelcomePage: React.FC = () => {
       )}
 
       {/* HERO Swiper (FADE) */}
-      <section className="w-full h-[72vh] min-h-[520px] relative overflow-hidden pb-20 md:pb-0">
-        <Swiper
-          modules={[Pagination, Autoplay, Navigation, EffectFade]}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 12000, disableOnInteraction: false }} // longer pause
-          loop
-          speed={1100} // smoother, slower fade
-          navigation
-          className="w-full h-full"
-          aria-roledescription="carousel"
-        >
-          {/* BSP */}
-          <SwiperSlide>
-            <div
-              className="h-full w-full relative bg-cover bg-center"
-              style={{ backgroundImage: "url(/PYM-digital-poster.jpg)" }}
-              role="img"
-              aria-label="Teacher in a classroom — ASPAC Teachers’ Salary Loan (APDS)"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
-
-              <div className="absolute left-4 md:left-16 bottom-10 md:bottom-16 max-w-xl">
-                <div className="animate-[fadeIn_500ms_ease-out] space-y-3"></div>
-              </div>
-            </div>
-          </SwiperSlide>
-          {/* Slide 1 */}
-          <SwiperSlide>
-            <div
-              className="h-full w-full relative bg-cover bg-center"
-              style={{ backgroundImage: "url(/APDS3.jpg)" }}
-              role="img"
-              aria-label="Teacher in a classroom — ASPAC Teachers’ Salary Loan (APDS)"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
-
-              <div className="absolute left-4 md:left-16 bottom-10 md:bottom-16 max-w-xl">
-                <div className="animate-[fadeIn_500ms_ease-out] space-y-3">
-                  <h1 className="text-[#ebd839] text-3xl md:text-5xl font-extrabold leading-tight drop-shadow">
-                    Fuel your passion for teaching with ASPAC Teachers’ Loan
-                  </h1>
-
-                  <p className="text-white/90 text-base md:text-lg max-w-prose">
-                    Our Teachers’ Salary Loan (APDS) offers flexible terms and
-                    convenient salary deduction for teachers.
-                  </p>
-
-                  <p className="text-white/80 text-sm md:text-base">
-                    Learn more about our{" "}
-                    <Link
-                      to="/teachers-loan"
-                      className="underline font-semibold hover:text-white"
-                    >
-                      Teachers’ Loan (APDS)
-                    </Link>
-                    .
-                  </p>
-                </div>
-
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowApplyModal(true)}
-                    className="px-5 py-3 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
-                  >
-                    Inquire Now
-                  </button>
-
-                  <button
-                    onClick={() => navigate("/teachers-loan")}
-                    className="px-5 py-3 rounded-full bg-white/90 hover:bg-white text-gray-900 font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/30"
-                  >
-                    Learn More
-                  </button>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          {/* Slide 2 */}
-          <SwiperSlide>
-            <div
-              className="h-full w-full relative bg-cover bg-center"
-              style={{ backgroundImage: "url(/Growyoursavings.jpg)" }}
-              role="img"
-              aria-label="Coins and plants symbolizing savings growth"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
-              <div className="absolute left-4 md:left-16 bottom-10 md:bottom-16 max-w-xl">
-                <div className="animate-[fadeIn_500ms_ease-out]">
-                  <h2 className="text-[#ebd839] text-3xl md:text-5xl font-extrabold leading-tight drop-shadow">
-                    Grow your savings with us
-                  </h2>
-                  <p className="text-white/90 text-base md:text-lg mt-3 max-w-prose">
-                    Open a savings or time deposit account at your nearest
-                    branch.
-                  </p>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <button
-                    onClick={() => setShowContactModal(true)}
-                    className="px-5 py-3 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
-                  >
-                    Talk to Us
-                  </button>
-                  <Link
-                    to="/deposit-account"
-                    className="px-5 py-3 rounded-full bg-white/90 hover:bg-white text-gray-900 font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/30"
-                  >
-                    View Savings
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          {/* Slide 3 */}
-          <SwiperSlide>
-            <div
-              className="h-full w-full relative bg-cover bg-center"
-              style={{ backgroundImage: "url(/Simplysafe.jpg)" }}
-              role="img"
-              aria-label="Shield icon over banking imagery — safety"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
-              <div className="absolute left-4 md:left-16 bottom-10 md:bottom-16 max-w-xl">
-                <div className="animate-[fadeIn_500ms_ease-out]">
-                  <h2 className="text-[#ebd839] text-3xl md:text-5xl font-extrabold leading-tight drop-shadow">
-                    Simply safe banking
-                  </h2>
-                  <p className="text-white/90 text-base md:text-lg mt-3 max-w-prose">
-                    Straightforward services and community-first support.
-                  </p>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <button
-                    onClick={() => navigate("/explore")}
-                    className="px-5 py-3 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
-                  >
-                    Know More
-                  </button>
-                  <Link
-                    to="/advisories"
-                    className="px-5 py-3 rounded-full bg-white/90 hover:bg-white text-gray-900 font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/30"
-                  >
-                    View Advisories
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-        </Swiper>
-      </section>
+      <ParallaxHero
+        slides={heroSlides}
+        onNavigate={navigate}
+        onApply={() => setShowApplyModal(true)}
+        onContact={() => setShowContactModal(true)}
+        onExplore={() => navigate("/explore")}
+      />
 
       {/* Page-level keyframes for caption fade */}
       <style>{`
@@ -386,223 +225,386 @@ const WelcomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Core tiles */}
-      <section className="relative">
+      {/* Core tiles – Enhanced with animations & icons */}
+      <section className="relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-aspac-green/5 rounded-full blur-3xl -ml-40 -mb-32" />
+
         <div
           className="absolute inset-0 bg-gradient-to-b from-white via-aspac-green/10 to-white pointer-events-none"
           aria-hidden
         />
-        <div className="relative max-w-6xl mx-auto px-6 py-16">
-          <div className="text-center mb-12">
+        <div className="relative max-w-6xl mx-auto px-6 py-20">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
+          >
             <p className="uppercase tracking-widest text-[11px] md:text-xs text-primary/80 font-semibold">
               Products & Services
             </p>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-primary">
+            <h2 className="text-light md:text-2xl font-bold text-primary mt-3">
               Your trusted financial partner
             </h2>
-            <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base md:text-lg">
               Save, borrow, and grow locally. Visit any ASPAC branch to get
               started.
             </p>
-          </div>
+          </motion.div>
 
-          {/* cards */}
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* APDS */}
-            <article className="group bg-white rounded-3xl overflow-hidden shadow-sm ring-1 ring-gray-100 hover:shadow-lg hover:ring-gray-200 transition">
-              <div className="relative">
-                <img
-                  src="/homesecure.jpg"
-                  alt="Teacher loan assistance at a branch"
-                  className="w-full h-56 object-cover"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 inline-flex items-center rounded-full bg-primary text-white text-[11px] px-2.5 py-1 shadow">
-                  For Teachers
-                </span>
-              </div>
-              <div className="p-5">
-                <h3 className="text-2xl font-semibold text-primary">
-                  Teacher Salary Loan (APDS)
-                </h3>
-                <ul className="mt-3 text-sm text-gray-600 space-y-1">
-                  <li>• Simple requirements</li>
-                  <li>• Convenient salary deduction</li>
-                  <li>• Competitive, transparent rates</li>
-                </ul>
-                <div className="mt-5 flex items-center gap-3">
-                  <Link
-                    to="/teachers-loan"
-                    className="inline-flex items-center px-4 py-2 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-medium shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
-                  >
-                    Apply in-branch
-                  </Link>
-                </div>
-              </div>
-            </article>
+            <motion.article
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -8 }}
+              className="
+      group
+      relative
+      overflow-hidden
+      rounded-[32px]
+      bg-white/70
+      backdrop-blur-xl
+      border border-white/50
+      shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+      hover:shadow-[0_30px_80px_rgba(69,146,67,0.18)]
+      transition-all duration-500
+      p-8
+    "
+            >
+              {/* Glow */}
+              <div className="absolute -top-20 -right-20 h-52 w-52 rounded-full bg-primary/10 blur-3xl" />
 
-            {/* Savings */}
-            <article className="group bg-white rounded-3xl overflow-hidden shadow-sm ring-1 ring-gray-100 hover:shadow-lg hover:ring-gray-200 transition">
-              <div className="relative">
-                <img
-                  src="/homepersonalized.jpg"
-                  alt="Savings account opening at the counter"
-                  className="w-full h-56 object-cover"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 inline-flex items-center rounded-full bg-primary text-white text-[11px] px-2.5 py-1 shadow">
-                  Deposits
+              {/* Arrow */}
+              <div className="absolute top-8 right-8">
+                <FaArrowRight className="text-primary/30 group-hover:text-primary transition-colors duration-300" />
+              </div>
+
+              {/* Icon */}
+              <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-aspac-green text-white shadow-xl">
+                <FaGraduationCap className="text-3xl" />
+              </div>
+
+              <p className="text-xs uppercase tracking-[0.25em] text-primary/60 font-semibold">
+                APDS
+              </p>
+
+              <h3 className="mt-3 text-3xl font-bold text-primary">
+                Teacher Salary Loan
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-relaxed">
+                Flexible salary loan solutions designed specifically for
+                teachers with simple requirements and convenient repayment
+                options.
+              </p>
+
+              {/* Chips */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Simple Requirements
+                </span>
+
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Salary Deduction
+                </span>
+
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Competitive Rates
                 </span>
               </div>
-              <div className="p-5">
-                <h3 className="text-2xl font-semibold text-primary">
-                  Savings & Time Deposit
-                </h3>
-                <ul className="mt-3 text-sm text-gray-600 space-y-1">
-                  <li>• Safe and dependable</li>
-                  <li>• Passbook and ATM-free options</li>
-                  <li>• Time deposit terms that work for you</li>
-                </ul>
-                <div className="mt-5 flex items-center gap-3">
-                  <Link
-                    to="/savings"
-                    className="inline-flex items-center px-4 py-2 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-medium shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
-                  >
-                    Open at a branch
-                  </Link>
-                </div>
+
+              <div className="mt-8">
+                <Link
+                  to="/teachers-loan"
+                  className="inline-flex items-center gap-2 rounded-full
+          bg-gradient-to-r
+          from-primary
+          to-aspac-green
+          px-6
+          py-3
+          mt-3
+          text-white
+          font-semibold
+          shadow-lg
+          hover:shadow-xl
+          transition-all
+        "
+                >
+                  Apply Now
+                  <FaArrowRight />
+                </Link>
               </div>
-            </article>
+            </motion.article>
+
+            {/* SAVINGS */}
+            <motion.article
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -8 }}
+              className="
+      group
+      relative
+      overflow-hidden
+      rounded-[32px]
+      bg-white/70
+      backdrop-blur-xl
+      border border-white/50
+      shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+      hover:shadow-[0_30px_80px_rgba(69,146,67,0.18)]
+      transition-all duration-500
+      p-8
+    "
+            >
+              <div className="absolute -top-20 -right-20 h-52 w-52 rounded-full bg-aspac-green/10 blur-3xl" />
+
+              <div className="absolute top-8 right-8">
+                <FaArrowRight className="text-primary/30 group-hover:text-primary transition-colors duration-300" />
+              </div>
+
+              <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-aspac-green to-primary text-white shadow-xl">
+                <FaPiggyBank className="text-3xl" />
+              </div>
+
+              <p className="text-xs uppercase tracking-[0.25em] text-primary/60 font-semibold">
+                DEPOSITS
+              </p>
+
+              <h3 className="mt-3 text-3xl font-bold text-primary">
+                Savings & Time Deposit
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-relaxed">
+                Secure and dependable savings products designed to help you
+                build a stronger financial future.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Safe & Secure
+                </span>
+
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Flexible Terms
+                </span>
+
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Competitive Returns
+                </span>
+              </div>
+
+              <div className="mt-8">
+                <Link
+                  to="/savings"
+                  className="
+          inline-flex
+          items-center
+          gap-2
+          rounded-full
+          bg-gradient-to-r
+          from-aspac-green
+          to-primary
+          px-6
+          py-3
+          text-white
+          font-semibold
+          shadow-lg
+          hover:shadow-xl
+          transition-all
+        "
+                >
+                  Open an Account
+                  <FaArrowRight />
+                </Link>
+              </div>
+            </motion.article>
 
             {/* MSME */}
-            <article className="group bg-white rounded-3xl overflow-hidden shadow-sm ring-1 ring-gray-100 hover:shadow-lg hover:ring-gray-200 transition">
-              <div className="relative">
-                <img
-                  src="/homecommunityfirst.jpg"
-                  alt="Small business owner at a store"
-                  className="w-full h-56 object-cover"
-                  loading="lazy"
-                />
-                <span className="absolute top-3 left-3 inline-flex items-center rounded-full bg-primary text-white text-[11px] px-2.5 py-1 shadow">
-                  Business
+            <motion.article
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -8 }}
+              className="
+      group
+      relative
+      overflow-hidden
+      rounded-[32px]
+      bg-white/70
+      backdrop-blur-xl
+      border border-white/50
+      shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+      hover:shadow-[0_30px_80px_rgba(69,146,67,0.18)]
+      transition-all duration-500
+      p-8
+    "
+            >
+              <div className="absolute -top-20 -right-20 h-52 w-52 rounded-full bg-yellow-300/10 blur-3xl" />
+
+              <div className="absolute top-8 right-8">
+                <FaArrowRight className="text-primary/30 group-hover:text-primary transition-colors duration-300" />
+              </div>
+
+              <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-aspac-green text-white shadow-xl">
+                <FaBriefcase className="text-3xl" />
+              </div>
+
+              <p className="text-xs uppercase tracking-[0.25em] text-primary/60 font-semibold">
+                BUSINESS
+              </p>
+
+              <h3 className="mt-3 text-3xl font-bold text-primary">
+                MSME Loans
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-relaxed">
+                Financing solutions that help local businesses grow, expand
+                operations, and strengthen communities.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Working Capital
+                </span>
+
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Expansion Funding
+                </span>
+
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  Fast Decisions
                 </span>
               </div>
-              <div className="p-5">
-                <h3 className="text-2xl font-semibold text-primary">
-                  MSME Loans
-                </h3>
-                <ul className="mt-3 text-sm text-gray-600 space-y-1">
-                  <li>• Working capital</li>
-                  <li>• Expansion financing</li>
-                  <li>• Local decisions, quick turnaround</li>
-                </ul>
-                <div className="mt-5 flex items-center gap-3">
-                  <Link
-                    to="/msme-loans"
-                    className="inline-flex items-center px-4 py-2 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-medium shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
-                  >
-                    Discuss with a loan officer
-                  </Link>
-                </div>
+
+              <div className="mt-8">
+                <Link
+                  to="/msme-loans"
+                  className="
+          inline-flex
+          items-center
+          gap-2
+          rounded-full
+          bg-gradient-to-r
+          from-primary
+          to-aspac-green
+          px-6
+          mt-8
+          py-3
+          text-white
+          font-semibold
+          shadow-lg
+          hover:shadow-xl
+          transition-all
+        "
+                >
+                  Learn More
+                  <FaArrowRight />
+                </Link>
               </div>
-            </article>
+            </motion.article>
           </div>
 
           {/* section CTAs */}
-          <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-4">
-            <button
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
+            className="mt-16 flex flex-col md:flex-row items-center justify-center gap-4"
+          >
+            <motion.button
               onClick={() => navigate("/branches")}
-              className="px-6 py-3 rounded-full bg-primary hover:bg-aspac-green/90 text-white font-semibold shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-8 py-4 rounded-full bg-gradient-to-r from-primary to-aspac-green hover:shadow-xl text-white font-semibold shadow-lg transition-all duration-300"
             >
               Locate a branch
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setShowContactModal(true)}
-              className="px-6 py-3 rounded-full bg-white border border-gray-200 hover:border-gray-300 font-semibold shadow-sm focus:outline-none focus:ring-4 focus:ring-primary/30"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-8 py-4 rounded-full bg-white border-2 border-primary/30 hover:border-primary hover:bg-gray-50 font-semibold shadow-sm transition-all duration-300"
             >
               Contact us
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </section>
 
       {/* Latest News & video feature card */}
-      <section
-        className="relative py-16 bg-cover bg-center"
-        style={{ backgroundImage: "url('/latestupdates.webp')" }}
-      >
-        {/* subtle overlay for readability */}
-        <div
-          className="absolute inset-0 bg-white/70 backdrop-blur-[2px]"
-          aria-hidden
-        />
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-primary/[0.03] to-white" />
+        <div className="absolute  right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-32 left-0 w-[500px] h-[500px] bg-aspac-green/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-6xl mx-auto px-6">
-          {/* ✅ BSP Security Tips (New Year) – above Maligayang Pasko */}
           <motion.section
-            initial={{ opacity: 0, y: 14, scale: 0.99 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            viewport={{ once: true, amount: 0.25 }}
-            className="mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mb-12"
           >
-            <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden">
-              {/* soft accent strip */}
+            <div
+              className="
+        relative overflow-hidden
+        rounded-[32px]
+        bg-white/70
+        backdrop-blur-xl
+        border border-white/50
+        shadow-[0_20px_80px_rgba(0,0,0,0.08)]
+      "
+            >
+              <div className="absolute -top-24 -right-24 h-72 w-72 bg-primary/10 blur-3xl rounded-full" />
+
               <div className="h-1 w-full bg-gradient-to-r from-primary to-aspac-green" />
 
-              <div className="p-5 md:p-6">
-                <motion.p
-                  initial={{ opacity: 0, y: 6 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.05 }}
-                  viewport={{ once: true }}
-                  className="uppercase tracking-widest text-[11px] md:text-xs text-primary/80 font-semibold"
-                >
-                  Security Advisory
-                </motion.p>
+              <div className="p-6 md:p-8 md:flex justify-between">
+                {/* header */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-primary to-aspac-green text-white flex items-center justify-center shadow-lg">
+                    <FaShieldAlt className="text-2xl" />
+                  </div>
 
-                <motion.h3
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  className="mt-2 text-2xl md:text-3xl font-bold text-primary leading-tight"
-                >
-                  BSP Security Tips – New Year
-                </motion.h3>
+                  <div>
+                    <p className="text-xs tracking-[0.3em] uppercase text-primary/60">
+                      Security Advisory
+                    </p>
+                    <h3 className="text-lg md:text-3xl font-bold text-primary">
+                      BSP Security Tips – New Year
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-700">
+                      Stay alert against scams and protect your accounts this
+                      season.
+                    </p>
+                  </div>
+                </div>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.15 }}
-                  viewport={{ once: true }}
-                  className="mt-2 text-gray-700"
-                >
-                  Stay alert against scams and protect your accounts this
-                  season.
-                </motion.p>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.2 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  className="mt-4"
-                >
+                <div className="mt-4">
                   <BspSecurityTipsNewYearAdvisory
                     title="BSP Security Tips – New Year"
                     caption=""
                   />
-                </motion.div>
+                </div>
               </div>
             </div>
           </motion.section>
 
-          <div className="text-center mb-10" id="latest-news">
-            <p className="uppercase tracking-widest text-[11px] md:text-xs text-primary/80 font-semibold">
+          <div className="text-center mb-12">
+            <p className="uppercase tracking-widest text-xs text-primary/70 font-semibold">
               News & Advisories
             </p>
-            <h2 className="text-3xl font-bold text-primary">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2">
               Latest news & updates
             </h2>
             <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
@@ -610,93 +612,116 @@ const WelcomePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8">
-            {news.map(
-              ({
-                title,
-                content,
-                label,
-                Icon,
-                iconColor,
-                to,
-                mediaType,
-                mediaSrc,
-                mediaAlt,
-              }) => (
-                <motion.article
-                  key={title}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:ring-gray-200 transition grid md:grid-cols-[1fr_360px] gap-6 overflow-hidden"
-                >
-                  {/* text */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="inline-flex items-center gap-2 text-xs font-medium text-gray-600">
-                        <Icon
-                          className={`text-base ${iconColor}`}
-                          aria-hidden
-                        />
-                        <span className="uppercase tracking-wide">{label}</span>
+          <div className="grid grid-cols-1 gap-10">
+            {news.map((item, index) => (
+              <motion.article
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="
+            group relative overflow-hidden
+            rounded-[32px]
+            bg-white/70
+            backdrop-blur-xl
+            border border-white/50
+            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+            hover:shadow-[0_30px_100px_rgba(69,146,67,0.18)]
+            transition-all duration-500
+          "
+              >
+                {/* glow */}
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 blur-3xl rounded-full" />
+
+                <div className="grid md:grid-cols-[1fr_420px]">
+                  <div className="p-4 md:p-8">
+                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                      <item.Icon className={`text-base ${item.iconColor}`} />
+                      <span className="uppercase tracking-wide">
+                        {item.label}
                       </span>
                     </div>
 
-                    <h3 className="text-2xl font-semibold text-primary leading-snug">
-                      {title}
+                    <h3 className="text-lg md:text-2xl font-bold text-primary">
+                      {item.title}
                     </h3>
 
-                    <p className="text-gray-700 text-sm leading-relaxed mt-3">
-                      {content}
+                    <p className="text-sm md:text-base mt-4 text-gray-600 leading-relaxed">
+                      {item.content}
                     </p>
 
-                    <div className="mt-5 flex items-center gap-3">
-                      {to && (
-                        <button
-                          onClick={() =>
-                            /^https?:\/\//i.test(to)
-                              ? window.open(to, "_blank", "noopener,noreferrer")
-                              : navigate(to)
-                          }
-                          className="inline-flex items-center px-4 py-2 rounded-full bg-primary hover:bg-aspac-green/90 text-white text-sm font-medium shadow focus:outline-none focus:ring-4 focus:ring-primary/40"
+                    <div className="mt-3 md:mt-6 flex gap-3 justify-between">
+                      {item.to && (
+                        <Link
+                          to="/advisories"
+                          className="
+                      inline-flex items-center gap-2
+                      px-2 py-2 md:px-5 md:py-3
+                      rounded-full
+                      bg-gradient-to-r from-primary to-aspac-green
+                      text-white md:font-semibold
+                      hover:shadow-lg
+                      transition
+                    "
                         >
-                          View full advisory
-                        </button>
+                          View advisory
+                          <FaArrowRight />
+                        </Link>
                       )}
+
                       <button
                         onClick={() => navigate("/advisories")}
-                        className="text-sm font-semibold text-primary hover:underline"
+                        className="text-primary md:font-semibold hover:underline pr-4 flex items-center justify-items-center gap-3"
                       >
-                        See all advisories →
+                        All advisories <FaArrowRight size={10} />
                       </button>
                     </div>
                   </div>
 
-                  {/* media */}
-                  <div className="relative h-56 md:h-auto">
-                    {mediaType === "image" ? (
+                  {/* ================= MEDIA (IMAGE / VIDEO) ================= */}
+                  <div className="relative h-72 md:h-auto overflow-hidden">
+                    {/* glass overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10" />
+
+                    {item.mediaType === "image" ? (
                       <img
-                        src={mediaSrc || "/bogo_reopens.jpg"}
-                        alt={mediaAlt || title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        loading="lazy"
+                        src={item.mediaSrc || "/bogo_reopens.jpg"}
+                        alt={item.mediaAlt || item.title}
+                        className="
+                    w-full h-full object-cover
+                    group-hover:scale-110 transition-transform duration-700
+                  "
                       />
                     ) : (
                       <video
-                        src={mediaSrc || "/assets/vid/cnsvid3.webm"}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        src={item.mediaSrc || "/assets/vid/cnsvid3.webm"}
                         autoPlay
                         muted
                         loop
                         playsInline
-                        aria-label={mediaAlt || "Branch feature montage"}
+                        className="
+                    w-full h-full object-cover
+                    group-hover:scale-110 transition-transform duration-700
+                  "
                       />
                     )}
+
+                    {/* floating label */}
+                    <div
+                      className="
+                absolute top-4 left-4 z-20
+                bg-black/40 backdrop-blur-md
+                text-white text-xs
+                px-3 py-1 rounded-full
+              "
+                    >
+                      Featured Update
+                    </div>
                   </div>
-                </motion.article>
-              ),
-            )}
+                </div>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
@@ -710,52 +735,10 @@ const WelcomePage: React.FC = () => {
             What our clients say
           </h2>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              quote:
-                "ASPAC Bank’s loan process was easy. I got the funds I needed to start my small business quickly.",
-              name: "Maria Lopez",
-              role: "Small Business Owner",
-            },
-            {
-              quote:
-                "The staff are very helpful and made my account opening straightforward.",
-              name: "John Santos",
-              role: "Teacher",
-            },
-            {
-              quote: "I appreciate the security and community focus at ASPAC.",
-              name: "Anna Reyes",
-              role: "Freelancer",
-            },
-          ].map(({ quote, name, role }) => (
-            <figure
-              key={name}
-              className="bg-white rounded-2xl p-6 shadow-sm ring-1 ring-gray-100 hover:shadow-md hover:ring-gray-200 transition"
-            >
-              <div className="flex items-start gap-4">
-                {/* minimalist avatar */}
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
-                  {name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .slice(0, 2)
-                    .join("")
-                    .toUpperCase()}
-                </div>
-                <blockquote className="text-gray-800 italic leading-relaxed">
-                  “{quote}”
-                </blockquote>
-              </div>
-              <figcaption className="mt-4 pl-14">
-                <div className="font-semibold text-primary">{name}</div>
-                <div className="text-sm text-gray-500">{role}</div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+        <MasonryGrid
+          items={reviews}
+          renderItem={(review) => <ReviewCard review={review} />}
+        />
       </section>
 
       {/* Contact modal */}
@@ -807,67 +790,8 @@ const WelcomePage: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Footer with trust badges */}
-      <footer className="bg-gray-50 border-t border-gray-100 mt-10">
-        <div className="max-w-6xl mx-auto px-6 py-10 grid md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3">
-              <img src="/favicon.ico" alt="ASPAC Bank" className="h-8 w-8" />
-              <span className="text-primary font-semibold">
-                ASPAC Bank, Inc.
-              </span>
-            </div>
-            <p className="text-sm text-gray-600 mt-3 max-w-md">
-              ASPAC Bank is a community-first rural bank offering savings,
-              deposits, and loan products in the Philippines.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3">Products</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/teachers-loan" className="hover:underline">
-                  Teacher Salary Loan (APDS)
-                </Link>
-              </li>
-              <li>
-                <Link to="/deposit-account" className="hover:underline">
-                  Savings & Time Deposit
-                </Link>
-              </li>
-              <li>
-                <Link to="/msme-loans" className="hover:underline">
-                  MSME Loans
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-3">Company</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/branches" className="hover:underline">
-                  Branches
-                </Link>
-              </li>
-              <li>
-                <Link to="/advisories" className="hover:underline">
-                  Advisories
-                </Link>
-              </li>
-              <li>
-                <Link to="/privacy" className="hover:underline">
-                  Privacy Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
-
       {/* Chatbot mounts only on WelcomePage */}
-      <AspacChatbot />
+      {/* <AspacChatbot /> */}
 
       <ApplyNowModal
         isOpen={showApplyModal}

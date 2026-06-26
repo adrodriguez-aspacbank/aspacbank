@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaMapMarkerAlt,
   FaExclamationTriangle,
@@ -9,34 +9,38 @@ import {
   FaInfoCircle,
   FaMobileAlt,
   FaEnvelope,
+  FaSearch,
+  FaBullhorn,
+  FaExchangeAlt,
+  FaShieldAlt,
 } from "react-icons/fa";
 import Seo from "../components/Seo";
-import BspSecurityTipsNewYearAdvisory from "../components/advisories/BspSecurityTipsNewYearAdvisory";
 
-type AdvisoryKind =
-  | "Holiday"
-  | "Closure"
-  | "Relocation"
-  | "Compliance"
-  | "Service"
-  | "General";
+import {
+  Advisory,
+  AdvisoryKind,
+  KIND_BADGE,
+  NEARBY_BRANCHES,
+} from "../data/advisories";
 
-type Advisory = {
-  id: string;
-  kind: AdvisoryKind;
-  title: string;
-  effective: string; // ISO or friendly
-  summary?: string;
-  paragraphs: string[];
-  cta?: { label: string; href: string };
-  icon?: React.ReactNode;
-  accent?: string; // tailwind color class for left border / pill
-  /** NEW: optional custom JSX appended to the advisory body */
-  extra?: React.ReactNode;
+const getAdvisoryIcon = (kind: AdvisoryKind) => {
+  switch (kind) {
+    case "Holiday":
+      return <FaCalendarAlt className="text-xl" />;
+    case "Closure":
+      return <FaExclamationTriangle className="text-xl" />;
+    case "Relocation":
+      return <FaExchangeAlt className="text-xl" />;
+    case "Compliance":
+      return <FaShieldAlt className="text-xl" />;
+    case "Service":
+      return <FaBullhorn className="text-xl" />;
+    default:
+      return <FaInfoCircle className="text-xl" />;
+  }
 };
 
-const ADVISORIES: Advisory[] = [
-  /** NEW: Bogo Branch Reopening Advisory (from poster image) **/
+const LoansAdvisories: Advisory[] = [
   {
     id: "bsp-security-tips-newyear",
     kind: "General",
@@ -47,14 +51,25 @@ const ADVISORIES: Advisory[] = [
     paragraphs: [
       "Please review the BSP security tips below and stay vigilant against scams and phishing.",
     ],
-    icon: <FaInfoCircle className="text-white" />,
-    accent: "border-primary",
     extra: (
-      <BspSecurityTipsNewYearAdvisory
-        className="mt-4"
-        title="BSP Security Tips – New Year"
-        caption=""
-      />
+      // <BspSecurityTipsNewYearAdvisory
+      //   className="mt-4"
+      //   title="BSP Security Tips – New Year"
+      //   caption=""
+      // />
+      <figure className="mt-4">
+        <img
+          src="/bspsecuritips_newyear.jpg"
+          alt="bsp"
+          loading="lazy"
+          className="w-max justify-self-center md:h-96 rounded-2xl shadow-sm ring-1 ring-gray-100 select-none"
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+        />
+        {/* <figcaption className="mt-2 text-xs text-gray-400 italic">
+          Official reopening advisory for ASPAC Bank Bogo Branch.
+        </figcaption> */}
+      </figure>
     ),
   },
 
@@ -75,23 +90,20 @@ const ADVISORIES: Advisory[] = [
       label: "Follow us on Facebook for updates",
       href: "https://www.facebook.com/aspacbank0620",
     },
-    icon: <FaCalendarAlt className="text-black" />,
-    accent: "border-primary",
     extra: (
       <figure className="mt-4">
         <img
           src="/bogo_reopens.jpg"
-          alt="ASPAC Bank Bogo Branch reopening advisory – Reopening on December 15, 2025"
-          className="w-full rounded-2xl shadow-md border border-gray-100"
+          alt="ASPAC Bank Bogo Branch reopening advisory"
+          className="w-full rounded-2xl shadow-sm border border-gray-100"
           loading="lazy"
         />
-        <figcaption className="mt-2 text-xs text-gray-500">
+        <figcaption className="mt-2 text-xs text-gray-400 italic">
           Official reopening advisory for ASPAC Bank Bogo Branch.
         </figcaption>
       </figure>
     ),
   },
-  /** NEW: Operations Notice from the provided image **/
   {
     id: "holiday-advisory-2025-12",
     kind: "Holiday",
@@ -111,16 +123,12 @@ const ADVISORIES: Advisory[] = [
       label: "Visit our Facebook Page",
       href: "https://www.facebook.com/aspacbank0620",
     },
-    icon: <FaCalendarAlt className="text-black" />,
-    accent: "border-aspac-yellow",
   },
-
   {
     id: "ops-notice-2025-11-05",
     kind: "General",
     title: "Service Advisory – Operations Notice (Nov 5, 2025)",
     effective: "November 5, 2025 · 10:00 AM – 3:00 PM",
-
     paragraphs: [
       "Dear Valued Customers,",
       "Please be informed that our Banilad, Carcar, Talisay, Lapu-Lapu branches and our Head Office in Mandaue will be open for operations from 10:00 AM to 3:00 PM.",
@@ -131,10 +139,7 @@ const ADVISORIES: Advisory[] = [
       label: "Visit our Facebook Page",
       href: "https://www.facebook.com/aspacbank0620",
     },
-    icon: <FaExclamationTriangle className="text-black" />,
-    accent: "border-aspac-yellow",
   },
-
   {
     id: "consolacion-relocate-2025",
     kind: "Relocation",
@@ -151,8 +156,6 @@ const ADVISORIES: Advisory[] = [
       label: "View on Google Maps",
       href: "https://www.google.com/maps/place/ASPAC+Rural+Savings+Bank/@10.373832,123.958717,18z",
     },
-    icon: <FaMapMarkerAlt className="text-white" />,
-    accent: "border-primary",
   },
   {
     id: "bsp-c1218-2025",
@@ -164,271 +167,328 @@ const ADVISORIES: Advisory[] = [
     paragraphs: [
       "In line with BSP Circular No. 1218 series of 2025, customers making cash withdrawals exceeding ₱500,000 will be required to present additional documents to verify the legitimate purpose of the transaction.",
     ],
-    icon: <FaInfoCircle className="text-white" />,
-    accent: "border-primary",
   },
 ];
 
-const KIND_BADGE: Record<AdvisoryKind, { bg: string; text: string }> = {
-  Closure: { bg: "bg-aspac-yellow", text: "text-black" },
-  Relocation: { bg: "bg-primary", text: "text-white" },
-  Compliance: { bg: "bg-aspac-green-aa", text: "text-white" },
-  Service: { bg: "bg-aspac-green-tint", text: "text-primary" },
-  General: { bg: "bg-gray-200", text: "text-gray-800" },
-  Holiday: { bg: "bg-gray-200", text: "text-gray-800" },
-};
-
 const Hero: React.FC = () => (
-  <section className="relative isolate">
-    {/* 1200x630 cover works well; center-crops on small screens */}
+  <section className="relative w-full h-[22rem] sm:h-[26rem] overflow-hidden bg-gray-900">
     <div
-      className="h-56 sm:h-64 md:h-72 lg:h-80 w-full bg-center bg-cover"
-      style={{
-        // Save the provided image to your public folder as
-        // /public/advisory-ops-notice-2025-11-05.png
-        backgroundImage: "url('/general_advisories1.png')",
-      }}
+      className="absolute inset-0 bg-center bg-cover scale-105 transform brightness-75 transition duration-700"
+      style={{ backgroundImage: "url('/general_advisories1.png')" }}
       role="img"
-      aria-label="ASPAC Bank Service Advisory – Operations Notice (Nov 5, 2025)"
+      aria-label="ASPAC Bank Advisories banner"
     />
-    {/* soft gradient overlay for contrast */}
-    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-gradient-to-t from-gray-50 via-gray-950/40 to-black/50" />
+    <div className="absolute inset-0 flex items-center max-w-6xl mx-auto px-6 w-full">
+      <div className="max-w-2xl text-white">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#fbbf24] text-black mb-4 shadow-sm">
+          <span className="h-2 w-2 rounded-full bg-black animate-pulse" />
+          Live Announcements
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white mb-4">
+          Advisories & <span className="text-[#459243]">Updates</span>
+        </h1>
+        <p className="text-sm sm:text-base text-gray-200 leading-relaxed max-w-xl">
+          Stay securely informed with corporate operational changes, holiday
+          adjustments, security alerts, and system notifications designed to
+          protect your banking integrity.
+        </p>
+      </div>
+    </div>
   </section>
 );
 
 const AdvisoryCard: React.FC<{ a: Advisory; idx: number }> = ({ a, idx }) => {
-  const badge = KIND_BADGE[a.kind];
+  const badgeConfig = KIND_BADGE[a.kind];
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 18 }}
+      layout
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: idx * 0.06 }}
-      className={`bg-white rounded-3xl shadow-brand overflow-hidden border border-gray-100`}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, delay: idx * 0.04 }}
+      className="bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between"
     >
-      {/* Header */}
-      <div className="relative">
-        <div className="bg-gradient-to-r from-primary to-aspac-green px-6 py-6 sm:px-8">
-          <div className="flex items-start sm:items-center gap-4">
-            <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm text-white">
-              {a.icon ?? <FaInfoCircle className="text-xl" />}
-            </div>
-            <div className="min-w-0">
-              <h3 className="text-white text-xl sm:text-2xl font-semibold tracking-tight">
-                {a.title}
-              </h3>
-              <p className="text-white/80 text-sm mt-1">{a.effective}</p>
-            </div>
-            <span
-              className={`ml-auto hidden sm:inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${badge.bg} ${badge.text}`}
+      <div className="p-6 sm:p-8 text-start">
+        {/* Card Header Structure */}
+        <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+          <div className="flex gap-4 items-center">
+            <div
+              className={`p-3 rounded-xl border ${badgeConfig.bg} text-gray-800 transition-transform duration-300 group-hover:rotate-3`}
             >
-              {a.kind}
-            </span>
+              {getAdvisoryIcon(a.kind)}
+            </div>
+            <div>
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold border ${badgeConfig.bg}`}
+              >
+                {a.kind}
+              </span>
+              <p className="text-xs text-gray-400 font-medium mt-1">
+                {a.effective}
+              </p>
+            </div>
           </div>
         </div>
-        <div
-          className={`absolute left-0 top-full h-1 w-full ${
-            a.accent ?? "bg-primary"
-          }`}
-        />
-      </div>
 
-      {/* Body */}
-      <div className="p-6 sm:p-8">
+        {/* Card Heading Content */}
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug group-hover:text-[#459243] transition-colors duration-200 mb-3">
+          {a.title}
+        </h3>
+
         {a.summary && (
-          <p className="text-gray-800 mb-4 text-[15px] sm:text-base">
+          <p className="text-sm text-gray-800 font-semibold bg-gray-50/70 p-3.5 border-l-4 border-emerald-600 rounded-r-xl mb-4 leading-relaxed">
             {a.summary}
           </p>
         )}
-        <div className="text-gray-700 space-y-4 leading-relaxed">
+
+        <div className="text-sm text-gray-600 space-y-3 leading-relaxed font-normal">
           {a.paragraphs.map((p, i) => (
-            <p key={i} className="text-base">
-              {p}
-            </p>
+            <p key={i}>{p}</p>
           ))}
         </div>
 
-        {/* Render any custom embedded section */}
-        {a.extra && <div className="mt-6">{a.extra}</div>}
-
-        {a.cta && (
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <a
-              href={a.cta.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary hover:bg-aspac-green-aa text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition transform hover:scale-[1.02]"
-            >
-              <FaMapMarkerAlt aria-hidden />
-              {a.cta.label}
-            </a>
-          </div>
-        )}
+        {a.extra && <div className="mt-5">{a.extra}</div>}
       </div>
+
+      {/* Card Action footer layout */}
+      {a.cta && (
+        <div className="px-6 py-5 sm:px-8 bg-gray-50/50 border-t border-gray-100 mt-auto flex items-center justify-end">
+          <a
+            href={a.cta.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-white text-gray-800 hover:bg-[#459243] hover:text-white border border-gray-200 hover:border-[#459243] px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition duration-200"
+          >
+            <FaMapMarkerAlt className="text-xs opacity-70" />
+            {a.cta.label}
+          </a>
+        </div>
+      )}
     </motion.article>
   );
 };
 
-const RightRail: React.FC = () => (
-  <aside className="md:sticky md:top-6 space-y-4">
-    {/* Contacts */}
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-      <p className="text-gray-900 font-semibold mb-3">Need help?</p>
-      <div className="grid grid-cols-1 gap-3">
+export const RightRail: React.FC = () => (
+  <aside className=" lg:top-6 space-y-6">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 relative overflow-hidden group">
+      <div className="absolute top-0 left-0 rotate-180 w-[60%] h-full bg-gradient-to-bl from-[#459243]/10 to-transparent rounded-bl-full pointer-events-none" />
+      <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-[#459243]" />
+        Direct Support Channels
+      </h3>
+      <div className="space-x-3 flex w-full overflow-x-auto items-center  scrollbar-none  border-r-2 border-primary md:border-none md:border-r-0 p-2 ">
+        
         <a
-          href="mailto:customerservice@aspacbank.com"
-          className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white p-3 hover:bg-gray-50"
+          href="mailto:aspacbank@aspacbank.com"
+          className="flex items-center gap-3.5 rounded-xl border border-gray-100 bg-gray-50/30 p-3.5 hover:bg-emerald-50/50 hover:border-[#459243]/20 transition-all duration-200 group/link shrink-0 w-[260px]  md:w-max"
         >
-          <FaEnvelope className="text-primary mt-0.5" aria-hidden />
-          <span className="text-sm font-medium text-gray-900 break-all">
-            customerservice@aspacbank.com
-          </span>
+          <div className="p-2.5 bg-white shadow-sm border border-gray-100 rounded-lg text-[#459243] group-hover/link:bg-[#459243] group-hover/link:text-white transition-colors duration-200">
+            <FaEnvelope />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11px] uppercase tracking-wider text-gray-400 font-bold">
+              Email Helpdesk
+            </p>
+            <p className="text-sm font-semibold text-gray-800 truncate">
+              aspacbank@aspacbank.com
+            </p>
+          </div>
         </a>
+
         <a
           href="tel:+638982722724"
-          className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white p-3 hover:bg-gray-50"
+          className="flex items-center gap-3.5 rounded-xl border border-gray-100 bg-gray-50/30 p-3.5 hover:bg-emerald-50/50 hover:border-[#459243]/20 transition-all duration-200 group/link shrink-0 w-[260px] md:w-max"
         >
-          <FaMobileAlt className="text-primary mt-0.5" aria-hidden />
-          <span className="text-sm font-medium text-gray-900">
-            898 272 2724
-          </span>
+          <div className="p-2.5 bg-white shadow-sm border border-gray-100 rounded-lg text-[#459243] group-hover/link:bg-[#459243] group-hover/link:text-white transition-colors duration-200">
+            <FaMobileAlt />
+          </div>
+          <div>
+            <p className="text-[11px] uppercase tracking-wider text-gray-400 font-bold">
+              Mobile Hotline
+            </p>
+            <p className="text-sm font-semibold text-gray-800">0898 272 2724</p>
+          </div>
         </a>
+
         <a
-          href="tel:+63322722724"
-          className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white p-3 hover:bg-gray-50"
+          href="tel:+63325012724"
+          className="flex items-center gap-3.5 rounded-xl border border-gray-100 bg-gray-50/30 p-3.5 hover:bg-emerald-50/50 hover:border-[#459243]/20 transition-all duration-200 group/link shrink-0 w-[260px] md:w-max"
         >
-          <FaPhone className="text-primary mt-0.5" aria-hidden />
-          <span className="text-sm font-medium text-gray-900">
-            (032) 501 2724
-          </span>
+          <div className="p-2.5 bg-white shadow-sm border border-gray-100 rounded-lg text-[#459243] group-hover/link:bg-[#459243] group-hover/link:text-white transition-colors duration-200">
+            <FaPhone />
+          </div>
+          <div>
+            <p className="text-[11px] uppercase tracking-wider text-gray-400 font-bold">
+              Mandaue Landline
+            </p>
+            <p className="text-sm font-semibold text-gray-800">
+              (032) 501 2724
+            </p>
+          </div>
         </a>
       </div>
     </div>
-
-    {/* Service status example */}
   </aside>
 );
 
 const AdvisoriesPage: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedKind, setSelectedKind] = useState<AdvisoryKind | "All">("All");
+
+  const categories: ("All" | AdvisoryKind)[] = [
+    "All",
+    "Holiday",
+    "Closure",
+    "Relocation",
+    "Compliance",
+    "Service",
+    "General",
+  ];
+  
+  const filteredAdvisories = useMemo(() => {
+    return LoansAdvisories.filter((a) => {
+      const matchesKind = selectedKind === "All" || a.kind === selectedKind;
+      const matchesSearch =
+        a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.paragraphs.some((p) =>
+          p.toLowerCase().includes(searchQuery.toLowerCase()),
+        ) ||
+        (a.summary &&
+          a.summary.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesKind && matchesSearch;
+    });
+  }, [searchQuery, selectedKind]);
+
   return (
     <>
       <Seo
         title="Advisories & Service Updates | ASPAC Bank"
-        description="Stay informed with ASPAC Bank advisories — branch schedules, service changes, compliance notices, and important updates for clients and stakeholders across Cebu and nearby areas."
+        description="Stay informed with ASPAC Bank advisories — branch schedules, service changes, compliance notices, and important updates for clients and stakeholders across Cebu."
         canonical="https://www.aspacbank.com/advisories"
         ogType="website"
         ogImage="https://www.aspacbank.com/general_advisories1.png"
         ogImageAlt="ASPAC Bank advisories, service updates, and branch notices"
         ogSiteName="ASPAC Bank"
         ogLocale="en_PH"
-        /* Match brand & manifest theme color */
         themeColor="#459243"
         iconHref="https://www.aspacbank.com/favicon.ico"
         appleTouchIconHref="https://www.aspacbank.com/favicon.ico"
         manifestHref="https://www.aspacbank.com/manifest.json"
         includeTwitter={false}
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: "ASPAC Bank Advisories & Service Updates",
-          description:
-            "Latest advisories from ASPAC Bank, including branch schedules, service changes, compliance notices, and important updates for clients and stakeholders.",
-          url: "https://www.aspacbank.com/advisories",
-          publisher: {
-            "@type": "Organization",
-            name: "ASPAC Bank",
-            url: "https://www.aspacbank.com",
-            logo: "https://www.aspacbank.com/favicon.ico",
-            sameAs: ["https://www.facebook.com/aspacbank0620/"],
-          },
-        }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-aspac-green/5 via-white to-aspac-green/10">
+      <div className="min-h-screen bg-gray-50/50">
         <Hero />
+      
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="container mx-auto px-4 py-10 max-w-6xl grid md:grid-cols-12 gap-6"
-        >
-          {/* Left: Advisories */}
-          <div className="md:col-span-8 space-y-8">
-            {/* Page header */}
-            <div className="text-left">
-              <div className="inline-block bg-aspac-yellow text-black px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                Important Updates
-              </div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">
-                Bank <span className="text-primary">Advisories</span>
-              </h1>
-              <p className="text-gray-600">
-                Latest announcements and service notices from ASPAC Bank.
-              </p>
+        <section className="max-w-6xl mx-auto px-6 mt-8 space-y-5">
+            <RightRail />
+        
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Real-time search query container input */}
+            <div className="relative w-full md:max-w-xs">
+              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+              <input
+                type="text"
+                placeholder="Search notices..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-200 focus:border-[#459243] focus:ring-4 focus:ring-[#459243]/10 transition-all duration-200 rounded-xl py-2.5 pl-11 pr-4 text-sm font-medium text-gray-800 placeholder-gray-400 focus:outline-none"
+              />
             </div>
 
-            {ADVISORIES.map((a, i) => (
-              <AdvisoryCard key={a.id} a={a} idx={i} />
-            ))}
+          
+            <div className="w-full overflow-x-auto flex items-center gap-2 pb-1 md:pb-0 scrollbar-none justify-start md:justify-end">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedKind(cat)}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 border tracking-wide uppercase ${
+                    selectedKind === cat
+                      ? "bg-[#459243] text-white border-[#459243] shadow-md shadow-emerald-700/10"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
 
-            {/* Standalone Nearby branches block (optional; can keep or remove since Bogo has embedded) */}
+        {/* Core Main content interface section layout assembly */}
+        <div className="container mx-auto px-6 py-8 max-w-6xl grid grid-cols-1 lg:grid-cols-1 gap-8">
+          {/* Main Advisories stream left block column */}
+       
+          <div className="lg:col-span-8 space-y-6">
+            <AnimatePresence mode="popLayout">
+              {filteredAdvisories.length > 0 ? (
+                filteredAdvisories.map((a, i) => (
+                  <AdvisoryCard key={a.id} a={a} idx={i} />
+                ))
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white rounded-2xl border border-dashed border-gray-300 p-12 text-center"
+                >
+                  <FaInfoCircle className="mx-auto text-3xl text-gray-300 mb-3" />
+                  <p className="text-gray-900 font-bold text-lg mb-1">
+                    No matches found
+                  </p>
+                  <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                    We couldn't find any announcements matching your current
+                    filter combination or query parameters.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Standalone Nearby Branch Network Section */}
             <section
               id="nearby-branches"
-              className="bg-white rounded-3xl border border-gray-100 shadow-brand p-6 sm:p-8"
+              className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 sm:p-8"
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <FaMapMarkerAlt className="text-primary" aria-hidden />
-                Visit Our Nearby Branches
+              <h2 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+                <FaMapMarkerAlt className="text-[#459243]" aria-hidden />
+                Alternative Nearby Branch Network
               </h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-xl p-5 shadow-sm border border-primary/10">
-                  <p className="font-bold text-gray-900 text-lg mb-3 pb-2 border-b border-gray-200">
-                    ASPAC BANK – Danao Branch
-                  </p>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-start gap-2">
-                      <FaMapMarkerAlt className="text-primary mt-1" />
-                      <span>Pio Del Pilar St., Danao City, Cebu</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaPhone className="text-primary" />
-                      <span>0917-108-6575</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaClock className="text-primary" />
-                      <span>9:00 AM – 3:00 PM (Mon–Fri)</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="bg-white rounded-xl p-5 shadow-sm border border-primary/10">
-                  <p className="font-bold text-gray-900 text-lg mb-3 pb-2 border-b border-gray-200">
-                    ASPAC BANK – Bantayan Branch
-                  </p>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-start gap-2">
-                      <FaMapMarkerAlt className="text-primary mt-1" />
-                      <span>Ticad, Poblacion Bantayan, Cebu</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaPhone className="text-primary" />
-                      <span>0917-128-4422</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaClock className="text-primary" />
-                      <span>9:00 AM – 3:00 PM (Mon–Fri)</span>
-                    </li>
-                  </ul>
-                </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                {NEARBY_BRANCHES.map((branch, bIdx) => (
+                  <div
+                    key={bIdx}
+                    className="bg-gray-50/50 rounded-xl p-5 border border-gray-100 flex flex-col justify-between"
+                  >
+                    <div>
+                      <p className="font-bold text-gray-900 text-base mb-3 pb-2 border-b border-gray-200/60">
+                        {branch.name}
+                      </p>
+                      <ul className="space-y-2.5 text-sm font-normal text-gray-600">
+                        <li className="flex items-start gap-2.5">
+                          <FaMapMarkerAlt className="text-[#459243] mt-1 shrink-0 text-xs" />
+                          <span>{branch.address}</span>
+                        </li>
+                        <li className="flex items-center gap-2.5">
+                          <FaPhone className="text-[#459243] shrink-0 text-xs" />
+                          <span>{branch.phone}</span>
+                        </li>
+                        <li className="flex items-center gap-2.5">
+                          <FaClock className="text-[#459243] shrink-0 text-xs" />
+                          <span>{branch.hours}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                ))}
               </div>
             </section>
           </div>
 
-          {/* Right rail */}
-          <div className="md:col-span-4">
-            <RightRail />
-          </div>
-        </motion.div>
+       
+        </div>
       </div>
     </>
   );

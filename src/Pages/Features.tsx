@@ -1,109 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Testimonials from "../components/Testimonials";
 import Seo from "../components/Seo";
-
-interface FeatureItem {
-  title: string;
-  image: string;
-  description: string;
-}
-
-const features: FeatureItem[] = [
-  {
-    title: "Fast Loan Processing",
-    image: "/Fastloanprocessing.jpg",
-    description:
-      "Get your loan approved within 24 hours with our streamlined and customer-friendly process.",
-  },
-  {
-    title: "Secure Transactions",
-    image: "/secure-transactions.jpg",
-    description:
-      "With our in-branch systems and rigorous verification steps, your transactions are safe and reliable.",
-  },
-  {
-    title: "Customer Support",
-    image: "/customer-support.jpg",
-    description:
-      "Our dedicated team is ready to assist you through call, text, or branch visits from Monday to Friday.",
-  },
-  {
-    title: "Personalized Banking Experience",
-    image: "/personalized.jpg",
-    description:
-      "We understand your needs. Our staff provides tailored financial solutions to meet your goals.",
-  },
-  {
-    title: "Community-Focused Services",
-    image: "/community.jpg",
-    description:
-      "We prioritize local development, supporting small businesses and education through loans.",
-  },
-  {
-    title: "Accessible Branch ",
-    image: "/branch-network.jpg",
-    description:
-      "Strategically located branches across cebu bring's banking closer to you.",
-  },
-];
-
-const whyUs = [
-  {
-    title: "Community-rooted",
-    description:
-      "A bank that understands the realities of local businesses, farmers, and families.",
-  },
-  {
-    title: "Human-first service",
-    description:
-      "Real people you can talk to in-branch or over the phone—no confusing processes.",
-  },
-  {
-    title: "Simple, clear products",
-    description:
-      "Straightforward loan and deposit options, explained in plain language.",
-  },
-];
-
-const steps = [
-  {
-    label: "Step 1",
-    title: "Talk to us",
-    description:
-      "Visit any ASPAC branch or give us a call so we can understand what you need.",
-  },
-  {
-    label: "Step 2",
-    title: "Submit requirements",
-    description:
-      "Our team will guide you through the documents needed for your chosen product.",
-  },
-  {
-    label: "Step 3",
-    title: "Get approved & enjoy",
-    description:
-      "Once approved, you can access your funds or start using your account.",
-  },
-];
-
-const faqs = [
-  {
-    question: "Who can apply for a loan with ASPAC Bank?",
-    answer:
-      "We serve salaried individuals, self-employed borrowers, and small business owners, subject to standard credit evaluation.",
-  },
-  {
-    question: "Do I need to visit a branch to apply?",
-    answer:
-      "You may start your inquiry by phone, but final application and signing of documents are typically done in-branch.",
-  },
-  {
-    question: "What documents do I need?",
-    answer:
-      "Basic requirements often include valid IDs, proof of income, and, for businesses, relevant business documents. Our branch staff can share the exact list based on your chosen product.",
-  },
-];
+import { faqs, FeatureItem, features, steps, whyUs } from "../data/features";
+import MasonryGridTextInsideImage from "../module/MassonryGridTextInsideImage";
+import { IoMdOpen } from "react-icons/io";
+import { FaArrowRight } from "react-icons/fa6";
 
 const FeatureCard: React.FC<FeatureItem> = ({ title, image, description }) => (
   <motion.article
@@ -173,68 +76,116 @@ const Features: React.FC = () => {
         className="min-h-screen bg-gray-50"
       >
         {/* HERO SECTION */}
-        <section className="relative overflow-hidden bg-aspac-green text-white">
+        <section className="relative overflow-hidden bg-aspac-green text-white py-12 md:py-16">
+          {/* 🟢 Background Media Layers with Parallax Scaling Effect */}
           <img
             src="/features3.jpg"
             alt="Highlights of ASPAC Bank services and community"
-            className="absolute inset-0 h-full w-full object-cover opacity-40"
+            className="absolute inset-0 h-full w-full object-cover opacity-35 scale-105 transition-transform duration-[10s] ease-out pointer-events-none"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-black/40" />
-          <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28 grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <p className="text-sm font-semibold tracking-[0.2em] uppercase text-aspac-yellow mb-3">
-                ASPAC BANK FEATURES
-              </p>
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
-                Banking made simple, secure, and closer to home.
+          <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-slate-950/75 to-aspac-green/40 mix-blend-multiply" />
+
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-aspac-yellow/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative max-w-7xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-inner">
+                <span className="w-1.5 h-1.5 rounded-full bg-aspac-yellow animate-pulse" />
+                <p className="text-xs font-bold tracking-[0.25em] uppercase text-aspac-yellow">
+                  ASPAC BANK FEATURES
+                </p>
+              </div>
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
+                Banking made simple, <br className="hidden sm:inline" />
+                secure, and{" "}
+                <span className="text-aspac-yellow">closer to home.</span>
               </h1>
-              <p className="text-base md:text-lg text-white/90 max-w-xl mb-8">
+
+              <p className="text-base md:text-lg text-slate-200/90 max-w-xl font-normal leading-relaxed">
                 From fast loan approvals to community-focused banking, ASPAC
                 Bank is here to support your plans—whether for your family, your
                 farm, or your business.
               </p>
-              <div className="flex flex-wrap gap-4">
+
+              {/* 🛑 CORE CTA BUTTON REGION (UNTOUCHED ACTION LAYER LOGIC) */}
+              <div className="flex flex-wrap gap-4 items-center ">
                 <button
                   onClick={() => setShowModal(true)}
-                  className="bg-aspac-yellow text-black font-semibold px-8 py-3 rounded-xl shadow-md hover:bg-aspac-yellow/90 transition duration-300 text-base md:text-lg focus:outline-none focus:ring-4 focus:ring-white/40"
+                  className="relative inline-block md:mt-6 overflow-hidden text-white border border-white px-6 md:px-6 py-3 text-sm md:text-base font-light md:font-semibold rounded shadow group"
                 >
-                  Apply for a Loan
+                  <span className="relative z-10 flex items-center gap-3">
+                    Apply for a Loan
+                    <IoMdOpen className="group-hover:scale-125   transition-transform duration-300" />
+                  </span>
+                  <span className="absolute inset-0 bg-primary  translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </button>
+
                 <a
                   href="/branches"
-                  className="border border-white/80 text-white font-semibold px-8 py-3 rounded-xl hover:bg-white hover:text-aspac-green transition duration-300 text-base md:text-lg focus:outline-none focus:ring-4 focus:ring-white/40"
+                  className="relative inline-block md:mt-6 overflow-hidden text-white border border-white px-6 md:px-6 py-3 text-sm md:text-base font-light md:font-semibold rounded shadow group"
                 >
-                  Find a Branch
+                  <span className="relative z-10 flex items-center gap-3">
+                    Find a Branch
+                    <FaArrowRight className="group-hover:-translate-y-0.5   relative -top-0.5 -rotate-12  transition-transform duration-300" />
+                  </span>
+                  <span className="absolute inset-0 bg-primary  translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </a>
               </div>
             </div>
 
-            {/* At a Glance Panel */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-white text-gray-900 rounded-2xl shadow-xl p-6 md:p-7"
-            >
-              <h2 className="text-xl md:text-2xl font-semibold mb-4 text-primary">
-                At a glance
-              </h2>
-              <ul className="space-y-3 text-sm md:text-base text-gray-700">
-                <li>• Fast loan processing with guided in-branch assistance</li>
-                <li>
-                  • Secure, documented transactions for your peace of mind
-                </li>
-                <li>• Personalized assessment based on your real situation</li>
-                <li>
-                  • Strong focus on local communities and small businesses
-                </li>
-              </ul>
-              <p className="mt-6 text-xs text-gray-500">
-                Visit your nearest ASPAC Bank branch to learn which product fits
-                your needs best.
-              </p>
-            </motion.div>
+            {/* Right Glassmorphic Interactive Metric / Advantage Grid Panel */}
+            <div className="lg:col-span-5 w-full">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white/[0.07] backdrop-blur-xl border border-white/10 text-white rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden group"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-500" />
+
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg md:text-xl font-bold uppercase tracking-wider text-aspac-yellow">
+                    At a glance
+                  </h2>
+                  <span className="text-[10px] font-bold text-white/50 bg-white/10 px-2 py-0.5 rounded-full border border-white/5">
+                    Core Promise
+                  </span>
+                </div>
+
+                {/* Feature Matrix Cards */}
+                <div className="space-y-4">
+                  {[
+                    "Fast loan processing with guided in-branch assistance",
+                    "Secure, documented transactions for your peace of mind",
+                    "Personalized assessment based on your real situation",
+                    "Strong focus on local communities and small businesses",
+                  ].map((text, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-200"
+                    >
+                      <div className="w-5 h-5 rounded-full bg-aspac-yellow/20 flex items-center justify-center shrink-0 mt-0.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-aspac-yellow" />
+                      </div>
+                      <p className="text-sm md:text-base text-slate-100 font-medium leading-normal">
+                        {text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 pt-5 border-t border-white/10 flex items-center gap-2.5">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <p className="text-xs text-slate-300 font-medium">
+                    Visit your nearest ASPAC Bank branch to learn which product
+                    fits your needs best.
+                  </p>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
@@ -272,27 +223,22 @@ const Features: React.FC = () => {
 
         {/* FEATURE GRID */}
         <section className="max-w-7xl mx-auto px-6 py-16 md:py-20">
-          <header className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+          {/* Header */}
+          <header className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-3">
               What we offer
             </h2>
             <p className="text-gray-600 text-sm md:text-base">
-              Explore some of the core features that make banking with ASPAC
-              simple, reliable, and aligned with your goals.
+              Explore features that make banking simple, reliable, and
+              goal-driven.
             </p>
           </header>
+          <MasonryGridTextInsideImage items={features} />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((f) => (
-              <FeatureCard key={f.title} {...f} />
-            ))}
-          </div>
-
-          {/* CTA under feature cards */}
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
+          <div className="mt-12 flex justify-center">
             <button
               onClick={() => setShowModal(true)}
-              className="bg-aspac-yellow text-black font-semibold px-8 py-4 rounded-xl shadow-md hover:bg-aspac-yellow/90 transition duration-300 text-lg focus:outline-none focus:ring-4 focus:ring-aspac-yellow/60"
+              className="bg-primary text-white px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition"
             >
               Start Your Application
             </button>
@@ -371,11 +317,6 @@ const Features: React.FC = () => {
               ))}
             </div>
           </div>
-        </section>
-
-        {/* TESTIMONIALS */}
-        <section className="bg-gray-50 py-10 md:py-14">
-          <Testimonials />
         </section>
 
         {/* CONTACT / APPLY MODAL */}

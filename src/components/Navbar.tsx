@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-
+import { IoIosArrowDown } from "react-icons/io";
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false); // mobile drawer
   const [isAdvisoryOpen, setIsAdvisoryOpen] = useState(false); // desktop advisory dropdown
   const [isReportsOpen, setIsReportsOpen] = useState(false); // desktop Financial Overview flyout
+  const [scrolled, setScrolled] = useState(false);
   const advisoryRef = useRef<HTMLLIElement>(null);
-
+  const [mobileAdvisoryOpen, setMobileAdvisoryOpen] = useState(false);
+  const [mobileReportsOpen, setMobileReportsOpen] = useState(false);
   // ---------- Global: close on outside click (desktop dropdowns) ----------
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
@@ -19,6 +21,26 @@ const Navbar: React.FC = () => {
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
   }, []);
+
+  // change nav appearance on scroll (matches provided design)
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+    useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
 
   // ---------- Mobile drawer: lock body scroll & close on ESC ----------
   useEffect(() => {
@@ -38,12 +60,24 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="bg-white py-4 px-6 flex items-center justify-between sticky top-0 z-[90] shadow-md">
-      {/* Left: Logo */}
+    <>
+    <nav
+      className={`w-full transition-all duration-300 fixed top-0 left-0 right-0 z-[90] px-10 flex items-center justify-between ${
+        scrolled
+          ? "bg-white text-[#459243] py-5 shadow-md"
+          : "bg-[#ffffff] bg-clip-padding backdrop-filter   backdrop-blur-md bg-opacity-60  text-[#064703]  py-3"
+      }`}
+    >
       <Link
         to="/"
         className="text-[#459243] text-xl font-medium flex items-center space-x-2 flex-nowrap"
-        onClick={closeAll}
+        onClick={() => {
+          closeAll();
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }}
       >
         <img
           src="/Aspac_logo-03A.png"
@@ -56,123 +90,168 @@ const Navbar: React.FC = () => {
       </Link>
 
       {/* Center: Desktop menu (md+) */}
-      <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:gap-6 text-gray-700 font-medium">
-        <Link to="/our-services" className="hover:text-[#459243]">
-          Services
-        </Link>
-        <Link to="/features" className="hover:text-[#459243]">
-          Features
-        </Link>
-
-        {/* Advisory (desktop dropdown with flyout) */}
+      <div className="hidden md:flex md:flex-1 md:items-center md:justify-end md:gap-8 font-light">
         <li
           ref={advisoryRef}
-          className="relative list-none hover:text-[#459243]"
+          className="relative list-none group"
           onMouseEnter={() => setIsAdvisoryOpen(true)}
           onMouseLeave={() => {
             setIsAdvisoryOpen(false);
             setIsReportsOpen(false);
           }}
         >
-          <button
-            type="button"
-            className="flex items-center gap-1"
-            aria-haspopup="menu"
-            aria-expanded={isAdvisoryOpen}
-            onClick={() => setIsAdvisoryOpen((s) => !s)}
+          <div className="cursor-pointer flex items-center gap-1 hover:text-[#459243] transition-colors duration-300">
+            Advisory
+            <span
+              className={`transition-transform duration-300 ${isAdvisoryOpen ? "-rotate-45" : ""}`}
+            >
+              <IoIosArrowDown size={18} className="pt-1" />
+            </span>
+            <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-[#459243] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+          </div>
+
+          <div
+            className={`absolute left-0 top-full pt-5 z-[95] transition-all duration-300 ${isAdvisoryOpen ? "opacity-100 visible" : "opacity-0 invisible -translate-y-2"}`}
           >
-            Advisory{" "}
-            <span className="text-sm">{isAdvisoryOpen ? "▲" : "▼"}</span>
-          </button>
-
-          {/* Level 1 */}
-          {isAdvisoryOpen && (
-            <div className="absolute left-0 top-full pt-2 z-[95]">
-              <ul
-                role="menu"
-                className="bg-white border rounded-md shadow-lg w-56 text-left overflow-visible"
-              >
-                <li role="none" className="hover:bg-gray-100">
-                  <Link
-                    role="menuitem"
-                    to="/advisories"
-                    className="block px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
-                    onClick={closeAll}
-                  >
-                    General Advisories
-                  </Link>
-                </li>
-
-                {/* Financial Overview (flyout) */}
-                <li
-                  role="none"
-                  className="relative hover:bg-gray-100 select-none"
-                  onMouseEnter={() => setIsReportsOpen(true)}
-                  onMouseLeave={() => setIsReportsOpen(false)}
+            <ul className="bg-white border rounded-md shadow-lg w-56 text-left overflow-visible">
+              <li className="hover:bg-gray-100 rounded-md">
+                <Link
+                  to="/advisories"
+                  className="block px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
+                  onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
                 >
-                  <button
-                    type="button"
-                    className="w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
-                    aria-haspopup="menu"
-                    aria-expanded={isReportsOpen}
-                    onClick={() => setIsReportsOpen((v) => !v)}
-                  >
-                    <span>Financial Overview</span>
-                    <span className="text-sm">▶</span>
-                  </button>
+                  General Advisories
+                </Link>
+              </li>
 
-                  {isReportsOpen && (
-                    <div className="absolute top-0 left-full pl-2 z-[96]">
-                      <ul
-                        role="menu"
-                        className="bg-white border rounded-md shadow-lg w-64 text-left overflow-visible"
+              <li
+                className="relative hover:bg-gray-100 select-none"
+                onMouseEnter={() => setIsReportsOpen(true)}
+                onMouseLeave={() => setIsReportsOpen(false)}
+              >
+                <div className="w-full text-left flex justify-between items-center px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors">
+                  <span>Financial Overview</span>
+                  <span
+                    className={`text-sm transition-transform duration-300 ${isReportsOpen ? "-rotate-45" : ""}`}
+                  >
+                    <IoIosArrowDown size={18} className="pt-1" />
+                  </span>
+                </div>
+
+                <div
+                  className={`absolute top-0 left-full pl-2 z-[96] transition-all duration-300 ${isReportsOpen ? "opacity-100 visible" : "opacity-0 invisible -translate-x-2"}`}
+                >
+                  <ul className="bg-white border rounded-md shadow-lg w-max text-left overflow-visible">
+                    <li className="hover:bg-gray-100 rounded-md">
+                      <Link
+                        to="/advisories/financial-overview/aspacbank-balance-sheet"
+                        className="block px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
+                        onClick={() => {
+                          closeAll();
+                          window.scrollTo({
+                            top: 0,
+                            behavior: "smooth",
+                          });
+                        }}
                       >
-                        <li role="none" className="hover:bg-gray-100">
-                          <Link
-                            role="menuitem"
-                            to="/advisories/financial-overview/aspacbank-balance-sheet"
-                            className="block px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
-                            onClick={closeAll}
-                          >
-                            ASPACBank Balance Sheet
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-                </li>
-                <li role="none" className="hover:bg-gray-100">
-                  <Link
-                    role="menuitem"
-                    to="/AnnualReport2024"
-                    className="block px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
-                    onClick={closeAll}
-                  >
-                    Annual Report
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          )}
-        </li>
+                        ASPACBank Balance Sheet
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
-        <Link to="/careers" className="hover:text-[#459243]">
-          Careers
+              <li className="hover:bg-gray-100 rounded-md">
+                <Link
+                  to="/AnnualReport2024"
+                  onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                  className="block px-4 py-2 text-gray-700 hover:text-[#459243] transition-colors"
+                >
+                  Annual Report
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <Link
+          to="/our-services"
+          onClick={() => {
+            closeAll();
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          className="relative hover:text-[#459243] transition-colors duration-150 group"
+        >
+          Services
+          <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-[#459243] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
         </Link>
-        <Link to="/branches" className="hover:text-[#459243]">
+        <Link
+          to="/features"
+          onClick={() => {
+            closeAll();
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          className="relative hover:text-[#459243] transition-colors duration-150 group"
+        >
+          Features
+          <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-[#459243] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+        </Link>
+        <Link
+          to="/careers"
+          onClick={() => {
+            closeAll();
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          className="relative hover:text-[#459243] transition-colors duration-150 group"
+        >
+          Careers
+          <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-[#459243] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+        </Link>
+        <Link
+          to="/branches"
+          onClick={() => {
+            closeAll();
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          className="relative hover:text-[#459243] transition-colors duration-150 group"
+        >
           Branches
+          <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-[#459243] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
         </Link>
       </div>
 
       {/* Right: Desktop CTA (md+) */}
-      <div className="hidden md:flex md:items-center">
+      {/* <div className="hidden md:flex md:items-center">
         <button className="px-4 py-2 bg-[#459243] text-white rounded-md hover:bg-green-600 whitespace-nowrap">
           Get Started
         </button>
-      </div>
+      </div> */}
 
       {/* Mobile: hamburger */}
-      <button
+      {/* <button
         onClick={() => setIsOpen((o) => !o)}
         className="md:hidden text-gray-700 text-2xl"
         aria-label="Toggle menu"
@@ -180,34 +259,39 @@ const Navbar: React.FC = () => {
         aria-controls="mobile-drawer"
       >
         {isOpen ? "✖" : "☰"}
-      </button>
+      </button> */}
+          <button
+          onClick={() => {
+            console.log("hamburger clicked");
+            setIsOpen((prev) => !prev);
+          }}
+          className="md:hidden text-2xl relative z-[200]"
+          aria-label="Open Menu"
+        >
+          {isOpen ? "✖" : "☰"}
+        </button>
 
+    
+    </nav>
       {/* Mobile drawer + backdrop */}
-      <div
-        className={`fixed inset-0 z-[100] md:hidden transition-opacity duration-200 ${
+       <div
+        className={`fixed inset-0 z-[999] md:hidden transition-opacity duration-300 ${
           isOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
         {/* Backdrop */}
-        <button
-          aria-label="Close menu"
+      <div
           className="absolute inset-0 bg-black/40"
           onClick={closeAll}
         />
 
         {/* Drawer — right slide on mobile */}
-        <aside
-          id="mobile-drawer"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="mobile-nav-title"
-          className={[
-            "absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl",
-            "transition-transform duration-300 will-change-transform flex flex-col",
-          ].join(" ")}
-          style={{ transform: isOpen ? "translateX(0)" : "translateX(100%)" }}
+      <aside
+          className={`absolute top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl transition-transform duration-300 flex flex-col ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         >
           {/* Drawer header */}
           <div className="flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),12px)] pb-3 border-b">
@@ -224,100 +308,153 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Drawer content (centered) */}
-          <nav className="flex-1 overflow-y-auto px-2 py-3 text-gray-800 flex flex-col items-center justify-center text-center">
+       <div className="flex-1 overflow-y-auto p-4 space-y-2">
             <Link
               to="/our-services"
-              className="block px-3 py-3 rounded-xl text-base hover:bg-gray-100 w-full max-w-xs"
-              onClick={closeAll}
+                 onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+              className="block p-3 rounded hover:bg-gray-100"
             >
               Services
             </Link>
+
             <Link
               to="/features"
-              className="block px-3 py-3 rounded-xl text-base hover:bg-gray-100 w-full max-w-xs"
-              onClick={closeAll}
+                onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+              className="block p-3 rounded hover:bg-gray-100"
             >
               Features
             </Link>
 
-            {/* Advisory (accordion on mobile) */}
-            <details className="px-1 py-1 w-full max-w-xs">
-              <summary className="list-none px-3 py-3 rounded-xl text-base hover:bg-gray-100 cursor-pointer">
-                <span className="flex items-center justify-between">
-                  Advisory
-                  <span className="ml-3 text-gray-500">▾</span>
-                </span>
-              </summary>
+            {/* ADVISORY */}
+            <div>
+              <button
+                onClick={() =>
+                  setMobileAdvisoryOpen((s) => !s)
+                }
+                className="flex justify-between w-full p-3 rounded hover:bg-gray-100"
+              >
+                <span>Advisory</span>
 
-              <div className="mt-1 ml-2 rounded-lg border">
+                <IoIosArrowDown
+                  className={`transition-transform ${
+                    mobileAdvisoryOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  mobileAdvisoryOpen
+                    ? "max-h-96"
+                    : "max-h-0"
+                }`}
+              >
                 <Link
                   to="/advisories"
-                  className="block px-3 py-3 hover:bg-gray-50"
-                  onClick={closeAll}
+                     onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                  className="block pl-8 py-2"
                 >
                   General Advisories
                 </Link>
 
-                {/* ✅ Annual Report */}
                 <Link
                   to="/AnnualReport2024"
-                  className="block px-3 py-3 hover:bg-gray-50 border-t"
-                  onClick={closeAll}
+                     onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                  className="block pl-8 py-2"
                 >
                   Annual Report
                 </Link>
 
-                {/* Financial Overview (accordion level 2) */}
-                <details className="border-t">
-                  <summary className="list-none px-3 py-3 hover:bg-gray-50 cursor-pointer">
-                    <span className="flex items-center justify-between">
-                      Financial Overview
-                      <span className="ml-3 text-gray-500">▾</span>
-                    </span>
-                  </summary>
-                  <div className="pl-3">
-                    <Link
-                      to="/advisories/financial-overview/aspacbank-balance-sheet"
-                      className="block px-3 py-3 hover:bg-gray-50"
-                      onClick={closeAll}
-                    >
-                      ASPACBank Balance Sheet
-                    </Link>
-                  </div>
-                </details>
+                <button
+                  onClick={() =>
+                    setMobileReportsOpen((s) => !s)
+                  }
+                  className="block w-full text-left pl-8 py-2"
+                >
+                  Financial Overview
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    mobileReportsOpen
+                      ? "max-h-40"
+                      : "max-h-0"
+                  }`}
+                >
+                  <Link
+                    to="/advisories/financial-overview/aspacbank-balance-sheet"
+                       onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                    className="block pl-12 py-2"
+                  >
+                    ASPACBank Balance Sheet
+                  </Link>
+                </div>
               </div>
-            </details>
+            </div>
 
             <Link
               to="/careers"
-              className="block px-3 py-3 rounded-xl text-base hover:bg-gray-100 w-full max-w-xs"
-              onClick={closeAll}
+                 onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+              className="block p-3 rounded hover:bg-gray-100"
             >
               Careers
             </Link>
+
             <Link
               to="/branches"
-              className="block px-3 py-3 rounded-xl text-base hover:bg-gray-100 w-full max-w-xs"
-              onClick={closeAll}
+                onClick={() => {
+                    closeAll();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+              className="block p-3 rounded hover:bg-gray-100"
             >
               Branches
             </Link>
+          </div>
 
-            <div className="px-3 pt-2 w-full max-w-xs">
-              <button
-                className="w-full px-4 py-3 bg-[#459243] text-white rounded-xl hover:bg-green-700"
-                onClick={closeAll}
-              >
-                Get Started
-              </button>
-            </div>
-          </nav>
-
-          {/* Safe area bottom padding for notches */}
           <div className="h-[max(env(safe-area-inset-bottom),12px)]" />
         </aside>
       </div>
-    </nav>
+    </>
   );
 };
 

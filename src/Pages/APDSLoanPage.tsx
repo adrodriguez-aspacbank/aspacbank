@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import Seo from "../components/Seo";
 import ApplyNowModal from "../components/ApplyNowModal";
-import { Pagination, Autoplay, Navigation } from "swiper/modules";
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -13,22 +8,15 @@ import {
   FaClipboardCheck as ClipboardIcon,
   FaClock as ClockIcon,
   FaMoneyCheckAlt as MoneyIcon,
+  FaChevronRight,
+  FaPhoneAlt,
 } from "react-icons/fa";
 
-const FaPiggyBank = PiggyBankIcon as React.ComponentType<
-  React.SVGProps<SVGSVGElement>
->;
-
-const FaClipboardCheck = ClipboardIcon as React.ComponentType<
-  React.SVGProps<SVGSVGElement>
->;
-
+const FaPiggyBank = PiggyBankIcon as React.ComponentType<React.SVGProps<SVGSVGElement>>;
+const FaClipboardCheck = ClipboardIcon as React.ComponentType<React.SVGProps<SVGSVGElement>>;
 const FaClock = ClockIcon as React.ComponentType<React.SVGProps<SVGSVGElement>>;
-const FaMoneyCheckAlt = MoneyIcon as React.ComponentType<
-  React.SVGProps<SVGSVGElement>
->;
+const FaMoneyCheckAlt = MoneyIcon as React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
-// ✅ Updated Modal with AnimatePresence & motion.div
 const ContactModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   isOpen,
   onClose,
@@ -37,43 +25,44 @@ const ContactModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex justify-center items-center z-50 p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="bg-white p-12 rounded-lg w-96 max-w-sm shadow-2xl"
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-slate-100"
+            initial={{ scale: 0.95, y: 20, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.95, y: 20, opacity: 0 }}
+            transition={{ type: "spring", duration: 0.4 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold text-primary mb-4 text-center">
-              Contact us
-            </h2>
-            <p className="text-gray-700 text-center">
-              For inquiries or assistance, call:
-            </p>
-            <div className="mt-3 flex justify-center">
-              <ul className="space-y-1 text-left">
-                <li className="text-gray-900 font-medium">
-                  Hotline: (032)-501-2724
-                </li>
-                <li className="text-gray-900 font-medium">
-                  Mobile Number: 0898-272-2724
-                </li>
-              </ul>
+            <div className="bg-emerald-800 p-6 text-white text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#16a34a,transparent)] opacity-40" />
+              <div className="mx-auto bg-white/10 w-12 h-12 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm">
+                <FaPhoneAlt className="text-xl text-emerald-300" />
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight">Contact Us</h2>
+              <p className="text-emerald-100/80 text-sm mt-1">We are here to assist with your inquiries</p>
             </div>
-            <br></br>
-            <div className="flex justify-center">
+
+            <div className="p-8 space-y-4">
+              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 transition hover:bg-slate-100/70">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Hotline</p>
+                <p className="text-lg font-bold text-slate-800">(032) 501-2724</p>
+              </div>
+              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 transition hover:bg-slate-100/70">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Mobile Number</p>
+                <p className="text-lg font-bold text-slate-800">0898-272-2724</p>
+              </div>
+
               <button
-                className="bg-yellow-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition transform duration-300 ease-in-out hover:bg-gray-200 "
+                className="w-full mt-2 bg-emerald-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-emerald-700/10 hover:bg-emerald-800 transition duration-200 active:scale-[0.99]"
                 onClick={onClose}
               >
-                Close
+                Dismiss
               </button>
             </div>
           </motion.div>
@@ -85,11 +74,10 @@ const ContactModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 
 const APDSLoanPage: React.FC = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [isApplyNowOpen, setIsApplyNowOpen] = useState(false); // ✅ add state
+  const [isApplyNowOpen, setIsApplyNowOpen] = useState(false);
 
   return (
     <>
-      {/* ✅ Page SEO */}
       <Seo
         title="Teacher Salary Loan (APDS) | ASPAC Bank"
         description="Apply for ASPAC Bank’s Teacher Salary Loan (APDS) with low interest, quick approval, and flexible terms up to 60 months. Enjoy convenient automatic payroll deduction—ideal for teachers and school personnel in Cebu and nearby areas."
@@ -99,8 +87,7 @@ const APDSLoanPage: React.FC = () => {
         ogImageAlt="ASPAC Bank Teacher Salary Loan (APDS) with payroll deduction and flexible terms"
         ogSiteName="ASPAC Bank"
         ogLocale="en_PH"
-        /* Match brand & manifest theme color */
-        themeColor="#459243"
+        themeColor="#065f46"
         iconHref="https://www.aspacbank.com/favicon.ico"
         appleTouchIconHref="https://www.aspacbank.com/favicon.ico"
         manifestHref="https://www.aspacbank.com/manifest.json"
@@ -126,161 +113,133 @@ const APDSLoanPage: React.FC = () => {
         }}
       />
 
-      {/* ✅ Page Content */}
-      <div className="w-full bg-white shadow-2xl overflow-hidden">
-        {/* Banner */}
-        <div className="relative w-full">
-          <img
-            src="./features1.jpg"
-            alt="Educators Banner"
-            className="w-full h-64 sm:h-80 object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h2 className="text-3xl sm:text-5xl font-medium text-white tracking-wide text-center px-2">
-              APDS Loan for Educators
-            </h2>
-          </div>
-        </div>
+      <div className="w-full bg-slate-50 min-h-screen text-slate-800 antialiased font-sans">
+        {/* Dynamic Image-free Hero Section */}
+        <div className="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 overflow-hidden py-20 sm:py-28 px-4 sm:px-8 border-b border-emerald-700/30">
+          {/* Ambient light flares */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-400/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/4 translate-y-1/4" />
+          
+          {/* Subtle grid mesh overlay */}
+          <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:3rem_3rem]" />
 
-        {/* Hero Section */}
-        <div
-          className="w-full text-white text-center px-4 sm:px-6 md:px-8 py-10 sm:py-12 md:py-16"
-          style={{ background: "linear-gradient(135deg, #27ae60, #1e8449)" }}
-        >
-          <p className="mx-auto max-w-[44rem] leading-relaxed opacity-90 mb-6 sm:mb-8 text-base sm:text-lg md:text-xl">
-            The Automatic Payroll Deduction Scheme (APDS) Loan is designed
-            specifically for hardworking teachers and school personnel. Fuel
-            your educational mission with our flexible loan options.
-          </p>
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 backdrop-blur-md mb-6 tracking-wide uppercase">
+              Exclusive Financial Solutions
+            </span>
+            <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
+              APDS Loan for <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">Educators</span>
+            </h1>
+            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-emerald-100/80 font-normal leading-relaxed mb-10">
+              The Automatic Payroll Deduction Scheme (APDS) is engineered tailored to the needs of hardworking educators and school system personnel. Accelerate your milestones easily.
+            </p>
 
-          {/* Actions */}
-          <div className="mx-auto flex w-full max-w-xl flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
-            <a
-              href="/files/ASPAC_Salary_loan_form.pdf"
-              download="ASPAC_Salary_loan_form.pdf"
-              className="w-full sm:w-auto inline-flex justify-center bg-white text-green-900 font-semibold py-3 px-6 md:px-8 rounded-full shadow-lg transition duration-300 hover:scale-105 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-green-300"
-              aria-label="Download Salary Loan Form (PDF)"
-            >
-              Download Form
-            </a>
-           
-            <button
-              className="w-full sm:w-auto bg-white text-green-900 font-semibold py-3 px-6 md:px-8 rounded-full shadow-lg transition duration-300 hover:scale-105 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-green-300"
-              onClick={() => setIsApplyNowOpen(true)} // ✅ open ApplyNowModal
-              aria-label="Apply for APDS Loan"
-            >
-              Inquire Now
-            </button>
-          </div>
-        </div>
-
-        {/* Features Section */}
-        <div className="py-12 px-6 sm:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 bg-white">
-          {[
-            {
-              Icon: FaPiggyBank,
-              title: "Low Interest",
-              description: "Exclusive rates for educators",
-            },
-            {
-              Icon: FaClipboardCheck,
-              title: "Easy Approval",
-              description: "Hassle-free application",
-            },
-            {
-              Icon: FaClock,
-              title: "Flexible Terms",
-              description: "Up to 60 months payment",
-            },
-            {
-              Icon: FaMoneyCheckAlt,
-              title: "Salary Deduction",
-              description: "Automatic monthly payments",
-            },
-          ].map(({ Icon, title, description }, index) => (
-            <div
-              key={index}
-              className="text-center bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300"
-            >
-              <div className="bg-green-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                <Icon className="text-2xl text-green-700" />
-              </div>
-              <h4 className="text-lg font-semibold">{title}</h4>
-              <p className="text-gray-600 text-sm">{description}</p>
+            {/* Strategic Action Matrix */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+              <a
+                href="/files/ASPAC_Salary_loan_form.pdf"
+                download="ASPAC_Salary_loan_form.pdf"
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-white text-emerald-900 font-semibold py-3.5 px-8 rounded-xl shadow-lg shadow-emerald-950/20 hover:bg-emerald-50 hover:shadow-xl transition-all duration-200 active:scale-[0.98]"
+                aria-label="Download Salary Loan Form (PDF)"
+              >
+                Download Form
+              </a>
+              
+              <button
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-emerald-600 text-white font-semibold py-3.5 px-8 rounded-xl shadow-lg shadow-emerald-950/20 hover:bg-emerald-500 border border-emerald-500/30 transition-all duration-200 active:scale-[0.98]"
+                onClick={() => setIsApplyNowOpen(true)}
+                aria-label="Apply for APDS Loan"
+              >
+                Inquire Now
+                <FaChevronRight className="ml-2 text-xs opacity-70" />
+              </button>
             </div>
-          ))}
+          </div>
         </div>
 
-        {/* Why Choose */}
-        <div className="px-6 py-12 bg-gray-50">
-          <h3 className="text-2xl sm:text-3xl font-semibold text-gray-800 text-center mb-8">
-            Why Choose APDS Loan?
-          </h3>
-          <ul className="space-y-4 text-lg text-gray-700 sm:text-xl max-w-3xl mx-auto list-disc list-inside">
-            <li>Low interest rates exclusive to educators</li>
-            <li>Flexible payment terms up to 60 months</li>
-            <li>Quick and hassle-free loan approval process</li>
-            <li>Automatic salary deduction for easy payments</li>
-          </ul>
-        </div>
-
-        {/* Testimonials */}
-        <div className="bg-white py-12 px-6 sm:px-12">
-          <h3 className="text-2xl sm:text-3xl font-semibold text-center text-gray-800 mb-10">
-            What Our Clients Say
-          </h3>
-          <Swiper
-            modules={[Pagination, Autoplay, Navigation]}
-            spaceBetween={30}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            navigation
-            autoplay={{ delay: 4000 }}
-            loop={true}
-            className="max-w-3xl mx-auto"
-          >
+        {/* Feature Grid Architecture */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 -mt-10 relative z-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                quote:
-                  "ASPAC Bank made the loan process smooth and stress-free. Highly recommended!",
-                author: "Maria L., Public School Teacher",
-                avatar: "woman1.png",
+                Icon: FaPiggyBank,
+                title: "Competitive Interest",
+                description: "Maximize your financial freedom with market-leading preferred rates.",
               },
               {
-                quote:
-                  "Flexible payment terms helped me manage my budget easily.",
-                author: "Jose R., High School Principal",
-                avatar: "man1.png",
+                Icon: FaClipboardCheck,
+                title: "Streamlined Approval",
+                description: "Experience an elegant application flow built to save you physical time.",
               },
               {
-                quote:
-                  "Quick approval and great customer service from ASPAC Bank!",
-                author: "Anna D., Elementary Teacher",
-                avatar: "woman2.png",
+                Icon: FaClock,
+                title: "Flexible Milestones",
+                description: "Structured payment channels distributed comfortably up to 60 months.",
               },
-            ].map((testimonial, index) => (
-              <SwiperSlide key={index}>
-                <div className="bg-gray-100 p-8 rounded-2xl shadow-md hover:shadow-lg transition text-center">
-                  <img
-                    src={`/avatars/${testimonial.avatar}`}
-                    alt={testimonial.author}
-                    className="w-20 h-20 rounded-full mx-auto mb-4 border-4 border-green-500 object-cover"
-                  />
-                  <p className="text-green-700 text-4xl mb-2 leading-none">"</p>
-                  <p className="text-lg italic mb-4 text-gray-700">
-                    "{testimonial.quote}"
-                  </p>
-                  <h4 className="font-bold text-green-800">
-                    {testimonial.author}
-                  </h4>
+              {
+                Icon: FaMoneyCheckAlt,
+                title: "Seamless Deductions",
+                description: "Worry-free processing routed straight via automatic monthly channels.",
+              },
+            ].map(({ Icon, title, description }, index) => (
+              <div
+                key={index}
+                className="group bg-white p-8 rounded-2xl shadow-sm border border-slate-200/60 hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="bg-emerald-50 w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors duration-300">
+                  <Icon className="text-2xl text-emerald-800 group-hover:text-white transition-colors duration-300" />
                 </div>
-              </SwiperSlide>
+                <h3 className="text-xl font-bold text-primary mb-2 group-hover:text-emerald-900 transition-colors">
+                  {title}
+                </h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
+              </div>
             ))}
-          </Swiper>
+          </div>
         </div>
 
-        {/* Contact Modal */}
+        {/* Editorial Value Section */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          <div className="bg-white rounded-3xl p-8 sm:p-14 shadow-sm border border-slate-200/50 relative overflow-hidden">
+          
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+       <div className="absolute  right-0  w-[400px]  h-[300px] bg-primary/10 rounded-full blur-3xl" />
+    
+            <h2 className="text-3xl font-bold text-primary text-center mb-12 tracking-tight">
+              Why Professionals Choose the APDS Loan
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                "Optimized interest baselines tailored around government institutional employees.",
+                "Amortization horizons running securely over a structured 5-year maximum window.",
+                "Zero administrative hassle—no manual transfers or complex payment slip verification steps.",
+                "Pre-vetted structures allowing immediate processing pipelines once your packet matches layout norms."
+              ].map((text, i) => (
+                <div key={i} className="flex gap-4 items-start">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold text-xs mt-1">
+                    {i + 1}
+                  </div>
+                  <p className="text-slate-600 leading-relaxed font-medium">{text}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-14 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-slate-500 text-sm font-medium text-center sm:text-left">
+                Have specific structural questions regarding payroll limits? Let’s talk.
+              </p>
+              <button
+                onClick={() => setIsContactModalOpen(true)}
+                className="text-emerald-700 font-bold hover:text-emerald-800 transition duration-150 underline decoration-2 underline-offset-4 decoration-emerald-600/30 hover:decoration-emerald-700"
+              >
+                Speak with our Loan Experts
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Modals */}
         <ContactModal
           isOpen={isContactModalOpen}
           onClose={() => setIsContactModalOpen(false)}

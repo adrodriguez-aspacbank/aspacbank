@@ -1,8 +1,9 @@
 import React from "react";
+import { FaFacebookF, FaPhone, FaEnvelope, FaYoutube } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
-
 const Footer: React.FC = () => {
-  const { pathname } = useLocation();
+    const { pathname } = useLocation();
 
   // Normalize path to lowercase for matching
   const currentPath = pathname.toLowerCase();
@@ -10,21 +11,19 @@ const Footer: React.FC = () => {
   // Show PDIC image only on Homepage and Deposit Account page
   const showPDICImage =
     currentPath === "/" || currentPath.includes("deposit-account");
-
   return (
-    <footer role="contentinfo" className="bg-gray-50 border-t border-gray-200">
-      {/* PDIC / BSP strip (conditional) */}
+    <footer className="bg-gradient-to-tl from-[#bcf7ba] via-[#d8fbd7] to-[#d1f8cf]  pt-16 pb-16 relative">
       {showPDICImage && (
-        <div className="max-w-6xl mx-auto px-6 pt-10 pb-6 text-center">
+        <div className="max-w-6xl mx-auto px-6 mb-10 text-center">
           <img
-            src="/New Official PDIC Digital Decal.jpg"
+            src="/pdic.jpg"
             alt="PDIC Digital Decal"
-            className="h-40 mx-auto object-contain"
+            className=" mx-auto object-contain rounded-full "
             loading="lazy"
-            width={320}
-            height={160}
+            width={100}
+            height={100}
           />
-          <p className="mt-2 text-sm text-gray-700 font-medium">
+          <p className="mt-5 text-sm text-gray-700 font-medium">
             Deposits are insured by the{" "}
             <span className="text-primary font-semibold">PDIC</span> up to{" "}
             <span className="text-primary font-semibold">P 1 Million</span> per
@@ -44,99 +43,68 @@ const Footer: React.FC = () => {
           </p>
         </div>
       )}
-
-      <div className="max-w-6xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-700">
-        {/* Contact and Regulatory Info */}
-        <section aria-labelledby="footer-contact" className="space-y-3">
-          <h3
-            id="footer-contact"
-            className="text-base font-semibold text-gray-900"
-          >
-            Contact Us
-          </h3>
-          <p>
-            For concerns, call our Customer Service Hotline at{" "}
-            <a
-              href="tel:+63322722724"
-              className="font-semibold text-primary hover:opacity-80"
-            >
-              (032) 501-2724
-            </a>{" "}
-            or Mobile number{" "}
-            <a
-              href="tel:+638982722724"
-              className="font-semibold text-primary hover:opacity-80"
-            >
-              0898-272-2724
-            </a>
-            .
+     <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 gap-10 lg:gap-0 lg:grid-cols-3 lg:justify-items-center">
+        <div>
+          <h2 className="text-lg font-bold text-black mb-3 flex items-end gap-2">
+        <img
+          src="/Aspac_logo-03A.png"
+          alt="ASPAC Bank Logo"
+          className="w-10 h-8 object-contain"
+        />
+        <span className="text-[#459243] text-xl font-semibold min-w-max">
+          ASPAC Bank
+        </span> 
+            
+          </h2>
+          
+          <p className=" leading-relaxed text-xs w-full lg:w-72">
+            Trusted banking solutions for Cebu communities with secure, reliable,
+            and customer-focused service.
           </p>
-          <p>
-            Email:&nbsp;
+        </div>
+   <div className="flex gap-4 text-xl">
             <a
-              href="mailto:aspacbank@aspacbank.com"
-              className="text-primary hover:opacity-80"
+              href="https://www.facebook.com/aspacbank0620/"
+              target="_blank"
+              rel="noopener noreferrer"
+             className="bg-[#469243c9] p-2 rounded-2xl h-max hover:bg-[#459243] transition"
             >
-              aspacbank@aspacbank.com
+              <FaFacebookF size={16} color="#fff" />
             </a>
-          </p>
-        </section>
-
-        {/* Address + Store badges */}
-        <section
-          aria-labelledby="footer-address"
-          className="text-center md:text-right space-y-3"
-        >
-          <h3
-            id="footer-address"
-            className="text-base font-semibold text-gray-900"
-          >
-            Head Office Address
-          </h3>
-          <address className="not-italic">
-            ASPAC Bank Building, Guizo, Mandaue City, Cebu, Philippines
-          </address>
-
-          <div className="flex justify-center md:justify-end gap-4 mt-4">
-            {/* If you have real store URLs, wrap images with <a href="..."> */}
-            <img
-              src="/appstore.png"
-              alt="Download on the App Store"
-              className="h-10"
-              loading="lazy"
-            />
-            <img
-              src="/googleplay.png"
-              alt="Get it on Google Play"
-              className="h-10"
-              loading="lazy"
-            />
+            {/* <a
+              href="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#469243c9] p-3 rounded-full hover:bg-[#459243] transition"
+            >
+              <FaYoutube color="#fff" />
+            </a> */}
           </div>
-        </section>
+
+        <div>
+          <ul className="space-y-3  text-sm w-full lg:w-60">
+            <li className="flex items-center gap-2">
+              <FaPhone className="text-[#459243]" />
+              <span>(032) 501-2724 | 0898-272-2724.</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <FaEnvelope className="text-[#459243]" />
+              <span>aspacbank@aspacbank.com</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <FaLocationDot size={20} className="text-[#459243]" />
+              <span>ASPAC Bank Building, Guizo, Mandaue City, Cebu, Philippines</span>
+            </li>
+          </ul>
+        </div>
+
+ 
+       
+  
       </div>
 
-      <div className="border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()}{" "}
-            <span className="font-medium">ASPAC Bank, Inc.</span> All rights
-            reserved.
-          </p>
-          <nav aria-label="Footer legal" className="text-xs text-gray-600">
-            <ul className="flex flex-wrap gap-x-4 gap-y-2">
-              <li>
-                <a href="/privacy" className="hover:underline">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="/terms" className="hover:underline">
-                  Terms & Conditions
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+      <div className="text-center text-black mt-6 text-xs">
+        © {new Date().getFullYear()} ASPAC Bank — All rights reserved.
       </div>
     </footer>
   );

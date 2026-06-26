@@ -18,6 +18,7 @@ import AspacBankBalanceSheet from "./Pages/AspacBankBalanceSheet"; // ✅ Added 
 import AnnualReport2024 from "./components/advisories/AnnualReport2024";
 
 import "./index.css";
+import { FooterBadge } from "./module/FooterBadge";
 
 const App: React.FC = () => {
   return (
@@ -52,7 +53,8 @@ const App: React.FC = () => {
           />
           <Route path="/AnnualReport2024" element={<AnnualReport2024 />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
+        <FooterBadge/>
       </div>
     </Router>
   );

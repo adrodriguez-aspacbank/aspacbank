@@ -1,195 +1,18 @@
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
+import { useRef } from "react";
+import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
-import Seo from "../components/Seo";
 import "swiper/css/effect-fade";
-
-const branches = [
-  {
-    name: "ASPAC Bank Mandaue Head Office",
-    address:
-      "ASPAC RURAL BANK Bldg. Cor. M.C. Briones Highway & Gen. Ricarte Sts. Guizo Mandaue City Cebu Philippines",
-    contact: "0917-127-7796",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-    mapUrl:
-      "https://www.google.com/maps/place/Aspac+Bank/@10.334932,123.939810,18z",
-
-    images: [
-      "/assets/branchesimages/man1.webp",
-      "/assets/branchesimages/man2.webp",
-      "/assets/branchesimages/man3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Banilad",
-    address: "UC Building, Banilad, Cebu City ",
-    contact: "0917-129-7936",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-
-    mapUrl:
-      "https://www.google.com/maps/place/Aspac+Rural+Bank,+Inc./@10.338449,123.911692,18z",
-    images: [
-      "/assets/branchesimages/bnl1.webp",
-      "/assets/branchesimages/bnl2.webp",
-      "/assets/branchesimages/bnl3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Bantayan",
-    address: "Ticad, Poblacion Bantayan, Cebu",
-    contact: "0917-128-4422",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Rural+Bank/@11.169291,123.724044,18z",
-    images: [
-      "/assets/branchesimages/ban1.webp",
-      "/assets/branchesimages/ban2.webp",
-      "/assets/branchesimages/ban3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Bogo",
-    address:
-      "ASPAC BANK Bldg., P. Rodriguez St., Cogon Poblacion Bogo City, Cebu",
-    contact: "0917-129-4966",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-
-    mapUrl:
-      "https://www.google.com/maps/place/Aspac+Bank/@11.046722,124.002806,18z",
-
-    images: [
-      "/assets/branchesimages/bog1.webp",
-      "/assets/branchesimages/bog2.webp",
-      "/assets/branchesimages/bog3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Carbon",
-    address: "Escaño St., Ermita Poblacion, Cebu City",
-    contact: "0917-130-6492",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Bank/@10.292803,123.897243,18z",
-    images: [
-      "/assets/branchesimages/cbn1.webp",
-      "/assets/branchesimages/cbn2.webp",
-      "/assets/branchesimages/cbn3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Carcar",
-    address: "Santa Catalina, Carcar City, Cebu",
-    contact: "0917-125-0313",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Bank/@10.104091,123.641842,18z",
-    images: [
-      "/assets/branchesimages/car1.webp",
-      "/assets/branchesimages/car2.webp",
-      "/assets/branchesimages/car3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Consolacion",
-    address:
-      "ASPAC Bldg., Sta Lucia Town Center, Poblacion Oriental Consolacion, Cebu",
-    contact: "0917-113-8143",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Rural+Savings+Bank/@10.373832,123.958717,18z",
-    images: [
-      "/assets/branchesimages/cns1.webp",
-      "/assets/branchesimages/cns2.webp",
-      "/assets/branchesimages/cns3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Danao",
-    address: "Pio Del Pilar St., Poblacion Danao City, Cebu",
-    contact: "0917-108-6575",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Rural+Bank,+Inc./@10.519936,124.026656,18z",
-    images: [
-      "/assets/branchesimages/dan1.webp",
-      "/assets/branchesimages/dan2.webp",
-      "/assets/branchesimages/dan3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Lapu-lapu",
-    address: "ASPAC BANK Bldg., Pusok Lapu-Lapu City, Cebu",
-    contact: "0917-116-5655",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Bank/@10.324447,123.974243,18z",
-    images: [
-      "/assets/branchesimages/lap1.webp",
-      "/assets/branchesimages/lap2.webp",
-      "/assets/branchesimages/lap3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank N.Bacalso",
-    address:
-      "ASPAC BANK Bldg., Cor. N. Bacalso St., & P. Del Rosario Ext., Sambag 1 Poblacion Cebu City",
-    contact: "0917-102-5671",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Bank/@10.298935,123.894919,18z",
-    images: [
-      "/assets/branchesimages/eml1.webp",
-      "/assets/branchesimages/eml2.webp",
-      "/assets/branchesimages/eml3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Talisay",
-    address: "Natalio Bacalso Ave., Tabunoc Talisay, Cebu City",
-    contact: "0917-129-7008",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Bank/@10.269829,123.844870,18z",
-    images: [
-      "/assets/branchesimages/tal1.webp",
-      "/assets/branchesimages/tal2.webp",
-      "/assets/branchesimages/tal3.webp",
-    ],
-  },
-
-  {
-    name: "ASPAC Bank Toledo",
-    address: "Purok Nangka, Sangi  Toledo City, Cebu",
-    contact: "0917-129-7896",
-    hours: "9:00 AM - 3:00 PM (Mon-Fri)",
-    mapUrl:
-      "https://www.google.com/maps/place/ASPAC+Bank/@10.386167,123.652075,18z",
-    images: [
-      "/assets/branchesimages/tol1.webp",
-      "/assets/branchesimages/tol2.webp",
-      "/assets/branchesimages/tol3.webp",
-    ],
-  },
-];
+import { branches } from "../data/branches";
+import Seo from "../components/Seo";
 
 const Branches = () => {
+  const swiperRef = useRef<SwiperType | null>(null);
+
   return (
     <>
       {/* ✅ SEO for /branches */}
@@ -734,66 +557,162 @@ const Branches = () => {
         }}
       />
 
-      {/* ✅ Main Page Content */}
-      <section className="min-h-screen bg-gray-50 py-10 px-4 md:px-10">
+      <section className="min-h-screen bg-gray-50 py-12 px-4 pt-28 md:px-10">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-center text-[#459243] mb-10">
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-[#459243] mb-12">
             Our Branches
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
             {branches.map((branch, index) => (
+              // <motion.div
+              //   key={index}
+              //   whileHover={{ y: -6 }}
+              //   transition={{ duration: 0.3 }}
+              //   className="
+              //     break-inside-avoid
+              //     mb-8
+              //   "
+              // >
               <motion.div
-                key={index}
-                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                whileHover={{ scale: 1.03 }}
+                key={branch.name}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{
+                  once: true,
+                  amount: 0.15,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.05,
+                  ease: "easeOut",
+                }}
+                className="break-inside-avoid mb-8 will-change-transform"
+                onMouseEnter={() => swiperRef.current?.autoplay.start()}
+                onMouseLeave={() => swiperRef.current?.autoplay.stop()}
               >
-                {/* Smooth Swiper */}
-                <Swiper
-                  modules={[Autoplay, Pagination, EffectFade]}
-                  effect="fade"
-                  fadeEffect={{ crossFade: true }}
-                  autoplay={{
-                    delay: 3500,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{ clickable: true }}
-                  loop={true}
-                  speed={800}
-                  className="w-full h-80"
+                <div
+                  className={`group relative bg-white/70 backdrop-blur-xl rounded-[28px] overflow-hidden border border-white/40
+                  shadow-[0_20px_60px_rgba(0,0,0,0.08)]
+                  hover:shadow-[0_30px_100px_rgba(69,146,67,0.18)]
+                  transition-all duration-500`}
                 >
-                  {branch.images.map((img, i) => (
-                    <SwiperSlide key={i}>
-                      <img
-                        src={img}
-                        alt={`${branch.name} ${i + 1}`}
-                        className="w-full h-80 object-cover transition-all duration-500"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                  {/* Glow */}
+                  <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 blur-3xl rounded-full" />
 
-                <div className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                    {branch.name}
-                  </h2>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <strong>Address:</strong> {branch.address}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <strong>Contact:</strong> {branch.contact}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-4">
-                    <strong>Hours:</strong> {branch.hours}
-                  </p>
-                  <a
-                    href={branch.mapUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block bg-[#459243] text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                  {/* IMAGE SWIPER */}
+                  <Swiper
+                    modules={[Autoplay, Pagination, EffectFade]}
+                    effect="fade"
+                    autoplay={{
+                      delay: 2500,
+                      disableOnInteraction: false,
+                    }}
+                    onSwiper={(swiper) => {
+                      swiperRef.current = swiper;
+                      swiper.autoplay.stop();
+                    }}
+                    pagination={{ clickable: true }}
+                    loop
+                    speed={600}
+                    className="h-72 w-full"
                   >
-                    View on Map
-                  </a>
+                    {branch.images.map((img, i) => (
+                      <SwiperSlide key={i}>
+                        <img
+                          src={img}
+                          alt={branch.name}
+                          className="
+                          w-full h-72 object-cover
+                          group-hover:scale-110
+                          transition-transform duration-700
+                        "
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+
+                  {/* TOP LABEL */}
+                  <div className="absolute top-4 left-4 z-10">
+                    <span
+                      className="
+                    bg-black/40 text-white text-xs
+                    px-3 py-1 rounded-full backdrop-blur-md
+                  "
+                    >
+                      Branch Office
+                    </span>
+                  </div>
+
+                  {/* CONTENT */}
+                  <div className="p-6">
+                    <h2 className="text-sm md:text-lg font-bold text-primary">
+                      {branch.name}
+                    </h2>
+
+                    <div className="mt-4 space-y-2 text-sm text-gray-600">
+                      <p>
+                        <span className="text-xs md:text-sm font-semibold text-gray-800">
+                          Address:
+                        </span>
+                        <br />
+                        <span className="text-xs md:text-sm">
+                          {branch.address}
+                        </span>
+                      </p>
+
+                      <p>
+                        <span className="text-xs md:text-sm font-semibold text-gray-800">
+                          Contact:
+                        </span>
+                        <br />
+                        <span className="text-xs md:text-sm">
+                          {branch.contact}
+                        </span>
+                      </p>
+
+                      <p>
+                        <span className="text-xs md:text-sm font-semibold text-gray-800">
+                          Hours:
+                        </span>
+                        <br />
+                        <span className="text-xs md:text-sm">
+                          {branch.hours}
+                        </span>
+                      </p>
+                    </div>
+
+                    {/* TAGS */}
+                    <div className="flex flex-wrap gap-2 mt-5">
+                      <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                        Banking Services
+                      </span>
+
+                      <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                        Local Branch
+                      </span>
+                    </div>
+
+                    {/* BUTTON */}
+                    <a
+                      href={branch.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="
+                      mt-6 inline-flex items-center justify-center
+                      w-full
+                      bg-gradient-to-r from-primary to-aspac-green
+                      text-white font-semibold
+                     py-2 md:py-3 rounded-full
+                      shadow-md
+                      hover:shadow-xl
+                      transition-all
+                      text-xs md:text-sm
+                    "
+                    >
+                      View on Map
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             ))}
