@@ -15,7 +15,6 @@ import {
 } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
 import Seo from "./components/Seo";
-import AspacChatbot from "./components/AspacChatbot";
 import ApplyNowModal from "./components/ApplyNowModal";
 import BspSecurityTipsNewYearAdvisory from "./components/advisories/BspSecurityTipsNewYearAdvisory";
 

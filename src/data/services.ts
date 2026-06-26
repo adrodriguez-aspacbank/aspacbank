@@ -3,9 +3,6 @@ import {
   FaUniversity,
   FaMoneyCheckAlt,
   FaHandHoldingUsd,
-  FaArrowRight,
-  FaPhoneAlt,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
 export interface Service {
   title: string;
