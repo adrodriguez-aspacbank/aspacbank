@@ -59,7 +59,7 @@ const OurServices: React.FC = () => {
           <img
             src="/Services5.jpg"
             alt="ASPAC Bank services collage"
-            className="absolute inset-0 h-full w-full object-cover transform motion-safe:animate-[pulse_8s_infinite_alternate]"
+            className="absolute inset-0 h-full w-full object-cover "
             loading="eager"
           />
           {/* Multi-layered radial & linear dynamic overlay gradient */}

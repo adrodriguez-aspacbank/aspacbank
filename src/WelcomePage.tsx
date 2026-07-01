@@ -29,6 +29,7 @@ import { reviews } from "./data/reviews";
 import { ReviewCard } from "./module/ReviewCardMasonry";
 import { news } from "./data/news";
 import ParallaxHero from "./module/Parallax";
+import { ChatBot } from "./components/ChatBot";
 
 /**
  * WelcomePage – ASPAC brand integration

@@ -18,6 +18,8 @@ import AnnualReport2024 from "./components/advisories/AnnualReport2024";
 
 import "./index.css";
 import { FooterBadge } from "./module/FooterBadge";
+import { ChatBot } from "./components/ChatBot";
+import AnnualReport from "./Pages/AnnualReport";
 
 const App: React.FC = () => {
   return (
@@ -51,7 +53,9 @@ const App: React.FC = () => {
             element={<AspacBankBalanceSheet />}
           />
           <Route path="/AnnualReport2024" element={<AnnualReport2024 />} />
+          <Route path="/Annual" element={<AnnualReport/>}/>
         </Routes>
+         <ChatBot />
         {/* <Footer /> */}
         <FooterBadge/>
       </div>
