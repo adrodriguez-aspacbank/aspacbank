@@ -174,10 +174,10 @@ export function ChatBot() {
             animate={{
               opacity: 1,
               x: 0,
-              width: wide ? "calc(95vw - 32px)" : 390,
-              height: wide ? "calc(100vh - 32px)" : 700,
+              width: wide ? "calc(100vw - 25px)" : window.innerWidth < 435 ? "calc(100vw - 25px)" : 400,
+              height: wide ? "calc(100vh - 32px)" : window.innerWidth < 435 ? "calc(85vh - 25px)" : 600,
               right: wide ? 16 : 24,
-              bottom: wide ? 16 : 20,
+              bottom: wide ? 16 : window.innerWidth < 435 ? 5 : 16,
               transition: {
                 type: "spring",
                 stiffness: 220,
@@ -194,8 +194,8 @@ export function ChatBot() {
               "fixed z-[9999] flex flex-col overflow-hidden bg-white",
               " shadow-[0_30px_80px_rgba(0,0,0,0.28)]",
               "inset-x-3 bottom-1 top-4 rounded-3xl",
-              "sm:inset-auto sm:bottom-[90px] sm:right-6 sm:top-auto",
-              "sm:h-[540px] sm:max-h-[calc(100vh-130px)] sm:w-[390px] sm:max-w-[calc(100vw-32px)]",
+              " sm:inset-auto sm:bottom-[0px] sm:right-6 sm:top-auto",
+              // "w-full h-full sm:h-[540px] sm:max-h-[calc(100vh-130px)] sm:w-[390px] sm:max-w-[calc(100vw-32px)]",
               "sm:rounded-[28px]",
              
             ].join(" ")}  >
