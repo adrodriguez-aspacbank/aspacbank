@@ -211,8 +211,8 @@ export function ChatBot() {
           <span className="text-lg leading-none sm:text-xl">⛌</span>
         ) : (
           <div className="relative">
-            <span className="text-lg sm:text-2xl">💬</span>
-            <span className="absolute -right-1 -top-3 h-3 w-3 rounded-full bg-white ring-2 ring-white" />
+            <span className="text-lg sm:text-3xl inline-block origin-[70%_70%] animate-[wave_2.5s_ease-in-out_infinite] right-1 relative">👋</span>
+            <span className="absolute -right-0 -top-1 h-3 w-3 rounded-full bg-white ring-2 ring-accent" />
           </div>
         )}
       </button>
