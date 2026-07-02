@@ -1,6 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { SERVER_URL } from "./config/api";
 
 type Message = {
   type: "user" | "bot";
@@ -36,7 +37,7 @@ export function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
  
-  const API_URL = process.env.SERVER_URL;
+  const API_URL = process.env.SERVER_URL || SERVER_URL;
 
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
