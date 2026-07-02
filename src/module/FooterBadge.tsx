@@ -30,7 +30,7 @@ export function FooterBadge() {
                 </h3>
 
                 <p className="text-xs tracking-widest uppercase text-primary/70">
-                 Digitally Simple
+                  Digitally Simple
                 </p>
               </div>
             </div>
@@ -41,8 +41,6 @@ export function FooterBadge() {
               goals through trusted savings, deposit, and loan solutions.
             </p>
 
-           
-   
             {showPDICImage && (
               <div className="mt-5">
                 <img
@@ -87,14 +85,28 @@ export function FooterBadge() {
               <Link
                 to="/teachers-loan"
                 className="group flex items-center justify-between bg-white rounded-xl px-4 py-2 shadow-sm hover:shadow-md transition"
-              >
-                <span className="text-xs md:text-base">Teacher Salary Loan</span>
+                      onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+             >
+                <span className="text-xs md:text-base">
+                  Teacher Salary Loan
+                </span>
                 <span className="group-hover:translate-x-1 transition">→</span>
               </Link>
 
               <Link
                 to="/deposit-account"
                 className="group flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition"
+                       onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
               >
                 <span className="text-xs md:text-base">Savings & Deposits</span>
                 <span className="group-hover:translate-x-1 transition">→</span>
@@ -103,7 +115,13 @@ export function FooterBadge() {
               <Link
                 to="/msme-loans"
                 className="group flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition"
-              >
+                     onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
                 <span className="text-xs md:text-base">MSME Loans</span>
                 <span className="group-hover:translate-x-1 transition">→</span>
               </Link>
@@ -118,6 +136,12 @@ export function FooterBadge() {
               <Link
                 className="text-xs md:text-base px-4 py-2 bg-white rounded-md shadow-sm hover:bg-primary hover:text-white transition "
                 to="/branches"
+                         onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
               >
                 Branches
               </Link>
@@ -125,6 +149,12 @@ export function FooterBadge() {
               <Link
                 className="text-xs md:text-base px-4 py-2 bg-white rounded-md shadow-sm hover:bg-primary hover:text-white transition"
                 to="/advisories"
+                         onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
               >
                 Advisories
               </Link>
@@ -132,6 +162,12 @@ export function FooterBadge() {
               <Link
                 className="text-xs md:text-base px-4 py-2 bg-white rounded-md shadow-sm hover:bg-primary hover:text-white transition"
                 to="/privacy"
+                         onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
               >
                 Privacy Policy
               </Link>
@@ -139,6 +175,12 @@ export function FooterBadge() {
               <Link
                 className="text-xs md:text-base px-4 py-2 bg-white rounded-md shadow-sm hover:bg-primary hover:text-white transition"
                 to="/features"
+                         onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
               >
                 Features
               </Link>
@@ -179,13 +221,40 @@ export function FooterBadge() {
           </p>
 
           <div className="flex gap-6 text-xs md:text-base">
-            <Link to="/privacy" className="hover:text-primary">
+            <Link
+              to="/privacy"
+              className="hover:text-primary"
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
               Privacy Policy
             </Link>
-            <Link to="/advisories" className="hover:text-primary">
+            <Link
+              to="/advisories"
+              className="hover:text-primary"
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
               Advisories
             </Link>
-            <Link to="/branches" className="hover:text-primary">
+            <Link
+              to="/branches"
+              className="hover:text-primary"
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
               Branches
             </Link>
           </div>

@@ -17,79 +17,82 @@ const quickReplies = [
   "Careers",
 ];
 
-function MessageText({ text, isUser }: { text: string; isUser: boolean }) {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-  return (
-    <div className="space-y-2 break-words">
-      {text.split("\n").map((line, lineIndex) => {
-        const parts = line.split(urlRegex);
-
-        return (
-          <p key={lineIndex} className="m-0">
-            {parts.map((part, partIndex) => {
-              const isUrl = urlRegex.test(part);
-              urlRegex.lastIndex = 0;
-
-              if (isUrl) {
-                const cleanUrl = part.replace(/[.,)]$/, "");
-
-                return (
-                  <a
-                    key={partIndex}
-                    href={cleanUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={[
-                      "break-all font-semibold underline underline-offset-2",
-                      isUser
-                        ? "text-white hover:text-green-100"
-                        : "text-[#229b15] hover:text-[#16750d]",
-                    ].join(" ")}
-                  >
-                    {cleanUrl}
-                  </a>
-                );
-              }
-
-              return <span key={partIndex}>{part}</span>;
-            })}
-          </p>
-        );
-      })}
-    </div>
-  );
-}
+const formatBotAnswer = (answer: string) => {
+  return answer
+    .replace(/\*\*/g, "")
+    .replace(/Q:\s?/g, "")
+    .replace(/A:\s?/g, "")
+    .trim();
+};
 
 export function ChatBot() {
   const [open, setOpen] = useState(false);
   const [wide, setWide] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      type: "bot",
-      text: "Hi! I am ARBI, how may I assist you today?",
-    },
-  ]);
+  const [showClosedHint, setShowClosedHint] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string>("");
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // const API_URL = process.env.SERVER_URL;
-  
-  const API_URL = process.env.SERVER_URL || "https://rag-api-bank-production.up.railway.app";
+ 
+  const API_URL = process.env.NEXT_PUBLIC_CHATBOT_API_URL;
+
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem("chatMessages");
+      if (saved) {
+        console.log("✅ Loaded chat history from localStorage");
+        return JSON.parse(saved);
+      }
+    } catch (error) {
+      console.error("Failed to load messages:", error);
+    }
+
+    return [
+      {
+        type: "bot",
+        text: "Hi! I am ARBI, how may I assist you today?",
+      },
+    ];
+  });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  const formatBotAnswer = (answer: string) => {
-    return answer
-      .replace(/\*\*/g, "")
-      .replace(/Q:\s?/g, "")
-      .replace(/A:\s?/g, "")
-      .trim();
-  };
+  useEffect(() => {
+    const newSessionId = `session-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+    setSessionId(newSessionId);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    if (open) {
+      setShowClosedHint(false);
+      return;
+    }
+
+    let closeTimer: ReturnType<typeof setTimeout>;
+
+    const showHint = () => {
+      setShowClosedHint(true);
+
+      closeTimer = setTimeout(() => {
+        setShowClosedHint(false);
+      }, 9000);
+    };
+
+    const interval = setInterval(showHint, 60000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(closeTimer);
+    };
+  }, [open]);
 
   const sendMessage = async (messageText: string) => {
     const userMessage = messageText.trim();
@@ -105,7 +108,10 @@ export function ChatBot() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({
+          message: userMessage,
+          session_id: sessionId,
+        }),
       });
 
       const data = await response.json();
@@ -139,9 +145,54 @@ export function ChatBot() {
     await sendMessage(input);
   };
 
+  const handleClearChat = () => {
+    if (window.confirm("Clear chat history?")) {
+      setMessages([
+        {
+          type: "bot",
+          text: "Hi! I am ARBI, how may I assist you today?",
+        },
+      ]);
+      localStorage.removeItem("chatMessages");
+      console.log("Cleared chat history");
+    }
+  };
+
   return (
     <>
-      {/* Floating Button */}
+      <AnimatePresence>
+        {!open && showClosedHint && (
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 15, scale: 0.95 }}
+              transition={{ duration: 0.5 }}
+              className={[
+                "fixed z-[9999]",
+                "bottom-28 right-4 sm:bottom-32 sm:right-8",
+                "max-w-[230px] rounded-tr-2xl rounded-l-2xl rounded-b-2xl rounded-r-none border border-green-100 bg-white px-4 py-3",
+                "text-sm font-medium text-slate-700 shadow-2xl",
+              ].join(" ")}
+            >
+              Need help? Ask ARBI about loans, branches, banking hours, and
+              services.
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 9, scale: 0.85 }}
+              transition={{ duration: 0.2 }}
+              className={[
+                "fixed z-[9999]",
+                "bottom-20 right-4 sm:bottom-24 sm:right-7",
+                "max-w-[20px] rounded-2xl border border-green-100 bg-white px-4 py-2",
+                "text-sm font-medium text-slate-700 shadow-2xl",
+              ].join(" ")}
+            />
+          </>
+        )}
+      </AnimatePresence>
       <button
         onClick={() => setOpen((prev) => !prev)}
         aria-label={open ? "Close chatbot" : "Open chatbot"}
@@ -161,7 +212,7 @@ export function ChatBot() {
         ) : (
           <div className="relative">
             <span className="text-lg sm:text-2xl">💬</span>
-            <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-accent ring-2 ring-white" />
+            <span className="absolute -right-1 -top-3 h-3 w-3 rounded-full bg-white ring-2 ring-white" />
           </div>
         )}
       </button>
@@ -169,13 +220,23 @@ export function ChatBot() {
       <AnimatePresence>
         {open && (
           <motion.div
-          layout
+            layout
             initial={{ opacity: 0, x: 80 }}
             animate={{
               opacity: 1,
               x: 0,
-              width: wide ? "calc(100vw - 25px)" : window.innerWidth < 435 ? "calc(100vw - 25px)" : 400,
-              height: wide ? "calc(100vh - 32px)" : window.innerWidth < 435 ? "calc(85vh - 25px)" : 600,
+              width: wide
+                ? window.innerWidth < 435
+                  ? "calc(100vw - 25px)"
+                  : "calc(99vw - 25px)"
+                : window.innerWidth < 435
+                  ? "calc(100vw - 25px)"
+                  : 400,
+              height: wide
+                ? "calc(100vh - 32px)"
+                : window.innerWidth < 435
+                  ? "calc(85vh - 25px)"
+                  : 600,
               right: wide ? 16 : 24,
               bottom: wide ? 16 : window.innerWidth < 435 ? 5 : 16,
               transition: {
@@ -190,15 +251,15 @@ export function ChatBot() {
               x: 80,
               transition: { duration: 0.25 },
             }}
-              className={[
+            className={[
               "fixed z-[9999] flex flex-col overflow-hidden bg-white ",
               " shadow-[0_30px_80px_rgba(0,0,0,0.28)]",
               "inset-x-3 bottom-1 top-4 rounded-3xl",
               " sm:inset-auto sm:bottom-[0px] sm:right-6 sm:top-auto",
-              // "w-full h-full sm:h-[540px] sm:max-h-[calc(100vh-130px)] sm:w-[390px] sm:max-w-[calc(100vw-32px)]",
+              "w-full h-full sm:h-[540px] sm:max-h-[calc(100vh - 130px)] sm:w-[390px] sm:max-w-[calc(100vw-32px)]",
               "sm:rounded-[28px]",
-             
-            ].join(" ")}  >
+            ].join(" ")}
+          >
             {/* Header */}
             <div className="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#229b15] via-[#28b51b] to-[#38cb2c] px-4 py-4 text-white sm:px-5 sm:py-5">
               <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/15 blur-xl" />
@@ -242,7 +303,11 @@ export function ChatBot() {
                     aria-label={wide ? "Restore size" : "Expand chatbot"}
                     className=" rounded-full px-2 text-2xl pt-0 text-white/90 transition hover:bg-white/15 hover:text-white"
                   >
-                    {wide ? <p className="pb-0">⿻</p> : <p className="pb-0">⛶</p>}
+                    {wide ? (
+                      <p className="pb-0">⿻</p>
+                    ) : (
+                      <p className="pb-0">⛶</p>
+                    )}
                   </button>
                   <button
                     onClick={() => setOpen(false)}
@@ -355,14 +420,72 @@ export function ChatBot() {
                 </button>
               </div>
 
-              <p className="mt-2 hidden text-center text-[10px] text-slate-400 sm:block">
-                ARBI provides general information. For official concerns, please
-                contact ASPAC Bank directly.
-              </p>
+              <div className="mt-3 flex items-start justify-between gap-2">
+                <p className="hidden text-[10px] text-slate-400 sm:block flex-1">
+                  ARBI provides general information. For official concerns,
+                  please contact ASPAC Bank directly.
+                </p>
+                <div className="group relative inline-block">
+                  <button
+                    type="button"
+                    onClick={handleClearChat}
+                    className="text-[10px] text-red-600 hover:text-red-500 transition whitespace-nowrap uppercase"
+                  >
+                    Clear
+                  </button>
+
+                  <div className="pointer-events-none absolute bottom-full -left-5 -mb-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-[11px] text-white shadow-lg group-hover:block whitespace-nowrap">
+                    Clear chat history
+                  </div>
+                </div>
+              </div>
             </form>
           </motion.div>
         )}
       </AnimatePresence>
     </>
+  );
+}
+function MessageText({ text, isUser }: { text: string; isUser: boolean }) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  return (
+    <div className="space-y-2 break-words">
+      {text.split("\n").map((line, lineIndex) => {
+        const parts = line.split(urlRegex);
+
+        return (
+          <p key={lineIndex} className="m-0">
+            {parts.map((part, partIndex) => {
+              const isUrl = urlRegex.test(part);
+              urlRegex.lastIndex = 0;
+
+              if (isUrl) {
+                const cleanUrl = part.replace(/[.,)]$/, "");
+
+                return (
+                  <a
+                    key={partIndex}
+                    href={cleanUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={[
+                      "break-all font-semibold underline underline-offset-2",
+                      isUser
+                        ? "text-white hover:text-green-100"
+                        : "text-[#229b15] hover:text-[#16750d]",
+                    ].join(" ")}
+                  >
+                    {cleanUrl}
+                  </a>
+                );
+              }
+
+              return <span key={partIndex}>{part}</span>;
+            })}
+          </p>
+        );
+      })}
+    </div>
   );
 }
