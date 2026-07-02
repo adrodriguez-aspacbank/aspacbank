@@ -191,7 +191,7 @@ export function ChatBot() {
               transition: { duration: 0.25 },
             }}
               className={[
-              "fixed z-[9999] flex flex-col overflow-hidden bg-white",
+              "fixed z-[9999] flex flex-col overflow-hidden bg-white ",
               " shadow-[0_30px_80px_rgba(0,0,0,0.28)]",
               "inset-x-3 bottom-1 top-4 rounded-3xl",
               " sm:inset-auto sm:bottom-[0px] sm:right-6 sm:top-auto",
