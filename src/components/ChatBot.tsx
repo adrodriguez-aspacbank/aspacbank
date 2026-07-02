@@ -146,19 +146,55 @@ export function ChatBot() {
     await sendMessage(input);
   };
 
-  const handleClearChat = () => {
-    if (window.confirm("Clear chat history?")) {
-      setMessages([
-        {
-          type: "bot",
-          text: "Hi! I am ARBI, how may I assist you today?",
-        },
-      ]);
-      localStorage.removeItem("chatMessages");
-      console.log("Cleared chat history");
-    }
-  };
+ const handleClearChat = async () => {
+  if (window.confirm("Clear chat history?")) {
+    return
+  }
 
+  try {
+    setLoading(true)
+    console.log("🗑️  Clearing conversation from database...")
+
+    const response = await fetch(`${API_URL}/api/chat/session/${sessionId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete from database: ${response.status}`)
+    }
+
+    const data = await response.json()
+    console.log(`✅ Database cleared: ${data.deleted_count} records deleted`)
+
+
+    localStorage.removeItem("chatMessages")
+    console.log("✅ localStorage cleared")
+
+    setMessages([
+      {
+        type: "bot",
+        text: "Hi! I am ARBI, how may I assist you today?",
+      },
+    ])
+
+   
+    const newSessionId = `session-${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(7)}`
+    setSessionId(newSessionId)
+
+    console.log("Conversation fully cleared - new session started")
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    console.error("❌ Error clearing chat:", errorMessage)
+    alert(`Failed to clear chat: ${errorMessage}`)
+  } finally {
+    setLoading(false)
+  }
+}
   return (
     <>
       <AnimatePresence>
@@ -430,9 +466,10 @@ export function ChatBot() {
                   <button
                     type="button"
                     onClick={handleClearChat}
+                      disabled={loading}
                     className="text-[10px] text-red-600 hover:text-red-500 transition whitespace-nowrap uppercase"
                   >
-                    Clear
+                     {loading ? "Clearing..." : "Clear"}
                   </button>
 
                   <div className="pointer-events-none absolute bottom-full -left-5 -mb-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-[11px] text-white shadow-lg group-hover:block whitespace-nowrap">
