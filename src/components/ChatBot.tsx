@@ -36,7 +36,7 @@ export function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
  
-  const API_URL = process.env.NEXT_PUBLIC_CHATBOT_API_URL;
+  const API_URL = process.env.SERVER_URL;
 
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
