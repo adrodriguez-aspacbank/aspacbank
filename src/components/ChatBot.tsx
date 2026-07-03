@@ -2,6 +2,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SERVER_URL } from "./config/api";
+import { IoIosArrowDown } from "react-icons/io";
+import AlertDialog from "./AlertDialog";
 
 type Message = {
   type: "user" | "bot";
@@ -30,14 +32,17 @@ export function ChatBot() {
   const [open, setOpen] = useState(false);
   const [wide, setWide] = useState(false);
   const [showClosedHint, setShowClosedHint] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [clearLoading, setClearLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>("");
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
- 
-  const API_URL = process.env.SERVER_URL || SERVER_URL;
+  // const API_URL = process.env.SERVER_URL || SERVER_URL;
+  const API_URL = "http://localhost:3000";
 
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
@@ -146,55 +151,42 @@ export function ChatBot() {
     await sendMessage(input);
   };
 
- const handleClearChat = async () => {
-  if (window.confirm("Clear chat history?")) {
-    return
-  }
-
+  const handleClearChat = async () => {
   try {
-    setLoading(true)
-    console.log("🗑️  Clearing conversation from database...")
+    setClearLoading(true);
 
     const response = await fetch(`${API_URL}/api/chat/session/${sessionId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    })
+    });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete from database: ${response.status}`)
+      throw new Error(`Failed to clear: ${response.status}`);
     }
 
-    const data = await response.json()
-    console.log(`✅ Database cleared: ${data.deleted_count} records deleted`)
-
-
-    localStorage.removeItem("chatMessages")
-    console.log("✅ localStorage cleared")
+    localStorage.removeItem("chatMessages");
 
     setMessages([
       {
         type: "bot",
         text: "Hi! I am ARBI, how may I assist you today?",
       },
-    ])
+    ]);
 
-   
     const newSessionId = `session-${Date.now()}-${Math.random()
       .toString(36)
-      .substring(7)}`
-    setSessionId(newSessionId)
+      .substring(7)}`;
 
-    console.log("Conversation fully cleared - new session started")
+    setSessionId(newSessionId);
+    setShowClearConfirm(false);
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
-    console.error("❌ Error clearing chat:", errorMessage)
-    alert(`Failed to clear chat: ${errorMessage}`)
+    console.error("Error clearing chat:", error);
   } finally {
-    setLoading(false)
+    setClearLoading(false);
   }
-}
+};
   return (
     <>
       <AnimatePresence>
@@ -248,7 +240,9 @@ export function ChatBot() {
           <span className="text-lg leading-none sm:text-xl">⛌</span>
         ) : (
           <div className="relative">
-            <span className="text-lg sm:text-3xl inline-block origin-[70%_70%] animate-[wave_2.5s_ease-in-out_infinite] right-1 relative">👋</span>
+            <span className="text-lg sm:text-3xl inline-block origin-[70%_70%] animate-[wave_2.5s_ease-in-out_infinite] right-1 relative">
+              👋
+            </span>
             <span className="absolute -right-0 -top-1 h-3 w-3 rounded-full bg-white ring-2 ring-accent" />
           </div>
         )}
@@ -290,7 +284,7 @@ export function ChatBot() {
             }}
             className={[
               "fixed z-[9999] flex flex-col overflow-hidden bg-white ",
-              " shadow-[0_30px_80px_rgba(0,0,0,0.28)]",
+              " shadow-[0_30px_80px_rgba(0,0,0,0.28)] ",
               "inset-x-3 bottom-1 top-4 rounded-3xl",
               " sm:inset-auto sm:bottom-[0px] sm:right-6 sm:top-auto",
               "w-full h-full sm:h-[540px] sm:max-h-[calc(100vh - 130px)] sm:w-[390px] sm:max-w-[calc(100vw-32px)]",
@@ -334,7 +328,7 @@ export function ChatBot() {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2 items-center justify-items-center">
+                <div className="flex gap-2 ">
                   <button
                     onClick={() => setWide((prev) => !prev)}
                     aria-label={wide ? "Restore size" : "Expand chatbot"}
@@ -349,15 +343,14 @@ export function ChatBot() {
                   <button
                     onClick={() => setOpen(false)}
                     aria-label="Close chatbot"
-                    className=" rounded-full px-2 text-lg pb-0 text-white/90 transition hover:bg-white/15 hover:text-white"
+                    className=" rounded-full px-2 text-lg pb-0 text-white/90 transition hover:bg-white/15 hover:text-white -rotate-90"
                   >
-                    ⛌
+                    <IoIosArrowDown size={18} />
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Info Strip */}
             <div className="shrink-0 border-b border-green-100 bg-green-50 px-3 py-2 text-center text-[11px] text-green-800 sm:px-4 sm:text-xs">
               Ask about loans, branches, banking hours, and services.
             </div>
@@ -374,7 +367,7 @@ export function ChatBot() {
                   >
                     <div
                       className={[
-                        "px-3 py-2.5 text-sm leading-relaxed shadow-sm sm:px-4 sm:py-3",
+                        "px-3 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm sm:px-4 sm:py-3",
                         "max-w-[88%] sm:max-w-[82%]",
                         isUser
                           ? "rounded-2xl rounded-br-md bg-gradient-to-br from-[#229b15] to-[#38cb2c] text-white"
@@ -428,7 +421,6 @@ export function ChatBot() {
               </div>
             )}
 
-            {/* Input */}
             <form
               onSubmit={handleSend}
               className="shrink-0 border-t border-slate-100 bg-white p-3 sm:p-4"
@@ -440,14 +432,14 @@ export function ChatBot() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask ARBI a question..."
                   disabled={loading}
-                  className="min-w-0 flex-1 bg-transparent px-3 text-sm text-slate-700 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
+                  className="min-w-0 flex-1 bg-transparent px-3 text-xs sm:text-sm text-slate-700 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
                 />
 
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
                   className={[
-                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white shadow-lg transition",
+                    "flex h-7 md:h-10 w-7 md:w-10 shrink-0 items-center justify-center rounded-full text-white shadow-lg transition",
                     loading || !input.trim()
                       ? "cursor-not-allowed bg-slate-300 shadow-none"
                       : "bg-gradient-to-br from-[#229b15] to-[#38cb2c] hover:scale-105 active:scale-95",
@@ -457,19 +449,19 @@ export function ChatBot() {
                 </button>
               </div>
 
-              <div className="mt-3 flex items-start justify-between gap-2">
-                <p className="hidden text-[10px] text-slate-400 sm:block flex-1">
+              <div className="mt-3 flex flex-col md:flex-row">
+                <p className=" text-[8px] md:text-[10px] text-slate-400  flex-1">
                   ARBI provides general information. For official concerns,
                   please contact ASPAC Bank directly.
                 </p>
-                <div className="group relative inline-block">
+                <div className="group relative inline-block self-end">
                   <button
                     type="button"
-                    onClick={handleClearChat}
-                      disabled={loading}
-                    className="text-[10px] text-red-600 hover:text-red-500 transition whitespace-nowrap uppercase"
+                    onClick={() => setShowClearConfirm(true)}
+                    disabled={clearLoading}
+                    className="text-[9px] md:text-[10px] text-red-600 hover:text-red-500 transition whitespace-nowrap uppercase "
                   >
-                     {loading ? "Clearing..." : "Clear"}
+                    {clearLoading ? "Clearing..." : "Clear"}
                   </button>
 
                   <div className="pointer-events-none absolute bottom-full -left-5 -mb-2 hidden -translate-x-1/2 rounded-md bg-slate-800 px-2 py-1 text-[11px] text-white shadow-lg group-hover:block whitespace-nowrap">
@@ -481,9 +473,22 @@ export function ChatBot() {
           </motion.div>
         )}
       </AnimatePresence>
+      <AlertDialog
+        open={showClearConfirm}
+        title="Clear chat history?"
+        message="Would you like to clear your chat with ARBI history from this device?"
+        icon="🗑️"
+        confirmText="Clear"
+        cancelText="Cancel"
+        loading={loading}
+        loadingText="Clearing..."
+        onCancel={() => setShowClearConfirm(false)}
+        onConfirm={handleClearChat}
+      />
     </>
   );
 }
+
 function MessageText({ text, isUser }: { text: string; isUser: boolean }) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
 
@@ -493,7 +498,7 @@ function MessageText({ text, isUser }: { text: string; isUser: boolean }) {
         const parts = line.split(urlRegex);
 
         return (
-          <p key={lineIndex} className="m-0">
+          <p key={lineIndex} className="m-0 text-xs sm:text-sm">
             {parts.map((part, partIndex) => {
               const isUrl = urlRegex.test(part);
               urlRegex.lastIndex = 0;
@@ -510,7 +515,7 @@ function MessageText({ text, isUser }: { text: string; isUser: boolean }) {
                     className={[
                       "break-all font-semibold underline underline-offset-2",
                       isUser
-                        ? "text-white hover:text-green-100"
+                        ? "text-white hover:text-green-100 "
                         : "text-[#229b15] hover:text-[#16750d]",
                     ].join(" ")}
                   >

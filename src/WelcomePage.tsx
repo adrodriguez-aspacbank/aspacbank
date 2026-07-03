@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPhoneAlt,
   FaFacebookF,
@@ -40,7 +36,6 @@ const WelcomePage: React.FC = () => {
   const [showContactModal, setShowContactModal] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
   // Toggle this if your Layout already renders a global header
-  const SHOW_LOCAL_HEADER = false;
 
   return (
     <motion.div
@@ -119,54 +114,6 @@ const WelcomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Simple header (hidden when SHOW_LOCAL_HEADER is false to avoid duplication with global header) */}
-      {SHOW_LOCAL_HEADER && (
-        <header className="sticky top-0 z-40 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-b border-gray-100">
-          <div className="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3 group">
-              <img
-                src="/favicon.ico"
-                alt="ASPAC Bank logo"
-                className="h-7 w-7 rounded"
-                loading="eager"
-              />
-              <span className="font-semibold tracking-wide group-hover:text-primary">
-                ASPAC Bank
-              </span>
-            </Link>
-            <nav aria-label="Primary">
-              <ul className="hidden md:flex items-center gap-6 text-sm">
-                <li>
-                  <Link className="hover:text-primary" to="/teachers-loan">
-                    APDS
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" to="/savings">
-                    Savings
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" to="/msme-loans">
-                    MSME Loans
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" to="/branches">
-                    Branches
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" to="/advisories">
-                    Advisories
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </header>
-      )}
-
       {/* HERO Swiper (FADE) */}
       <ParallaxHero
         slides={heroSlides}
@@ -175,27 +122,6 @@ const WelcomePage: React.FC = () => {
         onContact={() => setShowContactModal(true)}
         onExplore={() => navigate("/explore")}
       />
-
-      {/* Page-level keyframes for caption fade */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        /* Swiper control polish */
-        .swiper-button-next, .swiper-button-prev {
-          color: white;
-          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-        }
-        .swiper-button-next:after, .swiper-button-prev:after {
-          font-size: 18px;
-          font-weight: 700;
-        }
-        .swiper-pagination-bullet {
-          width: 10px; height: 10px; opacity: 1; background: rgba(255,255,255,0.7);
-        }
-        .swiper-pagination-bullet-active { background: #459243; } /* brand green */
-      `}</style>
 
       {/* Advisory ticker */}
       <section className="border-y border-gray-100 bg-gray-50">
@@ -223,7 +149,7 @@ const WelcomePage: React.FC = () => {
       </section>
 
       {/* Core tiles – Enhanced with animations & icons */}
-     <CoreTiles/>
+      <CoreTiles />
       {/* Latest News & video feature card */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-white via-primary/[0.03] to-white" />
@@ -242,7 +168,7 @@ const WelcomePage: React.FC = () => {
               className="
         relative overflow-hidden
         rounded-[32px]
-        bg-white/70
+        bg-white/70 
         backdrop-blur-xl
         border border-white/50
         shadow-[0_20px_80px_rgba(0,0,0,0.08)]

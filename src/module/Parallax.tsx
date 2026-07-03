@@ -1,9 +1,9 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Parallax, Pagination, Autoplay, EffectFade } from "swiper/modules";
-import { useState } from "react";
+import {  Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { useEffect, useState } from "react";
 import {
   motion,
-  AnimatePresence,
+
   useScroll,
   useTransform,
 } from "framer-motion";
@@ -50,18 +50,17 @@ export default function ParallaxHero({
   onContact,
   onExplore,
 }: Props) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  // const [activeIndex, setActiveIndex] = useState(0);
   const { scrollY } = useScroll();
   const [isMobile, setIsMobile] = useState(false);
-  useState(() => {
+  useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
-  });
-  const imageY = useTransform(scrollY, [0, 1000], [0, isMobile ? 120 : 500]);
-
-  const textY = useTransform(scrollY, [0, 1600], [0, isMobile ? 80 : 250]);
+  }, []);
+const imageY = useTransform(scrollY, [10, 1000], [0, isMobile ? 100 : 160]);
+const textY = useTransform(scrollY, [0, 800], [0, isMobile ? 20 : 60]);
   const handlePrimaryAction = (action?: string) => {
     switch (action) {
       case "applyModal":
@@ -78,16 +77,16 @@ export default function ParallaxHero({
   return (
     <section className="w-full h-screen min-h-screen relative overflow-hidden  ">
       <Swiper
-        modules={[Parallax, Pagination, Autoplay, EffectFade]}
+        modules={[ Pagination, Autoplay, EffectFade]}
         effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={1000}
         loop
         autoplay={{ delay: 9000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
-        parallax
+        
         onSlideChange={(swiper) => {
-          setActiveIndex(swiper.realIndex);
+          // setActiveIndex(swiper.realIndex);
           onActiveChange?.(swiper.realIndex);
         }}
         className="w-full h-full"
@@ -101,7 +100,7 @@ export default function ParallaxHero({
                   backgroundImage: `url(${slide.image})`,
                   y: imageY,
                 }}
-                data-swiper-parallax="-1%"
+               
               />
 
               {/* overlays */}
@@ -116,12 +115,12 @@ export default function ParallaxHero({
                   transition={{ duration: 0.1 }}
                   key={slide.title}
                   className="max-w-3xl text-center mx-auto"
-                  data-swiper-parallax="-300"
+                
                   style={{
                     y: textY,
                   }}
                 >
-                  <h1 className="text-[#ebd839] text-3xl md:text-5xl font-normal leading-tight hero-text-shadow">
+                  <h1 className="text-[#ebd839] text-3xl md:text-5xl font-normal leading-8 hero-text-shadow">
                     {slide.title}
                   </h1>
 
@@ -142,14 +141,12 @@ export default function ParallaxHero({
               </div>
               {(slide.primaryButton || slide.secondaryButton) && (
                 <div className="absolute bottom-40 md:bottom-36  left-1/2 -translate-x-1/2 flex flex-col sm:flex-row items-center gap-3 z-20 w-full px-6 sm:w-auto">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeIndex}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="flex gap-3"
-                    >
+                  <motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3 }}
+  className="flex gap-3"
+>
                       {slide.primaryButton && (
                         <button
                           onClick={() =>
@@ -184,7 +181,7 @@ export default function ParallaxHero({
                         </button>
                       )}
                     </motion.div>
-                  </AnimatePresence>
+                  {/* </AnimatePresence> */}
                 </div>
               )}
             </div>
