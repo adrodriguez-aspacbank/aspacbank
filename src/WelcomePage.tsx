@@ -3,13 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPhoneAlt,
   FaFacebookF,
-  FaArrowRight,
-  FaShieldAlt,
 } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Seo from "./components/Seo";
 import ApplyNowModal from "./components/ApplyNowModal";
-import BspSecurityTipsNewYearAdvisory from "./components/advisories/BspSecurityTipsNewYearAdvisory";
+// import BspSecurityTipsNewYearAdvisory from "./components/advisories/BspSecurityTipsNewYearAdvisory";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -23,6 +21,7 @@ import { ReviewCard } from "./module/ReviewCardMasonry";
 import { news } from "./data/news";
 import ParallaxHero from "./module/Parallax";
 import CoreTiles from "./components/CoreTiles";
+import LatestNewsSection from "./components/LatestNewsSection";
 
 /**
  * WelcomePage – ASPAC brand integration
@@ -83,7 +82,7 @@ const WelcomePage: React.FC = () => {
         role="status"
         aria-live="polite"
       >
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-2 md:gap-6 justify-between">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-2 md:gap-6 justify-between">
           <p className="flex items-center gap-2">
             {/* <span
               className="inline-flex h-2 w-2 rounded-full bg-white"
@@ -125,7 +124,7 @@ const WelcomePage: React.FC = () => {
 
       {/* Advisory ticker */}
       <section className="border-y border-gray-100 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
           <span className="text-xs font-semibold text-primary px-3 py-1 rounded-full bg-primary/10">
             Advisory
           </span>
@@ -148,194 +147,10 @@ const WelcomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Core tiles – Enhanced with animations & icons */}
       <CoreTiles />
-      {/* Latest News & video feature card */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-primary/[0.03] to-white" />
-        <div className="absolute  right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-32 left-0 w-[500px] h-[500px] bg-aspac-green/10 rounded-full blur-3xl" />
+      <LatestNewsSection news={news} />
 
-        <div className="relative max-w-6xl mx-auto px-6">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <div
-              className="
-        relative overflow-hidden
-        rounded-[32px]
-        bg-white/70 
-        backdrop-blur-xl
-        border border-white/50
-        shadow-[0_20px_80px_rgba(0,0,0,0.08)]
-      "
-            >
-              <div className="absolute -top-24 -right-24 h-72 w-72 bg-primary/10 blur-3xl rounded-full" />
-
-              <div className="h-1 w-full bg-gradient-to-r from-primary to-aspac-green" />
-
-              <div className="p-6 md:p-8 md:flex justify-between">
-                {/* header */}
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-primary to-aspac-green text-white flex items-center justify-center shadow-lg">
-                    <FaShieldAlt className="text-2xl" />
-                  </div>
-
-                  <div>
-                    <p className="text-xs tracking-[0.3em] uppercase text-primary/60">
-                      Security Advisory
-                    </p>
-                    <h3 className="text-lg md:text-3xl font-bold text-primary">
-                      BSP Security Tips – New Year
-                    </h3>
-                    <p className="text-xs md:text-sm text-gray-700">
-                      Stay alert against scams and protect your accounts this
-                      season.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <BspSecurityTipsNewYearAdvisory
-                    title="BSP Security Tips – New Year"
-                    caption=""
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          <div className="text-center mb-12">
-            <p className="uppercase tracking-widest text-xs text-primary/70 font-semibold">
-              News & Advisories
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2">
-              Latest news & updates
-            </h2>
-            <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
-              Branch movements, service advisories, and community updates.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-10">
-            {news.map((item, index) => (
-              <motion.article
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true, amount: 0.3 }}
-                className="
-            group relative overflow-hidden
-            rounded-[32px]
-            bg-white/70
-            backdrop-blur-xl
-            border border-white/50
-            shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-            hover:shadow-[0_30px_100px_rgba(69,146,67,0.18)]
-            transition-all duration-500
-          "
-              >
-                {/* glow */}
-                <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 blur-3xl rounded-full" />
-
-                <div className="grid md:grid-cols-[1fr_420px]">
-                  <div className="p-4 md:p-8">
-                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
-                      <item.Icon className={`text-base ${item.iconColor}`} />
-                      <span className="uppercase tracking-wide">
-                        {item.label}
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg md:text-2xl font-bold text-primary">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-sm md:text-base mt-4 text-gray-600 leading-relaxed">
-                      {item.content}
-                    </p>
-
-                    <div className="mt-3 md:mt-6 flex gap-3 justify-between">
-                      {item.to && (
-                        <Link
-                          to="/advisories"
-                          className="
-                      inline-flex items-center gap-2
-                      px-2 py-2 md:px-5 md:py-3
-                      rounded-full
-                      bg-gradient-to-r from-primary to-aspac-green
-                      text-white md:font-semibold
-                      hover:shadow-lg
-                      transition
-                    "
-                        >
-                          View advisory
-                          <FaArrowRight />
-                        </Link>
-                      )}
-
-                      <button
-                        onClick={() => navigate("/advisories")}
-                        className="text-primary md:font-semibold hover:underline pr-4 flex items-center justify-items-center gap-3"
-                      >
-                        All advisories <FaArrowRight size={10} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* ================= MEDIA (IMAGE / VIDEO) ================= */}
-                  <div className="relative h-72 md:h-auto overflow-hidden">
-                    {/* glass overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10" />
-
-                    {item.mediaType === "image" ? (
-                      <img
-                        src={item.mediaSrc || "/bogo_reopens.jpg"}
-                        alt={item.mediaAlt || item.title}
-                        className="
-                    w-full h-full object-cover
-                    group-hover:scale-110 transition-transform duration-700
-                  "
-                      />
-                    ) : (
-                      <video
-                        src={item.mediaSrc || "/assets/vid/cnsvid3.webm"}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="
-                    w-full h-full object-cover
-                    group-hover:scale-110 transition-transform duration-700
-                  "
-                      />
-                    )}
-
-                    {/* floating label */}
-                    <div
-                      className="
-                absolute top-4 left-4 z-20
-                bg-black/40 backdrop-blur-md
-                text-white text-xs
-                px-3 py-1 rounded-full
-              "
-                    >
-                      Featured Update
-                    </div>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-6xl mx-auto px-6 py-16">
+      <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-10">
           <p className="uppercase tracking-widest text-[11px] md:text-xs text-primary/80 font-semibold">
             Customer Stories

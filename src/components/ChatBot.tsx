@@ -5,6 +5,7 @@ import { SERVER_URL } from "./config/api";
 import { IoIosArrowDown } from "react-icons/io";
 import AlertDialog from "./AlertDialog";
 
+import { LuBotMessageSquare } from "react-icons/lu";
 type Message = {
   type: "user" | "bot";
   text: string;
@@ -232,18 +233,20 @@ export function ChatBot() {
           "text-white shadow-2xl transition-all duration-300",
           "hover:scale-105 active:scale-95",
           open
-            ? "bg-gradient-to-br from-primary/90 to-primary/90"
-            : "bg-gradient-to-br from-primary to-primary/70",
+            ? "bg-white ring-2 ring-primary"
+            : "bg-gradient-to-br from-black/90 to-black/80 ring-2 ring-primary",
         ].join(" ")}
       >
         {open ? (
-          <span className="text-lg leading-none sm:text-xl">⛌</span>
+          <span className="text-lg leading-none sm:text-xl text-black">⛌</span>
         ) : (
           <div className="relative">
-            <span className="text-lg sm:text-3xl inline-block origin-[70%_70%] animate-[wave_2.5s_ease-in-out_infinite] right-1 relative">
-              👋
+            <span className="text-lg sm:text-3xl inline-block origin-[50%_100%] animate-[wave_2.5s_ease-in-out_infinite] ">
+              {/* 👋 */}
+              {/* <FaRegMessage /> */}
+              <LuBotMessageSquare size={30} className="text-accent mt-2" />
             </span>
-            <span className="absolute -right-0 -top-1 h-3 w-3 rounded-full bg-white ring-2 ring-accent" />
+            {/* <span className="absolute -right-0 -top-1 h-3 w-3 rounded-full bg-white ring-2 ring-accent" /> */}
           </div>
         )}
       </button>

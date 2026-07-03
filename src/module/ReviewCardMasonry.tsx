@@ -27,23 +27,24 @@ export function ReviewCard({ review }: { review: Review }) {
 
       <div
         className="
-          max-h-[120px]
+        max-h-[90px]
+          md:max-h-[120px]
           overflow-hidden
           group-hover:max-h-[600px]
           transition-all
           duration-500
         "
       >
-        <p className="text-gray-700 italic leading-relaxed">
+        <p className="text-gray-700 italic md:leading-relaxed text-sm md:text-normal">
           "{review.quote}"
         </p>
       </div>
 
-      {/* Footer */}
-      <div className="mt-5 border-t border-gray-200 pt-4">
+
+      <div className="mt-4 md:mt-5 border-t border-gray-200 pt-2 md:pt-4">
         <div className="flex justify-between items-center">
           <div>
-            <h4 className="font-semibold text-primary">
+            <h4 className="md:font-semibold text-primary">
               {review.name}
             </h4>
 

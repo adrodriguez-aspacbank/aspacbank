@@ -393,9 +393,16 @@ const Navbar: React.FC = () => {
                   onClick={() =>
                     setMobileReportsOpen((s) => !s)
                   }
-                  className="block w-full text-left pl-8 py-2"
+                  className="flex justify-between w-full text-left pl-8 py-2"
                 >
-                  Financial Overview
+                  
+                     <span>Financial Overview</span>
+
+                <IoIosArrowDown
+                  className={`transition-transform ${
+                    mobileReportsOpen ? "-rotate-180" : ""
+                  }`}
+                />
                 </button>
 
                 <div

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  FaArrowRight,
-} from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -13,7 +11,7 @@ import { CoreCardProps, coreCards } from "../data/coretiles";
 // import "./WelcomePage.css";
 
 const CoreTiles: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [showContactModal, setShowContactModal] = useState(false);
   return (
@@ -28,14 +26,14 @@ const CoreTiles: React.FC = () => {
           className="absolute inset-0 bg-gradient-to-b from-white via-aspac-green/10 to-white pointer-events-none"
           aria-hidden
         />
-        <div className="relative max-w-6xl mx-auto px-6 py-20">
+        <div className="relative max-w-7xl mx-auto px-6 py-10 md:py-20">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true, amount: 0.2 }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
             <p className="uppercase tracking-widest text-[11px] md:text-xs text-primary/80 font-semibold">
               Products & Services
@@ -61,9 +59,9 @@ const CoreTiles: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true, amount: 0.2 }}
-            className="mt-16 flex flex-col md:flex-row items-center justify-center gap-4"
+            className="mt-10 md:mt-16 flex flex-col md:flex-row items-center justify-center gap-4"
           >
-            <motion.button
+            {/* <motion.button
               onClick={() => {
                 navigate("/branches");
                 window.scrollTo({
@@ -76,12 +74,12 @@ const CoreTiles: React.FC = () => {
               className="px-8 py-4 rounded-full bg-gradient-to-r from-primary to-aspac-green hover:shadow-xl text-white font-semibold shadow-lg transition-all duration-300"
             >
               Locate a branch
-            </motion.button>
+            </motion.button> */}
             <motion.button
               onClick={() => setShowContactModal(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 rounded-full bg-white border-2 border-primary/30 hover:border-primary hover:bg-gray-50 font-semibold shadow-sm transition-all duration-300"
+              className="px-4 md:px-8 py-3 md:py-4 rounded-full bg-gradient-to-r from-primary to-aspac-green hover:shadow-xl text-white font-semibold shadow-lg transition-all duration-300"
             >
               Contact us
             </motion.button>
@@ -159,7 +157,7 @@ const CoreCard: React.FC<CoreCardProps> = ({
       transition={{ duration: 0.5, delay }}
       viewport={{ once: true }}
       whileHover={{ y: -8 }}
-     className="
+      className="
   group
   relative
   flex
@@ -173,7 +171,8 @@ const CoreCard: React.FC<CoreCardProps> = ({
   shadow-[0_20px_60px_rgba(0,0,0,0.08)]
   hover:shadow-[0_30px_80px_rgba(69,146,67,0.18)]
   transition-all duration-500
-  p-8
+  md:p-8
+  p-4
 "
     >
       <div
@@ -181,24 +180,31 @@ const CoreCard: React.FC<CoreCardProps> = ({
       />
 
       <div className="absolute top-8 right-8">
-        <FaArrowRight className="text-primary/30 group-hover:text-primary transition-colors duration-300" />
+        <FaArrowRight
+          size={window.innerWidth < 768 ? 16 : 20}
+          className="text-primary/30 group-hover:text-primary transition-colors duration-300"
+        />
       </div>
 
       <div
-        className={`mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br ${iconGradient} text-white shadow-xl`}
+        className={`mb-2 md:mb-8 flex h-14 w-14 rounded-lg md:h-20 md:w-20 items-center justify-center md:rounded-3xl bg-gradient-to-br ${iconGradient} text-white shadow-xl`}
       >
-        <Icon className="text-3xl" />
+        <Icon className="text-2xl md:text-3xl" />
       </div>
 
       <p className="text-xs uppercase tracking-[0.25em] text-primary/60 font-semibold">
         {label}
       </p>
 
-      <h3 className="mt-3 text-3xl font-bold text-primary">{title}</h3>
+      <h3 className="md:mt-3 mt-2 text-xl md:text-3xl font-semibold md:font-bold text-primary">
+        {title}
+      </h3>
 
-      <p className="mt-4 text-gray-600 leading-relaxed">{description}</p>
+      <p className="text-sm md:text-normal mt-2 md:mt-4 text-gray-600 leading-relaxed">
+        {description}
+      </p>
 
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-4 md:mt-6 flex flex-wrap gap-2">
         {chips.map((chip) => (
           <span
             key={chip}
@@ -209,7 +215,7 @@ const CoreCard: React.FC<CoreCardProps> = ({
         ))}
       </div>
 
-     <div className="mt-auto pt-8">
+      <div className="mt-auto pt-4 md:pt-8">
         <Link
           to={link}
           onClick={() => {
@@ -226,17 +232,21 @@ const CoreCard: React.FC<CoreCardProps> = ({
             bg-gradient-to-r
             from-primary
             to-aspac-green
-            px-6
+            px-3
             py-3
+            md:px-6
+           
             text-white
-            font-semibold
+            md:font-semibold
             shadow-lg
             hover:shadow-xl
             transition-all
+            text-xs
+            md:text-normal
           "
         >
           {buttonText}
-          <FaArrowRight />
+          <FaArrowRight size={window.innerWidth < 768 ? 16 : 20} />
         </Link>
       </div>
     </motion.article>
