@@ -153,41 +153,41 @@ export function ChatBot() {
   };
 
   const handleClearChat = async () => {
-  try {
-    setClearLoading(true);
+    try {
+      setClearLoading(true);
 
-    const response = await fetch(`${API_URL}/api/chat/session/${sessionId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const response = await fetch(`${API_URL}/api/chat/session/${sessionId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to clear: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Failed to clear: ${response.status}`);
+      }
+
+      localStorage.removeItem("chatMessages");
+
+      setMessages([
+        {
+          type: "bot",
+          text: "Hi! I am ARBI, how may I assist you today?",
+        },
+      ]);
+
+      const newSessionId = `session-${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(7)}`;
+
+      setSessionId(newSessionId);
+      setShowClearConfirm(false);
+    } catch (error) {
+      console.error("Error clearing chat:", error);
+    } finally {
+      setClearLoading(false);
     }
-
-    localStorage.removeItem("chatMessages");
-
-    setMessages([
-      {
-        type: "bot",
-        text: "Hi! I am ARBI, how may I assist you today?",
-      },
-    ]);
-
-    const newSessionId = `session-${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(7)}`;
-
-    setSessionId(newSessionId);
-    setShowClearConfirm(false);
-  } catch (error) {
-    console.error("Error clearing chat:", error);
-  } finally {
-    setClearLoading(false);
-  }
-};
+  };
   return (
     <>
       <AnimatePresence>
@@ -231,12 +231,16 @@ export function ChatBot() {
           "bottom-4 right-4 sm:bottom-6 sm:right-6",
           "flex h-14 w-14 items-center justify-center rounded-full sm:h-[56px] sm:w-[56px]",
           "text-white shadow-2xl transition-all duration-300",
-          "hover:scale-105 active:scale-95",
+          "hover:scale-105 active:scale-95 group",
           open
             ? "bg-white ring-2 ring-primary"
             : "bg-gradient-to-br from-black/90 to-black/80 ring-2 ring-primary",
         ].join(" ")}
       >
+        <div className="rounded-tr-2xl rounded-l-2xl rounded-b-2xl rounded-r-none border border-purple-500 pointer-events-none absolute bottom-full -left-28 -mb-2 hidden rounded-md bg-purple-900 px-2 py-1 text-[12px] text-white shadow-lg group-hover:block whitespace-nowrap">
+          Chat with ARBI 💬
+        </div>
+
         {open ? (
           <span className="text-lg leading-none sm:text-xl text-black">⛌</span>
         ) : (
