@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaPhoneAlt, FaFacebookF } from "react-icons/fa";
+
 import { useNavigate } from "react-router-dom";
 import Seo from "./components/Seo";
 import ApplyNowModal from "./components/ApplyNowModal";
