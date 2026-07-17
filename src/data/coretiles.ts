@@ -32,7 +32,7 @@ export const coreCards = [
     icon: FaPiggyBank,
     chips: ["Safe & Secure", "Flexible Terms", "Competitive Returns"],
     buttonText: "Open an Account",
-    link: "/savings",
+    link: "/deposit-account",
     glow: "bg-aspac-green/10",
     iconGradient: "from-aspac-green to-primary",
   },

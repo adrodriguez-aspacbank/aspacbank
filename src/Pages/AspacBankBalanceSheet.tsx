@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import Seo from "../components/Seo";
 
 const LS_KEY = "aspac-balance-selected-asOf";
 
@@ -201,7 +202,18 @@ const AspacBankBalanceSheet: React.FC = () => {
   }, [currentSrc, stepPeriod, stepPage, triggerDownload, enterFullscreen]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden pt-24 bg-gradient-to-br from-green-50 via-white to-emerald-50 pb-10">
+    <>
+      <Seo
+        title="ASPAC Bank Balance Sheets | Quarterly Financial Reports"
+        description="View ASPAC Bank balance sheet publications by quarterly reporting period and access available financial documents."
+        canonical="https://www.aspacbank.com/advisories/financial-overview/aspacbank-balance-sheet"
+        ogType="website"
+        ogImage="https://www.aspacbank.com/Aspac_logo-03A.png"
+        ogImageAlt="ASPAC Bank logo"
+        ogSiteName="ASPAC Bank"
+        ogLocale="en_PH"
+      />
+      <div className="relative min-h-screen overflow-hidden pt-24 bg-gradient-to-br from-green-50 via-white to-emerald-50 pb-10">
       {/* Background Glow */}
       <div className="pointer-events-none absolute -top-32 right-0 h-96 w-96 rounded-full bg-green-200/40 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-96 w-96 rounded-full bg-emerald-200/40 blur-3xl" />
@@ -682,7 +694,8 @@ const AspacBankBalanceSheet: React.FC = () => {
           actions are disabled as an extra deterrent.
         </p>
       </main>
-    </div>
+      </div>
+    </>
   );
 };
 
