@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaPhoneAlt,
-  FaFacebookF,
-} from "react-icons/fa";
+
 import { useNavigate } from "react-router-dom";
 import Seo from "./components/Seo";
 import ApplyNowModal from "./components/ApplyNowModal";
@@ -77,41 +74,6 @@ const WelcomePage: React.FC = () => {
       />
 
       {/* Top announcement bar */}
-      <div
-        className="w-full bg-primary text-white text-sm md:text-[15px] py-2 px-4 mt-14"
-        role="status"
-        aria-live="polite"
-      >
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-2 md:gap-6 justify-between">
-          <p className="flex items-center gap-2">
-            {/* <span
-              className="inline-flex h-2 w-2 rounded-full bg-white"
-              aria-hidden
-            /> */}
-            <span className="font-light text-xs md:text-base">
-              Your trusted Bank - serving communities across Cebu and beyond.
-            </span>
-          </p>
-          <div className="flex items-center gap-4 text-xs md:text-base">
-            <a
-              href="tel:+63322722724"
-              className="inline-flex items-center gap-2 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-white/60 rounded"
-            >
-              <FaPhoneAlt aria-hidden /> <span>(032) 501-2724</span>
-            </a>
-
-            <a
-              href="https://www.facebook.com/aspacbank0620/"
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="ASPAC Bank on Facebook"
-              className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60"
-            >
-              <FaFacebookF aria-hidden />
-            </a>
-          </div>
-        </div>
-      </div>
 
       {/* HERO Swiper (FADE) */}
       <ParallaxHero
