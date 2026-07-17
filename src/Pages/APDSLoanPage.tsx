@@ -83,7 +83,7 @@ const APDSLoanPage: React.FC = () => {
         description="Apply for ASPAC Bank’s Teacher Salary Loan (APDS) with low interest, quick approval, and flexible terms up to 60 months. Enjoy convenient automatic payroll deduction—ideal for teachers and school personnel in Cebu and nearby areas."
         canonical="https://www.aspacbank.com/teachers-loan"
         ogType="service"
-        ogImage="https://www.aspacbank.com/TeachersLoan.png"
+        ogImage="https://www.aspacbank.com/APDS3.jpg"
         ogImageAlt="ASPAC Bank Teacher Salary Loan (APDS) with payroll deduction and flexible terms"
         ogSiteName="ASPAC Bank"
         ogLocale="en_PH"

@@ -34,55 +34,210 @@ type SeoProps = {
   manifestHref?: string; // e.g., "https://www.aspacbank.com/manifest.json"
 };
 
+const SITE_ORIGIN = "https://www.aspacbank.com";
+const DEFAULT_TITLE = "ASPAC Bank";
+const DEFAULT_DESCRIPTION = "ASPAC Bank – reliable banking services.";
 const DATA_ATTR = "data-seo-managed";
+const JSON_LD_ATTR = "data-seo-jsonld";
 
-function ensureHead() {
-  if (typeof document === "undefined") return null as never;
-  return document.head;
+const OPEN_GRAPH_PROPERTIES = [
+  "og:type",
+  "og:title",
+  "og:description",
+  "og:url",
+  "og:image",
+  "og:image:alt",
+  "og:site_name",
+  "og:locale",
+];
+
+const TWITTER_NAMES = [
+  "twitter:card",
+  "twitter:title",
+  "twitter:description",
+  "twitter:image",
+  "twitter:image:alt",
+  "twitter:site",
+  "twitter:creator",
+];
+
+function removeElements(selector: string) {
+  document.head.querySelectorAll(selector).forEach((element) => element.remove());
 }
 
-function upsertMetaBy(
+function upsertUniqueTitle(content: string) {
+  const matches = Array.from(document.head.querySelectorAll("title"));
+  const element = matches.shift() ?? document.createElement("title");
+
+  matches.forEach((duplicate) => duplicate.remove());
+  element.textContent = content;
+
+  if (!element.parentNode) {
+    document.head.appendChild(element);
+  }
+}
+
+function upsertUniqueMeta(
   keyAttr: "name" | "property",
   keyValue: string,
-  content: string
+  content: string,
 ) {
-  const head = ensureHead();
-  let el = head.querySelector<HTMLMetaElement>(
-    `meta[${keyAttr}="${keyValue}"]`
+  const selector = `meta[${keyAttr}="${keyValue}"]`;
+  const matches = Array.from(
+    document.head.querySelectorAll<HTMLMetaElement>(selector),
   );
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(keyAttr, keyValue);
-    el.setAttribute(DATA_ATTR, "1");
-    head.appendChild(el);
+  const element = matches.shift() ?? document.createElement("meta");
+
+  matches.forEach((duplicate) => duplicate.remove());
+  element.setAttribute(keyAttr, keyValue);
+  element.setAttribute("content", content);
+  element.setAttribute(DATA_ATTR, "1");
+
+  if (!element.parentNode) {
+    document.head.appendChild(element);
   }
-  el.setAttribute("content", content);
-  return el;
 }
 
-function upsertMeta(selector: string, attrs: Record<string, string>) {
-  const head = ensureHead();
-  let el = head.querySelector<HTMLMetaElement>(selector);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(DATA_ATTR, "1");
-    head.appendChild(el);
+function upsertUniqueLink(rel: string, href: string) {
+  const selector = `link[rel="${rel}"]`;
+  const matches = Array.from(
+    document.head.querySelectorAll<HTMLLinkElement>(selector),
+  );
+  const element = matches.shift() ?? document.createElement("link");
+
+  matches.forEach((duplicate) => duplicate.remove());
+  element.setAttribute("rel", rel);
+  element.setAttribute("href", href);
+  element.setAttribute(DATA_ATTR, "1");
+
+  if (!element.parentNode) {
+    document.head.appendChild(element);
   }
-  Object.entries(attrs).forEach(([k, v]) => el!.setAttribute(k, v));
-  return el;
 }
 
-function upsertLinkRel(rel: string, href: string) {
-  const head = ensureHead();
-  let el = head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
-  if (!el) {
-    el = document.createElement("link");
-    el.setAttribute("rel", rel);
-    el.setAttribute(DATA_ATTR, "1");
-    head.appendChild(el);
+function keepFirst(selector: string) {
+  const matches = Array.from(document.head.querySelectorAll(selector));
+  matches.slice(1).forEach((duplicate) => duplicate.remove());
+}
+
+function snapshotFirst(selector: string) {
+  const element = document.head.querySelector<HTMLElement>(selector);
+  return element ? (element.cloneNode(true) as HTMLElement) : null;
+}
+
+function restoreFirst(selector: string, snapshot: HTMLElement | null) {
+  removeElements(selector);
+  if (snapshot) {
+    document.head.appendChild(snapshot);
   }
-  el.setAttribute("href", href);
-  return el;
+}
+
+function canonicalFor(value?: string) {
+  const fallbackPath =
+    typeof window !== "undefined" ? window.location.pathname : "/";
+
+  try {
+    const parsed = new URL(value || fallbackPath, SITE_ORIGIN);
+    return `${SITE_ORIGIN}${parsed.pathname || "/"}`;
+  } catch {
+    return `${SITE_ORIGIN}${fallbackPath || "/"}`;
+  }
+}
+
+function validateJsonLdValue(
+  value: unknown,
+  path: string,
+  ancestors: Set<object>,
+) {
+  if (value === null || typeof value === "string" || typeof value === "boolean") {
+    return;
+  }
+
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) {
+      throw new TypeError(`${path} contains a non-finite number.`);
+    }
+    return;
+  }
+
+  if (typeof value !== "object") {
+    throw new TypeError(`${path} contains an unsupported ${typeof value} value.`);
+  }
+
+  if (ancestors.has(value)) {
+    throw new TypeError(`${path} contains a circular reference.`);
+  }
+
+  ancestors.add(value);
+
+  if (Array.isArray(value)) {
+    for (let index = 0; index < value.length; index += 1) {
+      if (!Object.prototype.hasOwnProperty.call(value, index)) {
+        throw new TypeError(`${path} contains a sparse array.`);
+      }
+      validateJsonLdValue(value[index], `${path}[${index}]`, ancestors);
+    }
+
+    const extraKeys = Object.keys(value).filter(
+      (key) => !/^\d+$/.test(key) || Number(key) >= value.length,
+    );
+    if (extraKeys.length > 0) {
+      throw new TypeError(`${path} contains unsupported array properties.`);
+    }
+  } else {
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) {
+      throw new TypeError(`${path} contains an unsupported object type.`);
+    }
+
+    if (Object.getOwnPropertySymbols(value).length > 0) {
+      throw new TypeError(`${path} contains symbol-keyed properties.`);
+    }
+
+    Object.entries(value).forEach(([key, nestedValue]) => {
+      validateJsonLdValue(nestedValue, `${path}.${key}`, ancestors);
+    });
+  }
+
+  ancestors.delete(value);
+}
+
+function serializeJsonLdBlocks(jsonLd?: JsonLd, jsonLdList?: JsonLd[]) {
+  const blocks: JsonLd[] = [
+    ...(jsonLd ? [jsonLd] : []),
+    ...(jsonLdList ?? []),
+  ];
+
+  const serializedBlocks = blocks.map((block, index) => {
+    try {
+      validateJsonLdValue(block, `JSON-LD block ${index}`, new Set());
+      const serialized = JSON.stringify(block);
+
+      if (typeof serialized !== "string") {
+        throw new TypeError(`JSON-LD block ${index} could not be serialized.`);
+      }
+
+      return serialized;
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      throw new TypeError(`Invalid JSON-LD: ${reason}`);
+    }
+  });
+
+  return JSON.stringify(serializedBlocks);
+}
+
+function removeRouteMetadata() {
+  removeElements('link[rel="canonical"]');
+  removeElements('meta[name="robots"]');
+  removeElements('meta[name="googlebot"]');
+  OPEN_GRAPH_PROPERTIES.forEach((property) =>
+    removeElements(`meta[property="${property}"]`),
+  );
+  TWITTER_NAMES.forEach((name) =>
+    removeElements(`meta[name="${name}"]`),
+  );
+  removeElements(`script[${JSON_LD_ATTR}]`);
 }
 
 export default function Seo({
@@ -111,147 +266,122 @@ export default function Seo({
   appleTouchIconHref,
   manifestHref,
 }: SeoProps) {
+  const serializedJsonLdBlocks = serializeJsonLdBlocks(jsonLd, jsonLdList);
+
   useEffect(() => {
     if (typeof document === "undefined") return;
 
-    const createdNodes: HTMLElement[] = [];
+    const effectiveTitle = title || DEFAULT_TITLE;
+    const effectiveDescription = description || DEFAULT_DESCRIPTION;
+    const effectiveCanonical = canonicalFor(canonical);
+    const robots = `${noindex ? "noindex" : "index"}, ${
+      nofollow ? "nofollow" : "follow"
+    }`;
 
-    // Track nodes created this render, then remove the marker so it won't show in DevTools
-    const mark = <T extends HTMLElement>(el: T) => {
-      if (el.getAttribute(DATA_ATTR) === "1") {
-        createdNodes.push(el);
-        el.removeAttribute(DATA_ATTR); // hide the marker
-      }
-      return el;
-    };
+    const themeColorSnapshot = snapshotFirst('meta[name="theme-color"]');
+    const iconSnapshot = snapshotFirst('link[rel="icon"]');
+    const appleTouchIconSnapshot = snapshotFirst(
+      'link[rel="apple-touch-icon"]',
+    );
+    const manifestSnapshot = snapshotFirst('link[rel="manifest"]');
 
-    // Title
-    document.title = title;
+    removeRouteMetadata();
 
-    // Description
-    if (description) {
-      mark(
-        upsertMeta('meta[name="description"]', {
-          name: "description",
-          content: description,
-        })
-      );
-    }
+    upsertUniqueTitle(effectiveTitle);
+    upsertUniqueMeta("name", "description", effectiveDescription);
+    upsertUniqueLink("canonical", effectiveCanonical);
+    upsertUniqueMeta("name", "robots", robots);
+    upsertUniqueMeta("name", "googlebot", robots);
 
-    // Canonical (fallback to current URL if not provided)
-    const effectiveCanonical =
-      canonical ||
-      (typeof window !== "undefined" ? window.location.href : undefined);
-
-    if (effectiveCanonical) {
-      mark(upsertLinkRel("canonical", String(effectiveCanonical)));
-    }
-
-    // Theme color
     if (themeColor) {
-      mark(
-        upsertMeta('meta[name="theme-color"]', {
-          name: "theme-color",
-          content: themeColor,
-        })
-      );
+      upsertUniqueMeta("name", "theme-color", themeColor);
+    } else {
+      keepFirst('meta[name="theme-color"]');
     }
 
-    // Icons & manifest
     if (iconHref) {
-      mark(upsertLinkRel("icon", iconHref));
+      upsertUniqueLink("icon", iconHref);
+    } else {
+      keepFirst('link[rel="icon"]');
     }
+
     if (appleTouchIconHref) {
-      mark(upsertLinkRel("apple-touch-icon", appleTouchIconHref));
+      upsertUniqueLink("apple-touch-icon", appleTouchIconHref);
+    } else {
+      keepFirst('link[rel="apple-touch-icon"]');
     }
+
     if (manifestHref) {
-      mark(upsertLinkRel("manifest", manifestHref));
+      upsertUniqueLink("manifest", manifestHref);
+    } else {
+      keepFirst('link[rel="manifest"]');
     }
 
-    // Robots
-    if (noindex || nofollow) {
-      const robots = `${noindex ? "noindex" : "index"}, ${
-        nofollow ? "nofollow" : "follow"
-      }`;
-      mark(
-        upsertMeta('meta[name="robots"]', { name: "robots", content: robots })
-      );
-      mark(
-        upsertMeta('meta[name="googlebot"]', {
-          name: "googlebot",
-          content: robots,
-        })
-      );
-    }
+    upsertUniqueMeta("property", "og:type", ogType);
+    upsertUniqueMeta("property", "og:title", effectiveTitle);
+    upsertUniqueMeta("property", "og:description", effectiveDescription);
+    upsertUniqueMeta("property", "og:url", effectiveCanonical);
 
-    // Open Graph
-    mark(upsertMetaBy("property", "og:type", ogType));
-    mark(upsertMetaBy("property", "og:title", title));
-
-    if (description) {
-      mark(upsertMetaBy("property", "og:description", description));
-    }
-    if (effectiveCanonical) {
-      mark(upsertMetaBy("property", "og:url", String(effectiveCanonical)));
-    }
     if (ogImage) {
-      mark(upsertMetaBy("property", "og:image", ogImage));
+      upsertUniqueMeta("property", "og:image", ogImage);
       if (ogImageAlt) {
-        mark(upsertMetaBy("property", "og:image:alt", ogImageAlt));
+        upsertUniqueMeta("property", "og:image:alt", ogImageAlt);
       }
     }
+
     if (ogSiteName) {
-      mark(upsertMetaBy("property", "og:site_name", ogSiteName));
+      upsertUniqueMeta("property", "og:site_name", ogSiteName);
     }
+
     if (ogLocale) {
-      mark(upsertMetaBy("property", "og:locale", ogLocale));
+      upsertUniqueMeta("property", "og:locale", ogLocale);
     }
 
-    // Twitter (optional)
     if (includeTwitter) {
-      mark(upsertMetaBy("name", "twitter:card", twitterCard));
-      mark(upsertMetaBy("name", "twitter:title", title));
+      upsertUniqueMeta("name", "twitter:card", twitterCard);
+      upsertUniqueMeta("name", "twitter:title", effectiveTitle);
+      upsertUniqueMeta("name", "twitter:description", effectiveDescription);
 
-      if (description) {
-        mark(upsertMetaBy("name", "twitter:description", description));
-      }
       if (ogImage) {
-        mark(upsertMetaBy("name", "twitter:image", ogImage));
+        upsertUniqueMeta("name", "twitter:image", ogImage);
         if (ogImageAlt) {
-          mark(upsertMetaBy("name", "twitter:image:alt", ogImageAlt));
+          upsertUniqueMeta("name", "twitter:image:alt", ogImageAlt);
         }
       }
+
       if (twitterSite) {
-        mark(upsertMetaBy("name", "twitter:site", twitterSite));
+        upsertUniqueMeta("name", "twitter:site", twitterSite);
       }
+
       if (twitterCreator) {
-        mark(upsertMetaBy("name", "twitter:creator", twitterCreator));
+        upsertUniqueMeta("name", "twitter:creator", twitterCreator);
       }
     }
 
-    // JSON-LD (support single or multiple blocks)
-    const blocks: JsonLd[] = [
-      ...(jsonLd ? [jsonLd] : []),
-      ...(jsonLdList ?? []),
-    ];
-    const createdScripts: HTMLScriptElement[] = [];
+    const blocks = JSON.parse(serializedJsonLdBlocks) as string[];
 
-    if (blocks.length > 0) {
-      blocks.forEach((block, i) => {
-        const el = document.createElement("script");
-        el.type = "application/ld+json";
-        el.text = JSON.stringify(block);
-        el.setAttribute("data-seo-jsonld", `block-${i}`);
-        // no DATA_ATTR here — we track JSON-LD via createdScripts
-        document.head.appendChild(el);
-        createdScripts.push(el);
-      });
-    }
+    blocks.forEach((block, index) => {
+      const element = document.createElement("script");
+      element.type = "application/ld+json";
+      element.text = block;
+      element.setAttribute(JSON_LD_ATTR, `block-${index}`);
+      document.head.appendChild(element);
+    });
 
-    // Cleanup only nodes we created this render
     return () => {
-      createdScripts.forEach((s) => s.parentNode?.removeChild(s));
-      createdNodes.forEach((n) => n.parentNode?.removeChild(n));
+      removeRouteMetadata();
+      upsertUniqueTitle(DEFAULT_TITLE);
+      upsertUniqueMeta("name", "description", DEFAULT_DESCRIPTION);
+      upsertUniqueMeta("name", "robots", "index, follow");
+      upsertUniqueMeta("name", "googlebot", "index, follow");
+
+      restoreFirst('meta[name="theme-color"]', themeColorSnapshot);
+      restoreFirst('link[rel="icon"]', iconSnapshot);
+      restoreFirst(
+        'link[rel="apple-touch-icon"]',
+        appleTouchIconSnapshot,
+      );
+      restoreFirst('link[rel="manifest"]', manifestSnapshot);
     };
   }, [
     title,
@@ -259,8 +389,7 @@ export default function Seo({
     canonical,
     ogImage,
     ogImageAlt,
-    jsonLd,
-    jsonLdList,
+    serializedJsonLdBlocks,
     ogType,
     ogSiteName,
     ogLocale,
@@ -276,5 +405,5 @@ export default function Seo({
     manifestHref,
   ]);
 
-  return null; // nothing to render in the page body
+  return null;
 }

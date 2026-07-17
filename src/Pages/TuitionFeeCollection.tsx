@@ -45,7 +45,6 @@ const TuitionFeeCollection: React.FC = () => {
               url: "https://www.aspacbank.com",
               telephone: "+63-32-272-2724",
             },
-            termsOfService: "https://www.aspacbank.com/terms-and-conditions",
             availableChannel: {
               "@type": "ServiceChannel",
               serviceUrl: "https://www.aspacbank.com/tuition-fee-collection",
