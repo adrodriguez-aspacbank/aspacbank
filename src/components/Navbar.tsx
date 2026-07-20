@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav
-        className={`w-max sm:w-[90%] transition-all justify-self-end mr-5 sm:mr-0 sm:justify-self-center rounded-full mt-5 duration-300 fixed top-0 left-0 right-0 z-[90] px-3 sm:px-10 flex items-center justify-between ${
+        className={`w-[90%] transition-all justify-self-end mr-5 sm:mr-0 sm:justify-self-center rounded-full mt-5 duration-300 fixed top-0 left-0 right-0 z-[90] px-3 sm:px-10 flex items-center justify-between ${
           scrolled
             ? "bg-white text-[#459243] py-2 sm:py-5 shadow-md"
             : "bg-[#ffffff] bg-clip-padding backdrop-filter   backdrop-blur-md bg-opacity-60  text-[#064703]  py-1 sm:py-3"
@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
       >
         <Link
           to="/"
-          className="text-[#459243] text-xl font-medium hidden  sm:flex items-center space-x-2 flex-nowrap "
+          className="text-[#459243] text-xl font-medium flex items-center space-x-2 flex-nowrap "
           onClick={() => {
             closeAll();
             window.scrollTo({
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
             alt="ASPAC Bank Logo"
             className="w-10 h-8 object-contain"
           />
-          <span className="text-[#459243] text-xl font-semibold min-w-max hidden sm:block">
+          <span className="text-[#459243] text-xs  sm:text-xl font-semibold min-w-max ">
             ASPAC Bank
           </span>
         </Link>
@@ -264,7 +264,7 @@ const Navbar: React.FC = () => {
             console.log("hamburger clicked");
             setIsOpen((prev) => !prev);
           }}
-          className="md:hidden text-2xl relative z-[200]"
+          className="md:hidden  pr-2 text-2xl relative z-[200]"
           aria-label="Open Menu"
         >
           {isOpen ? "✖" : "☰"}

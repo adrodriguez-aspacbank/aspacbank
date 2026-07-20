@@ -24,7 +24,6 @@ const loanTypes: ServiceItem[] = [
     description:
       "Support for businesses needing working capital or expansion funds.",
     Icon: FaBriefcase as React.ComponentType<React.SVGProps<SVGSVGElement>>,
-    link: "/loans/commercial",
     badge: "Business",
   },
   {
@@ -32,28 +31,24 @@ const loanTypes: ServiceItem[] = [
     description:
       "Flexible financing for property acquisition, renovation, or construction.",
     Icon: FaBuilding as React.ComponentType<React.SVGProps<SVGSVGElement>>,
-    link: "/loans/real-estate",
   },
   {
     title: "Honorarium Loan",
     description:
       "Loans for individuals receiving honoraria, such as public servants or consultants.",
     Icon: FaAward as React.ComponentType<React.SVGProps<SVGSVGElement>>,
-    link: "/loans/honorarium",
   },
   {
     title: "Chattel Loan",
     description:
       "Secured loans backed by assets for personal or emergency use.",
     Icon: FaGem as React.ComponentType<React.SVGProps<SVGSVGElement>>,
-    link: "/loans/chattel",
   },
   {
     title: "Salary Loan",
     description:
       "Quick and easy loans for employed individuals with flexible terms.",
     Icon: FaUserTie as React.ComponentType<React.SVGProps<SVGSVGElement>>,
-    link: "/loans/salary",
     badge: "Popular",
   },
 ];

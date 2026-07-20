@@ -36,10 +36,10 @@
       "url": "/teachers-loan"
     },
     {
-      "name": "Personal Loan",
-      "short_name": "Personal Loan",
-      "description": "Flexible and low-interest personal loans for Filipinos.",
-      "url": "/personal-loan"
+      "name": "Loans",
+      "short_name": "Loans",
+      "description": "Explore ASPAC Bank loan options for individuals and businesses, with branch-based guidance from our loan officers.",
+      "url": "/loans"
     },
     {
       "name": "Branches & Contact",
