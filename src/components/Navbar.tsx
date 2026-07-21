@@ -168,7 +168,7 @@ const Navbar: React.FC = () => {
 
                 <li className="hover:bg-gray-100 rounded-md">
                   <Link
-                    to="/AnnualReport2024"
+                    to="/annual-reports"
                     onClick={() => {
                       closeAll();
                       window.scrollTo({
@@ -366,7 +366,7 @@ const Navbar: React.FC = () => {
                 </Link>
 
                 <Link
-                  to="/AnnualReport2024"
+                  to="/annual-reports"
                   onClick={() => {
                     closeAll();
                     window.scrollTo({
