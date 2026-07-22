@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <header>
       <nav
         className={`w-[90%] transition-all justify-self-end mr-5 sm:mr-0 sm:justify-self-center rounded-full mt-5 duration-300 fixed top-0 left-0 right-0 z-[90] px-3 sm:px-10 flex items-center justify-between ${
           scrolled
@@ -446,7 +446,7 @@ const Navbar: React.FC = () => {
           <div className="h-[max(env(safe-area-inset-bottom),12px)]" />
         </aside>
       </div>
-    </>
+    </header>
   );
 };
 

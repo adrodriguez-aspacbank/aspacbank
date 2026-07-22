@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ReadonlyPdfViewer from "../ReadonlyPdfViewer";
+import Seo from "../Seo";
 
 type Year = 2024 | 2025;
 type ReportId = "annual-2024" | "part2-afs-2024" | "annual-2025";
@@ -93,6 +94,14 @@ export default function AnnualReport2024() {
   }, []);
 
   return (
+    <>
+      <Seo
+        title="Annual Reports | ASPAC Bank"
+        description="View ASPAC Bank's published annual reports and financial statement documents."
+        canonical="https://www.aspacbank.com/annual-reports"
+        noindex
+      />
+
     <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br pt-24 from-green-50 via-white to-emerald-50 px-3 py-6 sm:px-5 md:px-8 lg:px-10">
       {/* Background Glow */}
       <div className="pointer-events-none absolute -top-28 right-0 h-80 w-80 rounded-full bg-green-200/40 blur-3xl" />
@@ -376,6 +385,7 @@ export default function AnnualReport2024() {
             <div className="bg-slate-100 p-2 sm:p-4">
               <ReadonlyPdfViewer
                 pdfUrl={current.pdfPath}
+                title={current.title}
                 containerHeight={1050}
                 maxPageWidth={900}
                 scale={1.5}
@@ -389,5 +399,6 @@ export default function AnnualReport2024() {
         </p>
       </div>
     </section>
+    </>
   );
 }

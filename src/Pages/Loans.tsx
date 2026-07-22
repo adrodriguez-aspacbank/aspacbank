@@ -163,13 +163,12 @@ const Loans: React.FC = () => {
                   understand your needs.
                 </p>
                 <div className="flex flex-wrap gap-4">
-      
-                    <button
+                  <button
                     onClick={() => setShowModal(true)}
                     className="relative inline-block mt-6 overflow-hidden text-white border border-white px-6 md:px-6 py-3 text-sm md:text-base font-light md:font-semibold rounded shadow group"
                   >
                     <span className="relative z-10 flex items-center gap-3">
-                       Apply for a Loan
+                      Apply for a Loan
                       <IoMdOpen className="group-hover:scale-125   transition-transform duration-300" />
                     </span>
                     <span className="absolute inset-0 bg-primary  translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>

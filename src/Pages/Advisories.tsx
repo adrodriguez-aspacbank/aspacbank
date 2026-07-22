@@ -60,7 +60,7 @@ const LoansAdvisories: Advisory[] = [
       <figure className="mt-4">
         <img
           src="/bspsecuritips_newyear.jpg"
-          alt="bsp"
+          alt="BSP Security Tips – New Year advisory"
           loading="lazy"
           className="w-max justify-self-center md:h-96 rounded-2xl shadow-sm ring-1 ring-gray-100 select-none"
           draggable={false}
@@ -274,10 +274,10 @@ export const RightRail: React.FC = () => (
   <aside className=" lg:top-6 space-y-6">
     <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 relative overflow-hidden group">
       <div className="absolute top-0 left-0 rotate-180 w-[60%] h-full bg-gradient-to-bl from-[#459243]/10 to-transparent rounded-bl-full pointer-events-none" />
-      <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+      <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
         <span className="h-2 w-2 rounded-full bg-[#459243]" />
         Direct Support Channels
-      </h3>
+      </h2>
       <div className="space-x-3 flex w-full overflow-x-auto items-center  scrollbar-none  border-r-2 border-primary md:border-none md:border-r-0 p-2 ">
         
         <a
@@ -377,6 +377,21 @@ const AdvisoriesPage: React.FC = () => {
         appleTouchIconHref="https://www.aspacbank.com/favicon.ico"
         manifestHref="https://www.aspacbank.com/manifest.json"
         includeTwitter={false}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "ASPAC Bank Advisories & Service Updates",
+          description:
+            "Stay informed with ASPAC Bank advisories — branch schedules, service changes, compliance notices, and important updates for clients and stakeholders across Cebu.",
+          url: "https://www.aspacbank.com/advisories",
+          publisher: {
+            "@type": "Organization",
+            name: "ASPAC Bank",
+            url: "https://www.aspacbank.com",
+            logo: "https://www.aspacbank.com/favicon.ico",
+            sameAs: ["https://www.facebook.com/aspacbank0620/"],
+          },
+        }}
       />
 
       <div className="min-h-screen bg-gray-50/50">
@@ -423,6 +438,7 @@ const AdvisoriesPage: React.FC = () => {
           {/* Main Advisories stream left block column */}
        
           <div className="lg:col-span-8 space-y-6">
+            <h2 className="sr-only">Latest Advisories</h2>
             <AnimatePresence mode="popLayout">
               {filteredAdvisories.length > 0 ? (
                 filteredAdvisories.map((a, i) => (

@@ -79,7 +79,7 @@ const FAQ_DATA: Array<{ q: string; a: string; tags?: string[] }> = [
     q: "Do you offer Teacher's Loan?",
     a: `Thank you for your inquiry. We are pleased to confirm that we offer teacher salary loans.<br/>
   To begin your application, please download the loan application form here: 
-  <a href="https://www.aspacbank.com/teachersalary-loanform" target="_blank" class="underline text-primary">
+  <a href="https://www.aspacbank.com/files/ASPAC_Salary_loan_form.pdf" target="_blank" class="underline text-primary">
     Teacher Salary Form
   </a>. All required documentation and eligibility requirements are detailed on the second page of the form.`,
     tags: ["APDS", "inquire", "teachers", "teacher's"],
@@ -88,7 +88,7 @@ const FAQ_DATA: Array<{ q: string; a: string; tags?: string[] }> = [
     q: "How to apply Teacher's Loan?",
     a: `
     <ul class="list-none space-y-3 text-left">
-      <li><span class="font-semibold">Step 1:</span> Download the Salary Loan Application Form here:  <a href="https://www.aspacbank.com/teachersalary-loanform" target="_blank" class="underline text-primary">
+      <li><span class="font-semibold">Step 1:</span> Download the Salary Loan Application Form here:  <a href="https://www.aspacbank.com/files/ASPAC_Salary_loan_form.pdf" target="_blank" class="underline text-primary">
    Teacher Salary Form
   </a>. Prepare the requirements — Application Form, Payslip, Appointment Letter, 2x2 Picture, and Valid IDs.</li>
       <li><span class="font-semibold">Step 2:</span> Submit the requirements to the nearest ASPAC Bank Branch.</li>

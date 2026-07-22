@@ -34,9 +34,21 @@ type SeoProps = {
   manifestHref?: string; // e.g., "https://www.aspacbank.com/manifest.json"
 };
 
-const SITE_ORIGIN = "https://www.aspacbank.com";
+// Confirmed canonical production domain (matches robots.txt, sitemap.xml,
+// index.html, and the www redirect already deployed). If this ever changes,
+// update it here — every canonical/OG/Twitter URL in the app derives from it.
+export const SITE_URL = "https://www.aspacbank.com";
+const SITE_ORIGIN = SITE_URL;
 const DEFAULT_TITLE = "ASPAC Bank";
 const DEFAULT_DESCRIPTION = "ASPAC Bank – reliable banking services.";
+const DEFAULT_OG_SITE_NAME = "ASPAC Bank";
+const DEFAULT_OG_LOCALE = "en_PH";
+const DEFAULT_THEME_COLOR = "#459243";
+const DEFAULT_ICON_HREF = `${SITE_ORIGIN}/favicon.ico`;
+const DEFAULT_APPLE_TOUCH_ICON_HREF = `${SITE_ORIGIN}/apple-touch-icon.png`;
+const DEFAULT_MANIFEST_HREF = `${SITE_ORIGIN}/manifest.json`;
+const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/Aspac_logo-03A.png`;
+const DEFAULT_OG_IMAGE_ALT = "ASPAC Bank logo";
 const DATA_ATTR = "data-seo-managed";
 const JSON_LD_ATTR = "data-seo-jsonld";
 
@@ -244,14 +256,14 @@ export default function Seo({
   title,
   description,
   canonical,
-  ogImage,
-  ogImageAlt,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogImageAlt = DEFAULT_OG_IMAGE_ALT,
   jsonLd,
   jsonLdList,
 
   ogType = "website",
-  ogSiteName,
-  ogLocale,
+  ogSiteName = DEFAULT_OG_SITE_NAME,
+  ogLocale = DEFAULT_OG_LOCALE,
 
   includeTwitter = false,
   twitterCard = "summary_large_image",
@@ -261,10 +273,10 @@ export default function Seo({
   noindex,
   nofollow,
 
-  themeColor,
-  iconHref,
-  appleTouchIconHref,
-  manifestHref,
+  themeColor = DEFAULT_THEME_COLOR,
+  iconHref = DEFAULT_ICON_HREF,
+  appleTouchIconHref = DEFAULT_APPLE_TOUCH_ICON_HREF,
+  manifestHref = DEFAULT_MANIFEST_HREF,
 }: SeoProps) {
   const serializedJsonLdBlocks = serializeJsonLdBlocks(jsonLd, jsonLdList);
 

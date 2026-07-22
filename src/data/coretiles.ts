@@ -44,7 +44,7 @@ export const coreCards = [
     icon: FaBriefcase,
     chips: ["Working Capital", "Expansion Funding", "Fast Decisions"],
     buttonText: "Learn More",
-    link: "/msme-loans",
+    link: "/loans",
     glow: "bg-yellow-300/10",
     iconGradient: "from-primary to-aspac-green",
   },

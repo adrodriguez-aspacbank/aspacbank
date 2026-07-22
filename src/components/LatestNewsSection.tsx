@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaArrowRight, FaShieldAlt } from "react-icons/fa";
 import BspSecurityTipsNewYearAdvisory from "./advisories/BspSecurityTipsNewYearAdvisory";
 
@@ -54,7 +54,6 @@ export default function LatestNewsSection({
   advisoryPath = "/advisories",
   featuredAdvisory = defaultFeaturedAdvisory,
 }: LatestNewsSectionProps) {
-  const navigate = useNavigate();
   const FeaturedIcon = featuredAdvisory.icon || FaShieldAlt;
 
   return (
@@ -96,9 +95,9 @@ export default function LatestNewsSection({
                     {featuredAdvisory.label}
                   </p>
 
-                  <h3 className="text-lg font-bold text-primary md:text-3xl">
+                  <h2 className="text-lg font-bold text-primary md:text-3xl">
                     {featuredAdvisory.title}
-                  </h3>
+                  </h2>
 
                   <p className="text-xs text-gray-700 md:text-sm">
                     {featuredAdvisory.description}
@@ -172,31 +171,51 @@ export default function LatestNewsSection({
 
                     <div className="mt-3 flex justify-between gap-3 md:mt-6">
                       {item.to && (
-                        <Link
-                          to={item.to || advisoryPath}
-                          className="
-                            inline-flex items-center gap-2
-                            rounded-full
-                            bg-gradient-to-r from-primary to-aspac-green
-                            px-2 py-2
-                            text-white
-                            transition
-                            hover:shadow-lg
-                            md:px-5 md:py-3 md:font-semibold
-                          "
-                        >
-                          View advisory
-                          <FaArrowRight />
-                        </Link>
+                        /^https?:\/\//i.test(item.to) ? (
+                          <a
+                            href={item.to}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="
+                              inline-flex items-center gap-2
+                              rounded-full
+                              bg-gradient-to-r from-primary to-aspac-green
+                              px-2 py-2
+                              text-white
+                              transition
+                              hover:shadow-lg
+                              md:px-5 md:py-3 md:font-semibold
+                            "
+                          >
+                            View location
+                            <FaArrowRight />
+                          </a>
+                        ) : (
+                          <Link
+                            to={item.to}
+                            className="
+                              inline-flex items-center gap-2
+                              rounded-full
+                              bg-gradient-to-r from-primary to-aspac-green
+                              px-2 py-2
+                              text-white
+                              transition
+                              hover:shadow-lg
+                              md:px-5 md:py-3 md:font-semibold
+                            "
+                          >
+                            View advisory
+                            <FaArrowRight />
+                          </Link>
+                        )
                       )}
 
-                      <button
-                        type="button"
-                        onClick={() => navigate(advisoryPath)}
+                      <Link
+                        to={advisoryPath}
                         className="flex items-center justify-items-center gap-3 pr-4 text-primary hover:underline md:font-semibold"
                       >
                         All advisories <FaArrowRight size={10} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
 
@@ -207,6 +226,8 @@ export default function LatestNewsSection({
                       <img
                         src={item.mediaSrc || "/bogo_reopens.jpg"}
                         alt={item.mediaAlt || item.title}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (

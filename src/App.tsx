@@ -21,12 +21,14 @@ import "./index.css";
 import { FooterBadge } from "./module/FooterBadge";
 import { ChatBot } from "./components/ChatBot";
 import AnnualReport from "./Pages/AnnualReport";
+import NotFound from "./Pages/NotFound";
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="w-full overflow-x-hidden">
         <Navbar />
+        <main>
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="/welcome" element={<WelcomePage />} />
@@ -56,7 +58,9 @@ const App: React.FC = () => {
           />
           <Route path="/AnnualReport2024" element={<AnnualReport2024 />} />
           <Route path="/Annual" element={<AnnualReport/>}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
+        </main>
          <ChatBot />
         {/* <Footer /> */}
         <FooterBadge/>

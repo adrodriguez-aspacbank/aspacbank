@@ -1,4 +1,5 @@
 import React from "react";
+import Seo from "../components/Seo";
 
 type ReportLink = {
   yearLabel: string;
@@ -29,6 +30,14 @@ const REPORTS: ReportLink[] = [
 
 const AnnualReport: React.FC = () => {
   return (
+    <>
+      <Seo
+        title="Annual Reports | ASPAC Bank"
+        description="View ASPAC Bank's published annual reports and financial statement documents."
+        canonical="https://www.aspacbank.com/annual-reports"
+        noindex
+      />
+
     <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-green-50 via-white to-emerald-50 px-4 py-20 sm:px-6 lg:px-20">
       {/* Background decorations */}
       <div className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-green-200/40 blur-3xl" />
@@ -187,6 +196,7 @@ const AnnualReport: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

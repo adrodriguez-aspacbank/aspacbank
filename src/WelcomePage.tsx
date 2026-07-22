@@ -75,6 +75,11 @@ const WelcomePage: React.FC = () => {
 
       {/* Top announcement bar */}
 
+      {/* Single accessible/crawlable page heading — the hero carousel below uses h2 per slide */}
+      <h1 className="sr-only">
+        ASPAC Bank — Simply Safe Banking, Loans, and Deposit Accounts
+      </h1>
+
       {/* HERO Swiper (FADE) */}
       <ParallaxHero
         slides={heroSlides}

@@ -225,6 +225,7 @@ const AnnualReports: React.FC = () => {
               <ReadonlyPdfViewer
                 key={selectedReport.id}
                 pdfUrl={selectedReport.pdfPath}
+                title={selectedReport.title}
                 containerHeight={1050}
                 maxPageWidth={900}
                 scale={1.5}
