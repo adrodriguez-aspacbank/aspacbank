@@ -10,6 +10,7 @@ type Props = {
   containerHeight?: number;
   maxPageWidth?: number; // desktop cap
   scale?: number; // base scale cap (desktop only)
+  title?: string; // accessible name for the rendered document
 };
 
 export default function ReadonlyPdfViewer({
@@ -17,6 +18,7 @@ export default function ReadonlyPdfViewer({
   containerHeight = 1050,
   maxPageWidth = 980, // ✅ wider desktop default
   scale = 1.25,
+  title = "PDF document preview",
 }: Props) {
   const [pageCount, setPageCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -106,6 +108,8 @@ export default function ReadonlyPdfViewer({
     <div
       className="w-full overflow-auto rounded-2xl bg-slate-50/60" // ✅ subtle outer
       style={{ height: containerHeight }}
+      role="document"
+      aria-label={title}
       onContextMenu={(e) => e.preventDefault()}
       onMouseDown={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
@@ -128,6 +132,8 @@ export default function ReadonlyPdfViewer({
                 ref={(el) => {
                   canvasRefs.current[idx] = el;
                 }}
+                role="img"
+                aria-label={`${title} — page ${idx + 1} of ${pageCount}`}
                 style={{
                   display: "block",
                   width: "100%",

@@ -147,9 +147,9 @@ const BillsPayment: React.FC = () => {
                     <FaBuilding />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider font-mono">
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-wider font-mono">
                       Featured Biller
-                    </h3>
+                    </p>
                     <p className="text-lg font-bold text-primary">
                       Mactan Electric Company
                     </p>

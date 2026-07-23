@@ -113,7 +113,7 @@ export function FooterBadge() {
               </Link>
 
               <Link
-                to="/msme-loans"
+                to="/loans"
                 className="group flex items-center justify-between bg-white rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition"
                      onClick={() => {
                 window.scrollTo({

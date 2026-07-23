@@ -622,6 +622,8 @@ const Branches = () => {
                         <img
                           src={img}
                           alt={branch.name}
+                          loading="lazy"
+                          decoding="async"
                           className="
                           w-full h-72 object-cover
                           group-hover:scale-110

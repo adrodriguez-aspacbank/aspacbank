@@ -97,7 +97,7 @@ export const branches = [
     contact: "0917-108-6575",
     hours: "9:00 AM - 3:00 PM (Mon-Fri)",
     mapUrl:
-      "hhttps://www.google.com/maps/place/ASPAC+RURAL+BANK+INC./@10.51985,124.0266137,72m/data=!3m1!1e3!4m14!1m7!3m6!1s0x33a9b08428fc900b:0x2f8957a1b60b689c!2sASPAC+RURAL+BANK+INC.!8m2!3d10.5200079!4d124.0267235!16s%2Fg%2F11c1qb9xnr!3m5!1s0x33a9b08428fc900b:0x2f8957a1b60b689c!8m2!3d10.5200079!4d124.0267235!16s%2Fg%2F11c1qb9xnr?entry=ttu&g_ep=EgoyMDI2MDYyOS4wIKXMDSoASAFQAw%3D%3D",
+      "https://www.google.com/maps/place/ASPAC+RURAL+BANK+INC./@10.51985,124.0266137,72m/data=!3m1!1e3!4m14!1m7!3m6!1s0x33a9b08428fc900b:0x2f8957a1b60b689c!2sASPAC+RURAL+BANK+INC.!8m2!3d10.5200079!4d124.0267235!16s%2Fg%2F11c1qb9xnr!3m5!1s0x33a9b08428fc900b:0x2f8957a1b60b689c!8m2!3d10.5200079!4d124.0267235!16s%2Fg%2F11c1qb9xnr?entry=ttu&g_ep=EgoyMDI2MDYyOS4wIKXMDSoASAFQAw%3D%3D",
     images: [
       "/assets/branchesimages/dan1.webp",
       "/assets/branchesimages/dan2.webp",

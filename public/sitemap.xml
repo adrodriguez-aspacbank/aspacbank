@@ -78,4 +78,10 @@
     <priority>0.6</priority>
   </url>
 
+  <url>
+    <loc>https://www.aspacbank.com/annual-reports</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
 </urlset>

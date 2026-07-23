@@ -7,7 +7,7 @@ export interface ServiceItem {
   title: string;
   description: string;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  link: string;
+  link?: string;
   badge?: string;
 }
 
@@ -53,19 +53,9 @@ const ServicesGrid: React.FC<ServicesGridProps> = ({
         viewport={{ once: true, margin: "-100px" }}
         className={`grid gap-6 ${gridColsClass}`}
       >
-        {items.map(({ title, description, Icon, link, badge }) => (
-          <motion.div key={title} variants={cardVariants}>
-            <Link
-              to={link}
-                    onClick={() => {
-                
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                  }}
-              className="group relative flex flex-col justify-between h-full bg-white border border-gray-100 hover:border-[#459243]/30 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-3xl p-6 sm:p-8 overflow-hidden focus:outline-none focus:ring-4 focus:ring-[#459243]/20"
-            >
+        {items.map(({ title, description, Icon, link, badge }) => {
+          const cardContent = (
+            <>
               {/* Neon Glow Hover Effect Accent Line */}
               <div className="absolute top-0 left-0 w-full h-[4px] bg-gradient-to-r from-[#459243] to-[#fbbf24] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
 
@@ -87,15 +77,39 @@ const ServicesGrid: React.FC<ServicesGridProps> = ({
                   {description}
                 </p>
               </div>
-              {learnMore && (
+              {learnMore && link && (
                 <div className="mt-6 flex items-center self-end md:self-start text-sm font-semibold text-[#459243] opacity-80 group-hover:opacity-100 transition-opacity ">
                   <span>Learn More</span>
                   <FaArrowRight className="ml-2 text-xs transform group-hover:translate-x-1 transition-transform " />
                 </div>
               )}
-            </Link>
-          </motion.div>
-        ))}
+            </>
+          );
+
+          const cardClassName =
+            "group relative flex flex-col justify-between h-full bg-white border border-gray-100 hover:border-[#459243]/30 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-3xl p-6 sm:p-8 overflow-hidden focus:outline-none focus:ring-4 focus:ring-[#459243]/20";
+
+          return (
+            <motion.div key={title} variants={cardVariants}>
+              {link ? (
+                <Link
+                  to={link}
+                  onClick={() => {
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                  className={cardClassName}
+                >
+                  {cardContent}
+                </Link>
+              ) : (
+                <div className={cardClassName}>{cardContent}</div>
+              )}
+            </motion.div>
+          );
+        })}
       </motion.div>
     </section>
   );

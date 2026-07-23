@@ -5,7 +5,6 @@ import { SERVER_URL } from "./config/api";
 import { IoIosArrowDown } from "react-icons/io";
 import AlertDialog from "./AlertDialog";
 
-import { LuBotMessageSquare } from "react-icons/lu";
 type Message = {
   type: "user" | "bot";
   text: string;
@@ -223,37 +222,38 @@ export function ChatBot() {
           </>
         )}
       </AnimatePresence>
-      <button
-        onClick={() => setOpen((prev) => !prev)}
-        aria-label={open ? "Close chatbot" : "Open chatbot"}
-        className={[
-          "fixed z-[9999]",
-          "bottom-4 right-4 sm:bottom-6 sm:right-6",
-          "flex h-14 w-14 items-center justify-center rounded-full sm:h-[56px] sm:w-[56px]",
-          "text-white shadow-2xl transition-all duration-300",
-          "hover:scale-105 active:scale-95 group",
-          open
-            ? "bg-white ring-2 ring-primary"
-            : "bg-gradient-to-br from-black/90 to-black/80 ring-2 ring-primary",
-        ].join(" ")}
-      >
-        <div className="rounded-tr-2xl rounded-l-2xl rounded-b-2xl rounded-r-none border border-purple-500 pointer-events-none absolute bottom-full -left-28 -mb-2 hidden rounded-md bg-purple-900 px-2 py-1 text-[12px] text-white shadow-lg group-hover:block whitespace-nowrap">
-          Chat with ARBI 💬
-        </div>
-
-        {open ? (
-          <span className="text-lg leading-none sm:text-xl text-black">⛌</span>
-        ) : (
-          <div className="relative">
-            <span className="text-lg sm:text-3xl inline-block origin-[50%_100%] animate-[wave_2.5s_ease-in-out_infinite] ">
-              {/* 👋 */}
-              {/* <FaRegMessage /> */}
-              <LuBotMessageSquare size={30} className="text-accent mt-2" />
-            </span>
-            {/* <span className="absolute -right-0 -top-1 h-3 w-3 rounded-full bg-white ring-2 ring-accent" /> */}
-          </div>
+      <div className="fixed z-[9999] bottom-4 right-4 sm:bottom-6 sm:right-6">
+        {!open && (
+          <span className="absolute inset-0 rounded-full bg-primary/60 animate-ping" />
         )}
-      </button>
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          aria-label={open ? "Close chatbot" : "Open chatbot"}
+          className={[
+            "relative",
+            "flex h-14 w-14 items-center justify-center overflow-hidden rounded-full",
+            "text-white shadow-2xl transition-all duration-300",
+            "hover:scale-105 active:scale-95 group",
+            open ? "bg-white" : "animate-float",
+          ].join(" ")}
+        >
+          <div className="rounded-tr-2xl rounded-l-2xl rounded-b-2xl rounded-r-none border border-purple-500 pointer-events-none absolute bottom-full -left-28 -mb-2 hidden rounded-md bg-purple-900 px-2 py-1 text-[12px] text-white shadow-lg group-hover:block whitespace-nowrap">
+            Chat with ARBI 💬
+          </div>
+
+          {open ? (
+            <span className="text-lg leading-none sm:text-xl text-black">
+              ⛌
+            </span>
+          ) : (
+            <img
+              src="/arbi-assistant.png"
+              alt="ARBI Assistant"
+              className="h-full w-full object-cover"
+            />
+          )}
+        </button>
+      </div>
 
       <AnimatePresence>
         {open && (
@@ -305,9 +305,11 @@ export function ChatBot() {
 
               <div className="relative flex items-center justify-between gap-3">
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/20 shadow-inner ring-1 ring-white/30 backdrop-blur sm:h-12 sm:w-12">
-                    <span className="text-xl sm:text-2xl">🤖</span>
-                  </div>
+                  <img
+                    src="/arbi-assistant.png"
+                    alt="ARBI Assistant"
+                    className="h-11 w-11 shrink-0 object-cover sm:h-12 sm:w-12"
+                  />
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">

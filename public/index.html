@@ -6,9 +6,9 @@
 
   <title>ASPAC Bank</title>
 
-  
+
   <meta name="description" content="ASPAC Bank – reliable banking services." />
-  <meta name="theme-color" content="#0a3d62" />
+  <meta name="theme-color" content="#459243" />
 
   <!-- Icons / manifest -->
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -21,10 +21,34 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ASPAC Bank",
-    "url": "https://www.aspacbank.com",
-    "logo": "https://www.aspacbank.com/favicon.ico"
+    "@graph": [
+      {
+        "@type": "BankOrCreditUnion",
+        "@id": "https://www.aspacbank.com/#organization",
+        "name": "ASPAC Bank",
+        "alternateName": "ASPAC Rural Bank",
+        "url": "https://www.aspacbank.com",
+        "logo": "https://www.aspacbank.com/Aspac_logo-03A.png",
+        "image": "https://www.aspacbank.com/Aspac_logo-03A.png",
+        "telephone": "+63-32-501-2724",
+        "email": "aspacbank@aspacbank.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "ASPAC Bank Building, Guizo",
+          "addressLocality": "Mandaue City",
+          "addressRegion": "Cebu",
+          "addressCountry": "PH"
+        },
+        "sameAs": ["https://www.facebook.com/aspacbank0620/"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.aspacbank.com/#website",
+        "name": "ASPAC Bank",
+        "url": "https://www.aspacbank.com",
+        "publisher": { "@id": "https://www.aspacbank.com/#organization" }
+      }
+    ]
   }
   </script>
 </head>

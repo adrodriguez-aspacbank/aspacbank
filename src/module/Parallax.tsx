@@ -120,9 +120,9 @@ const textY = useTransform(scrollY, [0, 800], [0, isMobile ? 20 : 60]);
                     y: textY,
                   }}
                 >
-                  <h1 className="text-[#ebd839] text-3xl md:text-5xl font-normal leading-8 hero-text-shadow">
+                  <h2 className="text-[#ebd839] text-3xl md:text-5xl font-normal leading-8 hero-text-shadow">
                     {slide.title}
-                  </h1>
+                  </h2>
 
                   <p className="text-white/90 mt-5 text-base md:text-lg">
                     {slide.description}

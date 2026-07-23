@@ -21,9 +21,14 @@ module.exports = {
           '50%': { transform: 'rotate(10deg)' },
           '60%': { transform: 'rotate(0deg)' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
       },
         animation: {
         'wave-hand': 'wave 2.5s infinite',
+        'float': 'float 3s ease-in-out infinite',
       },
     },
   },
